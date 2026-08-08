@@ -1,0 +1,41 @@
+[
+  {
+    "slug": "automate-shopify-order-to-delivery",
+    "title": "Automating a Shopify store from order to delivery",
+    "excerpt": "What actually gets automated when an order lands, and where a human still needs to step in.",
+    "date": "2026-07-28",
+    "readingTime": "6 min",
+    "tag": "Shopify",
+    "body": [
+      "Most stores lose time in the gap between a paid order and a shipped parcel. The order arrives, someone copies it into a supplier sheet, someone else chases a tracking number, and the customer emails to ask where their parcel is.",
+      "The fix is not one tool. It is a chain: the order triggers a supplier notification, the supplier's response creates a shipment, the shipment pushes a tracking number back to the customer, and any break in that chain raises a flag for your team.",
+      "Once it runs, the only orders a person touches are the exceptions — and those arrive with the full history attached instead of as a mystery."
+    ]
+  },
+  {
+    "slug": "what-ai-ad-management-actually-does",
+    "title": "What AI ad management actually does to your ROAS",
+    "excerpt": "Budget reallocation, creative testing and the unglamorous parts that move return on ad spend.",
+    "date": "2026-07-14",
+    "readingTime": "5 min",
+    "tag": "Paid ads",
+    "body": [
+      "The headline number is ROAS, but the work behind it is repetitive: check which ad sets earned their spend yesterday, move budget toward them, pause what is dragging, and keep a steady flow of new creative in test.",
+      "None of that needs a human every day. It needs consistency, which is exactly what software is good at.",
+      "Across the accounts we manage the average lands at 4.2x, with ad spend down about a third for the same revenue."
+    ]
+  },
+  {
+    "slug": "an-ai-agent-on-whatsapp",
+    "title": "Putting an AI agent on WhatsApp without annoying your customers",
+    "excerpt": "How to automate 80% of support and keep the other 20% genuinely human.",
+    "date": "2026-06-30",
+    "readingTime": "4 min",
+    "tag": "Support",
+    "body": [
+      "Support automation fails when the bot pretends to know things it does not. It works when it answers the questions it can answer instantly, and hands over cleanly when it cannot.",
+      "In practice about four in five messages are order status, shipping and product questions. Those can be answered in under two seconds from live store data.",
+      "The remaining fifth reaches your team with the full conversation attached, so nobody asks the customer to repeat themselves."
+    ]
+  }
+]

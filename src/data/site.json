@@ -1,0 +1,1357 @@
+{
+  "solutions": [
+    {
+      "id": "sol-revenue",
+      "slug": "revenue-automation",
+      "icon": "revenue",
+      "badge": "+45% AOV",
+      "tone": "#3B82F6",
+      "short": "Pricing, upsells and cart recovery — 24/7.",
+      "eyebrow": "Solution · +45% AOV",
+      "title": "Revenue Automation",
+      "summary": "AI-optimized pricing, upsells and abandoned cart recovery running around the clock, so every visitor sees the offer most likely to convert them.",
+      "stats": [
+        [
+          "Avg order value",
+          "+45%"
+        ],
+        [
+          "Carts recovered",
+          "1 in 3"
+        ],
+        [
+          "Setup time",
+          "7–14 days"
+        ]
+      ],
+      "points": [
+        "Dynamic upsell and bundle logic based on cart contents",
+        "Cart recovery sequences over email, SMS and WhatsApp",
+        "Post-purchase offers triggered automatically",
+        "Price testing that reports back what actually converts"
+      ],
+      "video": {}
+    },
+    {
+      "id": "sol-fulfilment",
+      "slug": "order-fulfillment",
+      "icon": "package",
+      "badge": "0 manual work",
+      "tone": "#38BDF8",
+      "short": "Order to delivery, hands off.",
+      "eyebrow": "Solution · 0 manual work",
+      "title": "Order Fulfillment",
+      "summary": "From order to delivery — fulfillment, supplier routing, tracking and customer notifications handled end to end without a spreadsheet.",
+      "stats": [
+        [
+          "Time saved",
+          "20 hrs/week"
+        ],
+        [
+          "Manual steps",
+          "0"
+        ],
+        [
+          "Setup time",
+          "7–14 days"
+        ]
+      ],
+      "points": [
+        "Orders routed to the right supplier automatically",
+        "Tracking numbers pushed back to the customer",
+        "Stock synced across every sales channel",
+        "Exceptions flagged to your team with full context"
+      ],
+      "video": {}
+    },
+    {
+      "id": "sol-social",
+      "slug": "social-media-growth",
+      "icon": "social",
+      "badge": "10x followers",
+      "tone": "#F472B6",
+      "short": "Auto-posting for Instagram and TikTok.",
+      "eyebrow": "Solution · 10x followers",
+      "title": "Social Media Growth",
+      "summary": "Auto-posting, engagement and content scheduling for Instagram and TikTok, timed to when your audience is actually online.",
+      "stats": [
+        [
+          "Follower growth",
+          "up to 10x"
+        ],
+        [
+          "Posts/week",
+          "14+"
+        ],
+        [
+          "Hours saved",
+          "12/week"
+        ]
+      ],
+      "points": [
+        "AI captions and hashtags matched to each post",
+        "Publishing at peak engagement windows",
+        "Comment and DM replies handled automatically",
+        "Monthly reporting on reach, saves and follows"
+      ],
+      "video": {}
+    },
+    {
+      "id": "sol-shopify",
+      "slug": "shopify-optimization",
+      "icon": "bag",
+      "badge": "+38% CVR",
+      "tone": "#34D399",
+      "short": "Speed, SEO and CRO.",
+      "eyebrow": "Solution · +38% CVR",
+      "title": "Shopify Optimization",
+      "summary": "Speed, SEO and conversion work that turns more of the traffic you already pay for into buyers.",
+      "stats": [
+        [
+          "Conversion rate",
+          "+38%"
+        ],
+        [
+          "Load time",
+          "under 2s"
+        ],
+        [
+          "Setup time",
+          "10–14 days"
+        ]
+      ],
+      "points": [
+        "Theme and image optimization for Core Web Vitals",
+        "Technical SEO, structured data and sitemap fixes",
+        "Checkout and product page CRO",
+        "Bilingual Arabic / English store setup"
+      ],
+      "video": {}
+    },
+    {
+      "id": "sol-ads",
+      "slug": "ai-smart-ads",
+      "icon": "target",
+      "badge": "4.2x ROAS",
+      "tone": "#FBBF24",
+      "short": "ML-managed Meta and Google ads.",
+      "eyebrow": "Solution · 4.2x ROAS",
+      "title": "AI Smart Ads",
+      "summary": "Machine learning manages your Meta and Google campaigns — budget moves to what performs, daily, without you watching it.",
+      "stats": [
+        [
+          "Average ROAS",
+          "4.2x"
+        ],
+        [
+          "Ad spend",
+          "−35%"
+        ],
+        [
+          "Reporting",
+          "Daily"
+        ]
+      ],
+      "points": [
+        "Budget reallocated to the best performing ad sets",
+        "Creative testing on a fixed weekly cycle",
+        "Audience building from your own store data",
+        "Full funnel tracking from click to delivered order"
+      ],
+      "video": {}
+    },
+    {
+      "id": "sol-support",
+      "slug": "ai-customer-support",
+      "icon": "bot",
+      "badge": "80% automated",
+      "tone": "#7C6CFF",
+      "short": "Instant replies on WhatsApp and your site.",
+      "eyebrow": "Solution · 80% automated",
+      "title": "AI Customer Support",
+      "summary": "A chatbot that answers 80% of questions instantly on WhatsApp and your website, and hands the rest to your team with the full conversation attached.",
+      "stats": [
+        [
+          "Questions handled",
+          "80%"
+        ],
+        [
+          "First reply",
+          "under 2s"
+        ],
+        [
+          "Languages",
+          "Arabic + English"
+        ]
+      ],
+      "points": [
+        "Trained on your products, policies and order data",
+        "Live order status lookups inside the chat",
+        "Escalation to a human with full context",
+        "Available every hour of every day"
+      ],
+      "video": {}
+    }
+  ],
+  "goals": [
+    {
+      "id": "goal-revenue",
+      "slug": "increase-revenue",
+      "icon": "revenue",
+      "metric": "+45%",
+      "metricLabel": "average order value",
+      "tone": "#3B82F6",
+      "short": "Upsells, AI pricing, cart recovery.",
+      "eyebrow": "Goal",
+      "title": "Increase revenue",
+      "summary": "Lift what each customer spends without buying more traffic. Smart upsells, AI pricing and cart recovery do the work.",
+      "stats": [
+        [
+          "Avg order value",
+          "+45%"
+        ],
+        [
+          "Revenue growth",
+          "+132%"
+        ],
+        [
+          "Typical payback",
+          "Month 1"
+        ]
+      ],
+      "points": [
+        "Start with a free audit of your current funnel",
+        "We build upsell and recovery flows around your catalog",
+        "You keep the system whether or not you continue with us"
+      ],
+      "video": {}
+    },
+    {
+      "id": "goal-ops",
+      "slug": "automate-operations",
+      "icon": "package",
+      "metric": "20hrs",
+      "metricLabel": "saved every week",
+      "tone": "#7C6CFF",
+      "short": "Orders and fulfillment on autopilot.",
+      "eyebrow": "Goal",
+      "title": "Automate operations",
+      "summary": "Orders, fulfillment, tracking and supplier updates run end to end so your team stops copying data between tabs.",
+      "stats": [
+        [
+          "Hours saved",
+          "20/week"
+        ],
+        [
+          "Manual steps",
+          "0"
+        ],
+        [
+          "Go live",
+          "Under 14 days"
+        ]
+      ],
+      "points": [
+        "We map your current workflow before changing anything",
+        "Automations plug into the tools you already use",
+        "Everything is monitored, with alerts when something needs a human"
+      ],
+      "video": {}
+    },
+    {
+      "id": "goal-support",
+      "slug": "improve-customer-support",
+      "icon": "headset",
+      "metric": "80%",
+      "metricLabel": "of questions handled",
+      "tone": "#38BDF8",
+      "short": "AI replies in seconds, day and night.",
+      "eyebrow": "Goal",
+      "title": "Improve customer support",
+      "summary": "An AI agent replies on WhatsApp and on your store in seconds, day and night, in Arabic and English.",
+      "stats": [
+        [
+          "Handled by AI",
+          "80%"
+        ],
+        [
+          "Response time",
+          "under 2s"
+        ],
+        [
+          "Team time saved",
+          "4 hrs/day"
+        ]
+      ],
+      "points": [
+        "Answers product, shipping and order status questions",
+        "Escalates anything sensitive to your team",
+        "Learns from every conversation your team resolves"
+      ],
+      "video": {}
+    },
+    {
+      "id": "goal-decisions",
+      "slug": "make-better-decisions",
+      "icon": "chart",
+      "metric": "4.2x",
+      "metricLabel": "ROAS on managed ads",
+      "tone": "#34D399",
+      "short": "One live dashboard for everything.",
+      "eyebrow": "Goal",
+      "title": "Make better decisions",
+      "summary": "One live dashboard for revenue, orders, visitors and ROAS, so you stop guessing which channel is actually working.",
+      "stats": [
+        [
+          "Managed ROAS",
+          "4.2x"
+        ],
+        [
+          "Reporting",
+          "Live"
+        ],
+        [
+          "Setup time",
+          "5–7 days"
+        ]
+      ],
+      "points": [
+        "Revenue, orders and traffic in a single view",
+        "Channel level ROAS across Meta, Google and TikTok",
+        "Weekly summary delivered to WhatsApp or email"
+      ],
+      "video": {}
+    }
+  ],
+  "caseStudies": [
+    {
+      "id": "case-cairo",
+      "slug": "ecommerce-store-cairo",
+      "type": "E-commerce store · Cairo",
+      "kpi": "85",
+      "kpiUnit": "/day",
+      "kpiLabel": "Orders after automation",
+      "before": "20 orders/day",
+      "after": "85 orders/day",
+      "delta": "+325%",
+      "period": "in 6 weeks",
+      "c1": "#3B82F6",
+      "c2": "#7C6CFF",
+      "eyebrow": "Case study · E-commerce store, Cairo",
+      "title": "20 to 85 orders a day",
+      "summary": "A Cairo e-commerce store moved from manual order handling to a fully automated pipeline in six weeks.",
+      "stats": [
+        [
+          "Before",
+          "20 orders/day"
+        ],
+        [
+          "After",
+          "85 orders/day"
+        ],
+        [
+          "Change",
+          "+325%"
+        ]
+      ],
+      "points": [
+        "Order routing, fulfillment and tracking automated end to end",
+        "Abandoned cart recovery added across email and WhatsApp",
+        "Owner: \"Everything runs automatically while I sleep.\""
+      ],
+      "video": {}
+    },
+    {
+      "id": "case-beauty",
+      "slug": "beauty-brand",
+      "type": "Beauty brand",
+      "kpi": "18K",
+      "kpiUnit": " followers",
+      "kpiLabel": "Instagram after 3 months",
+      "before": "2K followers",
+      "after": "18K followers",
+      "delta": "+800%",
+      "period": "in 3 months",
+      "c1": "#F472B6",
+      "c2": "#7C6CFF",
+      "eyebrow": "Case study · Beauty brand",
+      "title": "2K to 18K followers",
+      "summary": "Content scheduling and engagement automation grew an Instagram audience 9x in three months.",
+      "stats": [
+        [
+          "Before",
+          "2K followers"
+        ],
+        [
+          "After",
+          "18K followers"
+        ],
+        [
+          "Change",
+          "+800%"
+        ]
+      ],
+      "points": [
+        "AI captions and hashtags on a fixed posting cadence",
+        "Publishing timed to peak engagement windows",
+        "Founder: \"The AI posts content better than I ever did.\""
+      ],
+      "video": {}
+    },
+    {
+      "id": "case-shopify",
+      "slug": "shopify-store",
+      "type": "Shopify store",
+      "kpi": "4.2",
+      "kpiUnit": "% CVR",
+      "kpiLabel": "Shopify conversion rate",
+      "before": "1.8% CVR",
+      "after": "4.2% CVR",
+      "delta": "+133%",
+      "period": "and 35% less ad spend",
+      "c1": "#34D399",
+      "c2": "#3B82F6",
+      "eyebrow": "Case study · Shopify store",
+      "title": "1.8% to 4.2% conversion",
+      "summary": "Store speed, SEO and checkout work more than doubled conversion while ad spend came down.",
+      "stats": [
+        [
+          "Before",
+          "1.8% CVR"
+        ],
+        [
+          "After",
+          "4.2% CVR"
+        ],
+        [
+          "Ad spend",
+          "−35%"
+        ]
+      ],
+      "points": [
+        "Theme and image optimization for Core Web Vitals",
+        "Product page and checkout CRO",
+        "Owner: \"Ad spend dropped 35%. Genuinely good.\""
+      ],
+      "video": {}
+    },
+    {
+      "id": "case-electronics",
+      "slug": "electronics-store",
+      "type": "Electronics store",
+      "kpi": "4.5",
+      "kpiUnit": "x ROAS",
+      "kpiLabel": "Meta and Google ads",
+      "before": "1.8x ROAS",
+      "after": "4.5x ROAS",
+      "delta": "+150%",
+      "period": "paid back in month one",
+      "c1": "#FBBF24",
+      "c2": "#F472B6",
+      "eyebrow": "Case study · Electronics store",
+      "title": "1.8x to 4.5x ROAS",
+      "summary": "AI managed budget allocation across Meta and Google paid for the whole engagement inside the first month.",
+      "stats": [
+        [
+          "Before",
+          "1.8x ROAS"
+        ],
+        [
+          "After",
+          "4.5x ROAS"
+        ],
+        [
+          "Change",
+          "+150%"
+        ]
+      ],
+      "points": [
+        "Daily budget reallocation to the best performing sets",
+        "Weekly creative testing cycle",
+        "Owner: \"It paid for everything in the first month.\""
+      ],
+      "video": {}
+    },
+    {
+      "id": "case-decor",
+      "slug": "home-decor-brand",
+      "type": "Home decor brand",
+      "kpi": "+280",
+      "kpiUnit": "%",
+      "kpiLabel": "Revenue in 4 months",
+      "before": "No live data",
+      "after": "Live dashboard",
+      "delta": "+280%",
+      "period": "revenue in 4 months",
+      "c1": "#7C6CFF",
+      "c2": "#38BDF8",
+      "eyebrow": "Case study · Home decor brand",
+      "title": "+280% revenue in 4 months",
+      "summary": "A live dashboard replaced guesswork, and revenue followed.",
+      "stats": [
+        [
+          "Revenue",
+          "+280%"
+        ],
+        [
+          "Timeframe",
+          "4 months"
+        ],
+        [
+          "Reporting",
+          "Live"
+        ]
+      ],
+      "points": [
+        "Revenue, orders and traffic unified in one view",
+        "Channel level ROAS across every paid source",
+        "Founder: \"I feel in control for the first time.\""
+      ],
+      "video": {}
+    }
+  ],
+  "systems": [
+    {
+      "id": "sys-accounting",
+      "slug": "accounting-system",
+      "tag": "SaaS system",
+      "short": "Invoicing, expenses and reports.",
+      "eyebrow": "Custom system · SaaS",
+      "title": "Accounting System",
+      "summary": "Invoicing, expense tracking, financial reports and multi-user access, built for small and medium businesses.",
+      "stats": [
+        [
+          "Users",
+          "Multi-user"
+        ],
+        [
+          "Reports",
+          "Automated"
+        ],
+        [
+          "Demo",
+          "On request"
+        ]
+      ],
+      "points": [
+        "Invoice generation and payment tracking",
+        "Expense categories and receipt capture",
+        "Monthly and quarterly financial reports",
+        "Role based access for accountants and owners"
+      ],
+      "video": {}
+    },
+    {
+      "id": "sys-seo",
+      "slug": "seo-forge",
+      "tag": "AI + SEO",
+      "short": "Keywords, content and rank tracking.",
+      "eyebrow": "Custom system · AI + SEO",
+      "title": "SEO Forge",
+      "summary": "Keyword research, content generation, rank tracking and site audits, powered by AI.",
+      "stats": [
+        [
+          "Languages",
+          "Arabic + English"
+        ],
+        [
+          "Tracking",
+          "Daily"
+        ],
+        [
+          "Demo",
+          "On request"
+        ]
+      ],
+      "points": [
+        "Keyword research with local search intent",
+        "AI drafted content briefs and copy",
+        "Daily rank tracking by keyword and page",
+        "Technical site audits with prioritized fixes"
+      ],
+      "video": {}
+    },
+    {
+      "id": "sys-courier",
+      "slug": "courier-system",
+      "tag": "Logistics",
+      "short": "Dispatch, tracking and notifications.",
+      "eyebrow": "Custom system · Logistics",
+      "title": "Courier System",
+      "summary": "Order dispatch, driver tracking, real-time status and automated customer notifications.",
+      "stats": [
+        [
+          "Tracking",
+          "Real time"
+        ],
+        [
+          "Notifications",
+          "Automated"
+        ],
+        [
+          "Demo",
+          "On request"
+        ]
+      ],
+      "points": [
+        "Dispatch orders to available drivers automatically",
+        "Live map tracking for every delivery",
+        "Status updates pushed to the customer",
+        "Delivery performance reporting by driver and zone"
+      ],
+      "video": {}
+    },
+    {
+      "id": "sys-trading",
+      "slug": "trading-system",
+      "tag": "Fintech",
+      "short": "Live data, signals and execution.",
+      "eyebrow": "Custom system · Fintech",
+      "title": "Trading System",
+      "summary": "Live market data, portfolio tracking, buy and sell signals and automated execution.",
+      "stats": [
+        [
+          "Data",
+          "Live"
+        ],
+        [
+          "Execution",
+          "Automated"
+        ],
+        [
+          "Demo",
+          "On request"
+        ]
+      ],
+      "points": [
+        "Live market data feeds",
+        "Portfolio performance tracking",
+        "Signal generation from configurable rules",
+        "Automated execution with manual override"
+      ],
+      "video": {}
+    },
+    {
+      "id": "sys-analytics",
+      "slug": "google-analytics-system",
+      "tag": "Analytics",
+      "short": "Traffic, funnels and alerts.",
+      "eyebrow": "Custom system · Analytics",
+      "title": "Google Analytics System",
+      "summary": "GA4 traffic insights, conversion funnels, real-time reports and automated alerts.",
+      "stats": [
+        [
+          "Platform",
+          "GA4"
+        ],
+        [
+          "Alerts",
+          "Automated"
+        ],
+        [
+          "Demo",
+          "On request"
+        ]
+      ],
+      "points": [
+        "Traffic and acquisition breakdowns",
+        "Conversion funnel analysis",
+        "Real-time reporting dashboards",
+        "Alerts when a metric moves outside its range"
+      ],
+      "video": {}
+    }
+  ],
+  "automations": [
+    {
+      "id": "auto-stripe",
+      "slug": "stripe-payment-automation",
+      "eyebrow": "Automation",
+      "title": "Stripe payment automation",
+      "summary": "Payments, receipts, refunds and reconciliation handled without anyone opening the dashboard.",
+      "stats": [
+        [
+          "Setup",
+          "3–5 days"
+        ],
+        [
+          "Manual work",
+          "0"
+        ]
+      ],
+      "points": [
+        "Automatic receipts and invoices",
+        "Failed payment retry sequences",
+        "Refunds synced back to your store",
+        "Daily reconciliation report"
+      ],
+      "video": {}
+    },
+    {
+      "id": "auto-whatsapp",
+      "slug": "whatsapp-ai-system",
+      "eyebrow": "Automation",
+      "title": "WhatsApp AI system",
+      "summary": "An AI agent on WhatsApp Business handling orders, questions and confirmations in Arabic and English.",
+      "stats": [
+        [
+          "Reply time",
+          "under 2s"
+        ],
+        [
+          "Automated",
+          "80%"
+        ]
+      ],
+      "points": [
+        "Order confirmation and rescheduling flows",
+        "Live order status lookups",
+        "Escalation to your team with full context",
+        "Broadcast campaigns to opted-in customers"
+      ],
+      "video": {}
+    },
+    {
+      "id": "auto-courier",
+      "slug": "courier-and-delivery-system",
+      "eyebrow": "Automation",
+      "title": "Courier and delivery system",
+      "summary": "Connects your store to your courier so dispatch, tracking and notifications happen on their own.",
+      "stats": [
+        [
+          "Setup",
+          "5–7 days"
+        ],
+        [
+          "Tracking",
+          "Automatic"
+        ]
+      ],
+      "points": [
+        "Shipments created the moment an order is paid",
+        "Tracking numbers returned to the customer",
+        "Delivery exceptions flagged to your team"
+      ],
+      "video": {}
+    },
+    {
+      "id": "auto-youtube",
+      "slug": "youtube-ai-generator",
+      "eyebrow": "Automation",
+      "title": "YouTube AI generator",
+      "summary": "Turns your product catalog and blog content into scripted, scheduled video output.",
+      "stats": [
+        [
+          "Output",
+          "Weekly"
+        ],
+        [
+          "Input",
+          "Your catalog"
+        ]
+      ],
+      "points": [
+        "Scripts generated from existing product content",
+        "Titles, descriptions and tags optimized for search",
+        "Scheduled publishing on a fixed cadence"
+      ],
+      "video": {}
+    },
+    {
+      "id": "auto-chatbot",
+      "slug": "ecommerce-chatbot",
+      "eyebrow": "Automation",
+      "title": "E-commerce chatbot",
+      "summary": "An on-site assistant that answers product questions and guides visitors to checkout.",
+      "stats": [
+        [
+          "Handled",
+          "80%"
+        ],
+        [
+          "Languages",
+          "Arabic + English"
+        ]
+      ],
+      "points": [
+        "Trained on your catalog and policies",
+        "Product recommendations inside the chat",
+        "Handover to a human when needed"
+      ],
+      "video": {}
+    },
+    {
+      "id": "auto-custom",
+      "slug": "custom-automations",
+      "eyebrow": "Automation",
+      "title": "Custom automations",
+      "summary": "If it happens more than twice a week and follows rules, it can be automated. Tell us the workflow.",
+      "stats": [
+        [
+          "Scope",
+          "Anything repeatable"
+        ],
+        [
+          "Start",
+          "Free audit"
+        ]
+      ],
+      "points": [
+        "We map the workflow before building anything",
+        "Built on the tools you already pay for",
+        "Documented and handed over, not locked in"
+      ],
+      "video": {}
+    }
+  ],
+  "team": [
+    {
+      "id": "team-heba",
+      "slug": "heba-hesham",
+      "initials": "HH",
+      "role": "Senior web developer",
+      "tone": "#3B82F6",
+      "eyebrow": "Team",
+      "title": "Heba Hesham",
+      "summary": "Senior web developer. Builds and maintains the Shopify themes, custom storefronts and client systems.",
+      "points": [
+        "Shopify OS 2.0 theme development",
+        "Custom storefront and system builds",
+        "Performance and SEO implementation"
+      ],
+      "video": null
+    },
+    {
+      "id": "team-hams",
+      "slug": "hams",
+      "initials": "HA",
+      "role": "Software engineer",
+      "tone": "#7C6CFF",
+      "eyebrow": "Team",
+      "title": "Hams",
+      "summary": "Software engineer. Works across the automation backends and integrations.",
+      "points": [
+        "Automation workflows and API integrations",
+        "Backend services and data pipelines"
+      ],
+      "video": null
+    },
+    {
+      "id": "team-mera",
+      "slug": "mera",
+      "initials": "ME",
+      "role": "Software engineer",
+      "tone": "#38BDF8",
+      "eyebrow": "Team",
+      "title": "Mera",
+      "summary": "Software engineer. Focused on dashboards, reporting and client-facing systems.",
+      "points": [
+        "Dashboard and reporting interfaces",
+        "System integrations and QA"
+      ],
+      "video": null
+    },
+    {
+      "id": "team-ganna",
+      "slug": "ganna",
+      "initials": "GA",
+      "role": "Content creator",
+      "tone": "#34D399",
+      "eyebrow": "Team",
+      "title": "Ganna",
+      "summary": "Content creator. Produces the copy and creative that the automations publish.",
+      "points": [
+        "Product and campaign copy",
+        "Creative direction for social output"
+      ],
+      "video": null
+    },
+    {
+      "id": "team-ebtsam",
+      "slug": "ebtsam",
+      "initials": "EB",
+      "role": "Social media creator",
+      "tone": "#F472B6",
+      "eyebrow": "Team",
+      "title": "Ebtsam",
+      "summary": "Social media creator. Runs the content calendars and engagement for client accounts.",
+      "points": [
+        "Content calendars for Instagram and TikTok",
+        "Engagement and community management"
+      ],
+      "video": null
+    },
+    {
+      "id": "team-amira",
+      "slug": "amira",
+      "initials": "AM",
+      "role": "Customer support",
+      "tone": "#FBBF24",
+      "eyebrow": "Team",
+      "title": "Amira",
+      "summary": "Customer support. First point of contact for clients, in Arabic and English.",
+      "points": [
+        "Client onboarding and day to day support",
+        "Escalation handling"
+      ],
+      "video": null
+    },
+    {
+      "id": "team-jumana",
+      "slug": "jumana",
+      "initials": "JU",
+      "role": "Customer support",
+      "tone": "#3B82F6",
+      "eyebrow": "Team",
+      "title": "Jumana",
+      "summary": "Customer support. Handles account questions and coordinates with the build team.",
+      "points": [
+        "Account and billing questions",
+        "Coordination between clients and engineers"
+      ],
+      "video": null
+    }
+  ],
+  "charts": {
+    "revenue": {
+      "kicker": "Monthly revenue, indexed",
+      "label": "avg revenue growth",
+      "count": 132,
+      "prefix": "+",
+      "suffix": "%",
+      "note": "The average client ends up at 2.3x the revenue they started with.",
+      "bars": [
+        {
+          "cap": "Before",
+          "val": 100,
+          "text": "100"
+        },
+        {
+          "cap": "After",
+          "val": 232,
+          "text": "232"
+        }
+      ]
+    },
+    "businesses": {
+      "kicker": "Businesses scaled to date",
+      "label": "and still climbing",
+      "count": 150,
+      "suffix": "+",
+      "note": "Stores and brands that have run on StarSolution automations.",
+      "bars": [
+        {
+          "cap": "Clients",
+          "val": 150,
+          "text": "150+"
+        }
+      ]
+    },
+    "hours": {
+      "kicker": "Manual hours per week",
+      "label": "saved per client team",
+      "count": 20,
+      "suffix": "hrs",
+      "note": "Twenty hours of moving data between tabs, removed every week.",
+      "bars": [
+        {
+          "cap": "Before",
+          "val": 20,
+          "text": "20 hrs"
+        },
+        {
+          "cap": "After",
+          "val": 0,
+          "text": "0 hrs"
+        }
+      ]
+    },
+    "roas": {
+      "kicker": "Return on ad spend",
+      "label": "average, managed accounts",
+      "count": 4.2,
+      "decimals": 1,
+      "suffix": "x",
+      "note": "Averaged across the Meta and Google accounts we manage.",
+      "bars": [
+        {
+          "cap": "Average",
+          "val": 4.2,
+          "text": "4.2x"
+        },
+        {
+          "cap": "Scale",
+          "val": 5,
+          "text": "5x",
+          "ghost": true
+        }
+      ]
+    },
+    "aov": {
+      "kicker": "Average order value, indexed",
+      "label": "order value increase",
+      "count": 45,
+      "prefix": "+",
+      "suffix": "%",
+      "note": "Upsells, bundles and post-purchase offers, with no extra traffic.",
+      "bars": [
+        {
+          "cap": "Before",
+          "val": 100,
+          "text": "100"
+        },
+        {
+          "cap": "After",
+          "val": 145,
+          "text": "145"
+        }
+      ]
+    },
+    "support": {
+      "kicker": "Questions reaching your team",
+      "label": "now handled by AI",
+      "count": 80,
+      "suffix": "%",
+      "note": "The AI agent answers four out of five questions before anyone sees them.",
+      "bars": [
+        {
+          "cap": "Before",
+          "val": 100,
+          "text": "100%"
+        },
+        {
+          "cap": "After",
+          "val": 20,
+          "text": "20%"
+        }
+      ]
+    },
+    "adspend": {
+      "kicker": "Ad spend, indexed",
+      "label": "ad spend reduction",
+      "count": 35,
+      "suffix": "%",
+      "note": "Same revenue, a third less spend, once the AI takes over bidding.",
+      "bars": [
+        {
+          "cap": "Before",
+          "val": 100,
+          "text": "100"
+        },
+        {
+          "cap": "After",
+          "val": 65,
+          "text": "65"
+        }
+      ]
+    },
+    "rating": {
+      "kicker": "Client rating",
+      "label": "from 150+ clients",
+      "count": 4.9,
+      "decimals": 1,
+      "note": "Averaged across every client review we have collected.",
+      "bars": [
+        {
+          "cap": "Rating",
+          "val": 4.9,
+          "text": "4.9"
+        },
+        {
+          "cap": "Out of",
+          "val": 5,
+          "text": "5.0",
+          "ghost": true
+        }
+      ]
+    }
+  },
+  "testimonials": [
+    {
+      "id": "t-omar",
+      "initials": "OH",
+      "tone": "#3B82F6",
+      "name": "Omar Hassan",
+      "role": "E-commerce owner, Cairo",
+      "quote": "Orders went from 20/day to 85/day in 6 weeks. Everything runs automatically while I sleep."
+    },
+    {
+      "id": "t-layla",
+      "initials": "LM",
+      "tone": "#F472B6",
+      "name": "Layla Mohammed",
+      "role": "Beauty brand founder",
+      "quote": "Instagram went from 2K to 18K followers in 3 months. The AI posts content better than I ever did."
+    },
+    {
+      "id": "t-ahmed",
+      "initials": "AF",
+      "tone": "#34D399",
+      "name": "Ahmed Farouk",
+      "role": "Shopify store owner",
+      "quote": "Shopify conversion rate jumped from 1.8% to 4.2%. Ad spend dropped 35%. Genuinely good."
+    },
+    {
+      "id": "t-nadia",
+      "initials": "NE",
+      "tone": "#7C6CFF",
+      "name": "Nadia El-Sayed",
+      "role": "Fashion brand, Dubai",
+      "quote": "The chatbot handles 80% of my customer queries. I used to spend 4 hours a day on WhatsApp."
+    },
+    {
+      "id": "t-karim",
+      "initials": "KM",
+      "tone": "#FBBF24",
+      "name": "Karim Mansour",
+      "role": "Electronics store",
+      "quote": "ROAS went from 1.8x to 4.5x. The AI ad optimization paid for everything in the first month."
+    },
+    {
+      "id": "t-sara",
+      "initials": "SR",
+      "tone": "#38BDF8",
+      "name": "Sara Al-Rashid",
+      "role": "Home decor brand",
+      "quote": "Revenue up 280% in 4 months. I feel in control for the first time with the live dashboard."
+    }
+  ],
+  "projects": [
+    {
+      "id": "p-montre",
+      "slug": "montre-co",
+      "badge": "E-commerce",
+      "title": "Montre Co.",
+      "short": "Shopify build, custom UI and checkout.",
+      "url": "https://montre-co.com/",
+      "accent": "#3B82F6",
+      "theme": "montre",
+      "summary": "A premium watch store rebuilt on Shopify with a custom theme, redesigned product pages and a streamlined checkout.",
+      "points": [
+        "Custom Shopify OS 2.0 theme",
+        "Product and collection page design",
+        "Checkout and cart flow rebuilt",
+        "Performance and SEO pass"
+      ]
+    },
+    {
+      "id": "p-beauty",
+      "slug": "beauty-bareg",
+      "badge": "Beauty & fashion",
+      "title": "Beauty Bareg",
+      "short": "Store design, catalog and mobile-first UX.",
+      "url": "https://beauty-bareg.net/",
+      "accent": "#7C6CFF",
+      "theme": "beauty",
+      "summary": "A luxury beauty and fashion storefront with a full catalog build, social integration and a mobile-first experience.",
+      "points": [
+        "Full store design and build",
+        "Product catalog and merchandising",
+        "Social and campaign integration",
+        "Mobile-first experience"
+      ]
+    }
+  ],
+  "process": [
+    {
+      "num": "01",
+      "icon": "search",
+      "title": "Free audit",
+      "text": "Your store, ads and workflows — analyzed free."
+    },
+    {
+      "num": "02",
+      "icon": "build",
+      "title": "We build",
+      "text": "Custom automation, live in 14 days."
+    },
+    {
+      "num": "03",
+      "icon": "rocket",
+      "title": "You grow",
+      "text": "Orders and revenue climb on autopilot."
+    }
+  ],
+  "nightLog": [
+    {
+      "time": "2:14 AM",
+      "title": "New order — $139.99",
+      "text": "Supplier notified. Tracking sent."
+    },
+    {
+      "time": "2:31 AM",
+      "title": "Customer asked about an order",
+      "text": "Answered in 1.8s."
+    },
+    {
+      "time": "3:07 AM",
+      "title": "Cart abandoned — $89",
+      "text": "Email sent. Recovered."
+    },
+    {
+      "time": "4:15 AM",
+      "title": "Ad budget optimized",
+      "text": "$200 moved to the top ad set."
+    },
+    {
+      "time": "5:00 AM",
+      "title": "TikTok post published",
+      "text": "AI caption, peak time."
+    }
+  ],
+  "nightStats": [
+    [
+      "Orders processed",
+      "342"
+    ],
+    [
+      "Messages answered",
+      "786"
+    ],
+    [
+      "Ads optimized",
+      "28"
+    ],
+    [
+      "Posts published",
+      "12"
+    ]
+  ],
+  "platforms": [
+    "Shopify",
+    "Meta Ads",
+    "Google Ads",
+    "TikTok",
+    "WhatsApp",
+    "OpenAI"
+  ],
+  "heroNodes": [
+    {
+      "icon": "bag",
+      "tone": "#34D399",
+      "source": "Shopify store",
+      "label": "Orders today",
+      "value": "342",
+      "delta": "+32% vs last week",
+      "spark": "0,20 15,18 30,14 45,15 60,9 75,6 90,2"
+    },
+    {
+      "icon": "eye",
+      "tone": "#3B82F6",
+      "source": "Store traffic",
+      "label": "Visitors today",
+      "value": "1,892",
+      "delta": "4.2x ROAS on ads",
+      "spark": "0,19 15,15 30,16 45,11 60,10 75,5 90,3"
+    },
+    {
+      "icon": "whatsapp",
+      "tone": "#25D366",
+      "source": "WhatsApp",
+      "label": "Messages answered",
+      "value": "786",
+      "delta": "80% fully automated",
+      "spark": "0,21 15,17 30,17 45,12 60,8 75,7 90,3"
+    },
+    {
+      "icon": "chart",
+      "tone": "#7C6CFF",
+      "source": "Analytics",
+      "label": "Revenue today",
+      "value": "$12,847.50",
+      "delta": "+32% vs last week",
+      "spark": "0,22 15,19 30,13 45,12 60,7 75,5 90,1"
+    }
+  ],
+  "heroStats": [
+    [
+      "Avg revenue growth",
+      "+132%",
+      ""
+    ],
+    [
+      "Client rating",
+      "4.9",
+      "/5"
+    ],
+    [
+      "Businesses scaled",
+      "150",
+      "+"
+    ]
+  ],
+  "figures": [
+    {
+      "metric": "businesses",
+      "icon": "star",
+      "count": 150,
+      "suffix": "+",
+      "fallback": "0+",
+      "label": "Businesses scaled",
+      "sub": "and growing"
+    },
+    {
+      "metric": "hours",
+      "icon": "clock",
+      "count": 20,
+      "suffix": "hrs",
+      "fallback": "0hrs",
+      "label": "Saved per week",
+      "sub": "per client team"
+    },
+    {
+      "metric": "roas",
+      "icon": "target",
+      "count": 4.2,
+      "decimals": 1,
+      "suffix": "x",
+      "fallback": "0x",
+      "label": "Average ROAS",
+      "sub": "Meta + Google"
+    },
+    {
+      "metric": "aov",
+      "icon": "bag",
+      "count": 45,
+      "prefix": "+",
+      "suffix": "%",
+      "fallback": "+0%",
+      "label": "Order value increase",
+      "sub": "with upsells"
+    },
+    {
+      "metric": "support",
+      "icon": "headset",
+      "count": 80,
+      "suffix": "%",
+      "fallback": "0%",
+      "label": "Support automated",
+      "sub": "WhatsApp + site"
+    },
+    {
+      "metric": "adspend",
+      "icon": "chart",
+      "count": 35,
+      "suffix": "%",
+      "fallback": "0%",
+      "label": "Ad spend reduction",
+      "sub": "same revenue"
+    },
+    {
+      "metric": "rating",
+      "icon": "check",
+      "count": 4.9,
+      "decimals": 1,
+      "fallback": "0",
+      "label": "Client rating",
+      "sub": "from 150+ clients"
+    }
+  ],
+  "contact": {
+    "email": "info@starsolution.ai",
+    "phone": "+20 123 456 7890",
+    "whatsapp": "https://wa.me/+201234567890",
+    "locations": "USA & UAE",
+    "offer": "STAR15"
+  }
+}
