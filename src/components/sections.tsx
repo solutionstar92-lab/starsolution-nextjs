@@ -5,6 +5,13 @@ import { Rail } from './Rail';
 import { BeforeAfter } from './BeforeAfter';
 import type { Entry, Project, Testimonial } from '@/lib/types';
 
+/* Automations carry their own icon and tone in site.json, but the Supabase
+   table has no such columns — these keep the cards coloured either way. */
+const AUTO_TONES = ['#3B82F6', '#34D399', '#FBBF24', '#F472B6', '#38BDF8', '#7C6CFF'];
+const AUTO_ICONS = ['revenue', 'whatsapp', 'package', 'play', 'bot', 'build'];
+export const autoTone = (i: number) => AUTO_TONES[i % AUTO_TONES.length];
+export const autoIcon = (i: number) => AUTO_ICONS[i % AUTO_ICONS.length];
+
 export function SectionHead({
   eyebrow, title, sub, id, row, action,
 }: {
@@ -53,8 +60,9 @@ export function Solutions({ solutions }: { solutions: Entry[] }) {
       <div className="mx-auto max-w-shell px-5 lg:px-8">
         <SectionHead id="solTitle" eyebrow="What we do" title="The complete AI automation suite" sub="Six systems. Your existing tools." />
         <div className="bento">
-          {solutions.map((s, i) => (
-            <Reveal as="article" key={s.id} delay={i * 0.05} className={i === 0 ? 'bento-lead' : i === 5 ? 'bento-wide' : ''}>
+          {solutions.map((s, i) => {
+            const cls = i === 0 ? 'bento-lead' : i === 5 ? 'bento-wide' : '';
+            const card = (
               <Link href={`/solutions/${s.slug}`} className="bento-card block h-full">
                 <span className="sol-icon" style={{ ['--g1' as string]: s.tone }}><Icon name={s.icon ?? 'star'} /></span>
                 <p className="sol-badge">{s.badge}</p>
@@ -62,8 +70,13 @@ export function Solutions({ solutions }: { solutions: Entry[] }) {
                 <p className="sol-desc">{s.short}</p>
                 <span className="card-glow" aria-hidden="true" />
               </Link>
-            </Reveal>
-          ))}
+            );
+            // The first system is always on screen. The rest fade in as they
+            // reach the bottom edge and fade back out when you scroll up.
+            return i === 0
+              ? <article key={s.id} className={cls}>{card}</article>
+              : <Reveal as="article" key={s.id} className={cls} repeat>{card}</Reveal>;
+          })}
         </div>
       </div>
     </section>
@@ -179,22 +192,40 @@ export function Work({ projects, systems, automations }: { projects: Project[]; 
 
         <h3 className="group-label">Custom systems and dashboards</h3>
         <ul className="system-grid">
-          {systems.map((s, i) => (
-            <Reveal as="li" key={s.id} delay={i * 0.05}>
+          {systems.map((s, i) => {
+            const card = (
               <Link href={`/systems/${s.slug}`} className="system-card block h-full">
                 <p className="sys-tag">{s.tag}</p>
                 <h4>{s.title}</h4>
                 <p>{s.short}</p>
                 <p className="sys-demo"><Icon name="play" /> Watch the walkthrough</p>
               </Link>
-            </Reveal>
-          ))}
+            );
+            // The first system is always on screen. The rest fade in as they
+            // reach the bottom edge and fade back out when you scroll up.
+            return i === 0
+              ? <li key={s.id}>{card}</li>
+              : <Reveal as="li" key={s.id} repeat>{card}</Reveal>;
+          })}
         </ul>
 
         <h3 className="group-label">AI automations and integrations</h3>
-        <Reveal as="ul" className="chip-row">
-          {automations.map((a) => (
-            <li key={a.id}><Link href={`/automations/${a.slug}`}>{a.title}</Link></li>
+        <Reveal as="ul" className="auto-grid">
+          {automations.map((a, i) => (
+            <li key={a.id}>
+              <Link
+                href={`/automations/${a.slug}`}
+                className="auto-card block"
+                style={{ ['--g1' as string]: a.tone ?? autoTone(i) }}
+              >
+                <span className="auto-icon"><Icon name={a.icon ?? autoIcon(i)} /></span>
+                <div className="auto-text">
+                  <h4>{a.title}</h4>
+                  <p>{a.summary}</p>
+                </div>
+                <span className="auto-go" aria-hidden="true"><Icon name="arrow" /></span>
+              </Link>
+            </li>
           ))}
         </Reveal>
       </div>
@@ -228,20 +259,7 @@ export function Testimonials({ items }: { items: Testimonial[] }) {
   );
 }
 
-/* ---------------- Tech + team ---------------- */
-export function Tech({ platforms }: { platforms: string[] }) {
-  return (
-    <section className="section" aria-labelledby="techTitle">
-      <div className="mx-auto max-w-shell px-5 lg:px-8">
-        <SectionHead id="techTitle" eyebrow="Platforms we automate" title="The tools you already use" sub="Nothing to migrate." />
-        <Reveal as="ul" className="tech-grid">
-          {platforms.map((p) => <li className="tech-cell" key={p}>{p}</li>)}
-        </Reveal>
-      </div>
-    </section>
-  );
-}
-
+/* ---------------- Team ---------------- */
 export function Team({ team }: { team: Entry[] }) {
   return (
     <section className="section section-soft" aria-labelledby="teamTitle">

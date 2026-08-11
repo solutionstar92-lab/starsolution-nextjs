@@ -685,7 +685,9 @@
         "Refunds synced back to your store",
         "Daily reconciliation report"
       ],
-      "video": {}
+      "video": {},
+      "icon": "revenue",
+      "tone": "#3B82F6"
     },
     {
       "id": "auto-whatsapp",
@@ -709,7 +711,9 @@
         "Escalation to your team with full context",
         "Broadcast campaigns to opted-in customers"
       ],
-      "video": {}
+      "video": {},
+      "icon": "whatsapp",
+      "tone": "#34D399"
     },
     {
       "id": "auto-courier",
@@ -732,7 +736,9 @@
         "Tracking numbers returned to the customer",
         "Delivery exceptions flagged to your team"
       ],
-      "video": {}
+      "video": {},
+      "icon": "package",
+      "tone": "#FBBF24"
     },
     {
       "id": "auto-youtube",
@@ -755,7 +761,9 @@
         "Titles, descriptions and tags optimized for search",
         "Scheduled publishing on a fixed cadence"
       ],
-      "video": {}
+      "video": {},
+      "icon": "play",
+      "tone": "#F472B6"
     },
     {
       "id": "auto-chatbot",
@@ -778,7 +786,9 @@
         "Product recommendations inside the chat",
         "Handover to a human when needed"
       ],
-      "video": {}
+      "video": {},
+      "icon": "bot",
+      "tone": "#38BDF8"
     },
     {
       "id": "auto-custom",
@@ -801,7 +811,9 @@
         "Built on the tools you already pay for",
         "Documented and handed over, not locked in"
       ],
-      "video": {}
+      "video": {},
+      "icon": "build",
+      "tone": "#7C6CFF"
     }
   ],
   "team": [

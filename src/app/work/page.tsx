@@ -4,6 +4,7 @@ import { PageHead } from '@/components/PageHead';
 import { Reveal } from '@/components/Reveal';
 import { Icon } from '@/components/Icon';
 import { BeforeAfter } from '@/components/BeforeAfter';
+import { autoIcon, autoTone } from '@/components/sections';
 import { getProjects, getSystems, getAutomations } from '@/lib/content';
 
 export const metadata: Metadata = { title: 'Our work' };
@@ -48,8 +49,23 @@ export default async function WorkIndexPage() {
           </ul>
 
           <h2 className="group-label">AI automations and integrations</h2>
-          <Reveal as="ul" className="chip-row">
-            {automations.map((a) => <li key={a.id}><Link href={`/automations/${a.slug}`}>{a.title}</Link></li>)}
+          <Reveal as="ul" className="auto-grid">
+            {automations.map((a, i) => (
+              <li key={a.id}>
+                <Link
+                  href={`/automations/${a.slug}`}
+                  className="auto-card block"
+                  style={{ ['--g1' as string]: a.tone ?? autoTone(i) }}
+                >
+                  <span className="auto-icon"><Icon name={a.icon ?? autoIcon(i)} /></span>
+                  <div className="auto-text">
+                    <h3>{a.title}</h3>
+                    <p>{a.summary}</p>
+                  </div>
+                  <span className="auto-go" aria-hidden="true"><Icon name="arrow" /></span>
+                </Link>
+              </li>
+            ))}
           </Reveal>
         </div>
       </section>

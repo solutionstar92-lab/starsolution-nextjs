@@ -263,6 +263,10 @@ h1,h2,h3,h4{ font-family:'General Sans', 'SF Pro Display', -apple-system, sans-s
   display:flex; align-items:flex-end; justify-content:space-between; gap:24px;
   max-width:none;
 }
+/* the action is a short label — let the title take the slack instead of
+   letting "View all" break across two lines */
+.section-head-row > .link-arrow{ flex:none; white-space:nowrap; }
+@media (max-width:639px){ .section-head-row{ gap:12px; } }
 
 .eyebrow{
   display:inline-flex; align-items:center; gap:7px;
@@ -864,35 +868,64 @@ h1,h2,h3,h4{ font-family:'General Sans', 'SF Pro Display', -apple-system, sans-s
 }
 .chip-row li:hover{ transform:translateY(-2px); border-color:#CFE0FA; }
 
-/* =========================================================
-   Tech grid
-   ========================================================= */
-.tech-grid{
-  display:grid; grid-template-columns:repeat(2,1fr);
-  border:1px solid var(--line); border-radius:var(--r-lg); overflow:hidden; background:#fff;
-  box-shadow:var(--shadow-sm);
+/* ---------- AI automations ----------
+   A row, not a box: gradient icon chip, name, one line of detail, and a
+   round arrow. Each card carries its own --g1 tone, so the group reads as
+   a colour-coded list rather than six identical white rectangles. */
+.auto-grid{ display:grid; grid-template-columns:1fr; gap:8px; }
+@media (min-width:640px){ .auto-grid{ grid-template-columns:repeat(2,1fr); gap:10px; } }
+@media (min-width:1024px){ .auto-grid{ grid-template-columns:repeat(3,1fr); gap:14px; } }
+
+.auto-card{
+  position:relative; overflow:hidden; height:100%;
+  display:grid; grid-template-columns:auto minmax(0,1fr) auto;
+  align-items:center; column-gap:11px;
+  padding:10px 12px 10px 10px; border-radius:14px; background:#fff;
+  border:1px solid var(--line); box-shadow:var(--shadow-xs);
+  transition:transform .3s var(--ease), box-shadow .3s var(--ease), border-color .3s;
 }
-@media (min-width:640px){ .tech-grid{ grid-template-columns:repeat(3,1fr); } }
-@media (min-width:1024px){ .tech-grid{ grid-template-columns:repeat(6,1fr); } }
-.tech-cell{
-  display:grid; place-items:center; min-height:70px; padding:12px 8px;
-  border-right:1px solid var(--line); border-bottom:1px solid var(--line);
-  font-family:'General Sans',sans-serif; font-size:15px; font-weight:600;
-  letter-spacing:-.025em; color:var(--ink-2);
-  transition:color .25s var(--ease), background .25s var(--ease), transform .25s var(--ease);
+/* the tone bleeds in from the icon side and lifts on hover */
+.auto-card::before{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(78% 130% at 0% 50%,
+    color-mix(in srgb, var(--g1) 15%, transparent), transparent 72%);
+  transition:opacity .35s var(--ease); opacity:.85;
 }
-.tech-cell:hover{ color:var(--ink); background:linear-gradient(180deg,#fff,var(--lav-100)); transform:translateY(-2px); }
-.tech-cell:nth-child(2n){ border-right:0; }
-.tech-cell:nth-last-child(-n+2){ border-bottom:0; }
-@media (min-width:640px){
-  .tech-cell{ border-right:1px solid var(--line); border-bottom:1px solid var(--line); }
-  .tech-cell:nth-child(3n){ border-right:0; }
-  .tech-cell:nth-last-child(-n+3){ border-bottom:0; }
+.auto-card:hover::before{ opacity:1; }
+.auto-card:hover{
+  transform:translateY(-2px); box-shadow:var(--shadow-md);
+  border-color:color-mix(in srgb, var(--g1) 40%, var(--line));
 }
-@media (min-width:1024px){
-  .tech-cell{ border-bottom:0; border-right:1px solid var(--line); }
-  .tech-cell:nth-child(3n){ border-right:1px solid var(--line); }
-  .tech-cell:last-child{ border-right:0; }
+.auto-card > *{ position:relative; }
+
+.auto-icon{
+  display:grid; place-items:center; width:32px; height:32px; border-radius:10px;
+  color:#fff; background:linear-gradient(150deg, var(--g1), color-mix(in srgb, var(--g1) 52%, var(--accent)));
+  box-shadow:0 8px 18px -10px color-mix(in srgb, var(--g1) 92%, transparent);
+  transition:transform .3s var(--ease);
+}
+.auto-icon svg{ width:16px; height:16px; }
+.auto-card:hover .auto-icon{ transform:scale(1.06) rotate(-3deg); }
+
+.auto-text{ min-width:0; }
+/* /work renders these titles as h3, the home page as h4 */
+.auto-card h3, .auto-card h4{
+  font-size:13.6px; font-weight:600; letter-spacing:-.022em; line-height:1.22;
+}
+/* one clean line — the full summary lives on the detail page */
+.auto-card p{
+  margin-top:2px; font-size:11px; color:var(--muted); line-height:1.35;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.auto-go{
+  display:grid; place-items:center; width:22px; height:22px; border-radius:50%;
+  background:var(--blue-100); color:var(--brand-deep);
+  transition:background .3s var(--ease), color .3s var(--ease), transform .3s var(--ease);
+}
+.auto-go svg{ width:12px; height:12px; }
+.auto-card:hover .auto-go{
+  background:linear-gradient(135deg, var(--brand), var(--accent));
+  color:#fff; transform:translateX(2px);
 }
 
 /* =========================================================
@@ -976,33 +1009,45 @@ h1,h2,h3,h4{ font-family:'General Sans', 'SF Pro Display', -apple-system, sans-s
 /* =========================================================
    Footer
    ========================================================= */
-.site-footer{ background:var(--soft); border-top:1px solid var(--line); }
+/* Dark footer. The Team section above it is tinted --soft, which is what
+   the footer used to be, so the two ran together with no boundary. These
+   tokens are local to the footer — the rest of the site stays light. */
+.site-footer{
+  --f-head:#FFFFFF;
+  --f-muted:#93A0BE;
+  --f-hover:#A9C4FF;
+  --f-icon:#6E9BFF;
+  --f-rule:rgba(255,255,255,.08);
+  background:#0B1220; border-top:1px solid var(--f-rule);
+}
+.site-footer .brand-word{ color:var(--f-head); }
+.site-footer .text-brand{ color:var(--f-hover); }
 .footer-grid{ display:grid; gap:22px; }
 @media (min-width:640px){ .footer-grid{ grid-template-columns:repeat(3,1fr); } }
 @media (min-width:1024px){ .footer-grid{ grid-template-columns:1.6fr 1fr 1fr 1.2fr; gap:40px; } }
 .footer-brand{ grid-column:1 / -1; }
 @media (min-width:1024px){ .footer-brand{ grid-column:auto; } }
-.footer-brand p{ margin-top:9px; max-width:34ch; font-size:13.5px; color:var(--muted); }
+.footer-brand p{ margin-top:9px; max-width:34ch; font-size:13.5px; color:var(--f-muted); }
 
 .footer-h{
   font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:.13em;
-  text-transform:uppercase; color:var(--ink); margin-bottom:10px; font-weight:500;
+  text-transform:uppercase; color:var(--f-head); margin-bottom:10px; font-weight:500;
 }
 .site-footer ul{ display:grid; gap:8px; }
 .site-footer a:not(.brand):not(.btn){
-  font-size:13.5px; color:var(--muted);
+  font-size:13.5px; color:var(--f-muted);
   transition:color .2s var(--ease);
 }
-.site-footer a:not(.brand):not(.btn):hover{ color:var(--brand-deep); }
-.footer-contact li{ display:flex; align-items:center; gap:9px; font-size:13.5px; color:var(--muted); }
-.footer-contact svg{ width:17px; height:17px; color:var(--brand); flex:none; }
+.site-footer a:not(.brand):not(.btn):hover{ color:var(--f-hover); }
+.footer-contact li{ display:flex; align-items:center; gap:9px; font-size:13.5px; color:var(--f-muted); }
+.footer-contact svg{ width:17px; height:17px; color:var(--f-icon); flex:none; }
 
 .footer-bottom{
   display:flex; flex-wrap:wrap; gap:7px; justify-content:space-between; align-items:center;
-  margin-top:24px; padding-top:15px; border-top:1px solid var(--line);
-  font-size:12px; color:var(--muted);
+  margin-top:24px; padding-top:15px; border-top:1px solid var(--f-rule);
+  font-size:12px; color:var(--f-muted);
 }
-.footer-code strong{ color:var(--brand-deep); }
+.footer-code strong{ color:var(--f-hover); }
 
 /* =========================================================
    Sticky mobile bar
@@ -1079,7 +1124,7 @@ h1,h2,h3,h4{ font-family:'General Sans', 'SF Pro Display', -apple-system, sans-s
 
 /* ---------- cards: hairline highlight + brighter hover edge ---------- */
 .goal-card, .bento-card, .step, .system-card, .live-card,
-.case-card, .review, .team-card, .rt, .tech-grid, .form-card{
+.case-card, .review, .team-card, .rt, .form-card{
   box-shadow:var(--shadow-sm), var(--hi);
 }
 .goal-card, .bento-card, .step, .system-card, .live-card, .case-card, .review, .team-card{
@@ -1136,15 +1181,6 @@ h1,h2,h3,h4{ font-family:'General Sans', 'SF Pro Display', -apple-system, sans-s
   background:linear-gradient(90deg,var(--brand),var(--accent));
 }
 
-/* ---------- tech grid ---------- */
-.tech-cell{ position:relative; }
-.tech-cell::before{
-  content:""; position:absolute; inset:0;
-  background:radial-gradient(60% 70% at 50% 120%, rgba(124,108,255,.14), transparent 70%);
-  opacity:0; transition:opacity .4s var(--ease-out);
-}
-.tech-cell:hover::before{ opacity:1; }
-
 /* ---------- CTA ---------- */
 .cta-wash{
   background:
@@ -1194,37 +1230,65 @@ h1,h2,h3,h4{ font-family:'General Sans', 'SF Pro Display', -apple-system, sans-s
 @media (max-width:639px){
 
   /* rhythm */
-  .section{ padding:34px 0; }
-  .section-head{ margin-bottom:16px; }
-  .eyebrow{ margin-bottom:8px; }
-  .section-title{ font-size:clamp(23px,6vw,30px); line-height:1.08; }
-  .section-sub{ margin-top:8px; font-size:14px; }
-  .group-label{ margin:20px 0 9px; }
-  .hero-shell{ padding:16px 14px 4px; gap:12px; }
-  .cta-shell{ padding:34px 18px; gap:16px; }
+  .section{ padding:24px 0; }
+  .section-head{ margin-bottom:11px; }
+  .eyebrow{ margin-bottom:6px; font-size:9.5px; }
+  .section-title{ font-size:clamp(19px,5.2vw,26px); line-height:1.1; }
+  .section-sub{ margin-top:5px; font-size:12.2px; }
+  .group-label{ margin:14px 0 7px; }
+  /* one line, so the title governs the row height instead of both wrapping */
+  .rating-line{ margin-top:0; font-size:10.5px; white-space:nowrap; }
+  .hero-shell{ padding:12px 14px 4px; gap:9px; }
+  .hero-proof{ margin-top:11px; padding:8px 0; gap:6px; }
+  .hero-proof dt{ font-size:8.8px; }
+  .hero-proof dd{ font-size:17px; margin-top:1px; }
+  .hero-proof dd span{ font-size:12px; }
+  .hero-logos{ margin-top:9px; }
+  .logo-label{ margin-bottom:5px; font-size:8.5px; }
+  .cta-shell{ padding:22px 16px; gap:12px; }
   .footer-shell{ padding:28px 18px; }
 
-  /* goals */
-  .goal-grid{ gap:8px; }
-  .goal-card{ padding:12px 12px 12px; border-radius:15px; }
-  .goal-icon{ width:32px; height:32px; border-radius:10px; margin-bottom:8px; }
-  .goal-icon svg{ width:17px; height:17px; }
-  .goal-card h3{ font-size:14.5px; }
-  .goal-card > p{ margin-top:5px; font-size:12.5px; }
-  .goal-metric{ margin:8px 0 8px; padding-top:8px; }
-  .goal-metric span{ font-size:18px; }
+  /* goals — the tightest the four cards go before the metric stops reading */
+  .goal-grid{ gap:7px; }
+  .goal-card{ padding:10px 10px 9px; border-radius:13px; }
+  .goal-icon{ width:26px; height:26px; border-radius:8px; margin-bottom:6px; }
+  .goal-icon svg{ width:14px; height:14px; }
+  .goal-card h3{ font-size:13.5px; line-height:1.2; letter-spacing:-.025em; }
+  /* clamp the blurb so a long one can't make its row taller than the rest */
+  .goal-card > p{
+    margin-top:3px; font-size:11.5px; line-height:1.38;
+    display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden;
+  }
+  .goal-metric{ margin:7px 0 0; padding-top:6px; font-size:10.5px; line-height:1.3; }
+  .goal-metric span{ font-size:16px; }
+  /* the whole card is the link, so the "Explore" label is redundant here —
+     keep just the arrow as the affordance */
+  .goal-card .link-arrow{
+    margin-top:7px; min-height:0; gap:0; font-size:0; align-self:flex-start;
+  }
+  .goal-card .link-arrow svg{ width:15px; height:15px; }
 
-  /* solutions */
-  .bento{ gap:8px; }
-  .bento-card{ padding:15px 14px; border-radius:18px; }
-  .sol-icon{ width:36px; height:36px; border-radius:11px; }
-  .sol-icon svg{ width:18px; height:18px; }
-  .sol-badge{ margin-top:11px; }
-  .bento-card h3{ font-size:17px; }
-  .bento-lead h3{ font-size:19px; }
-  .sol-desc{ margin-top:6px; font-size:13.5px; }
-  .sol-list{ margin-top:11px; gap:7px; }
-  .sol-list li{ font-size:13px; }
+  /* solutions — icon and badge share a row so each card loses a whole line */
+  .bento{ gap:7px; }
+  .bento-card{
+    padding:11px 12px 12px; border-radius:14px;
+    display:grid; grid-template-columns:28px 1fr; column-gap:9px; align-content:start;
+  }
+  .sol-icon{ grid-column:1; grid-row:1; width:28px; height:28px; border-radius:9px; }
+  .sol-icon svg{ width:15px; height:15px; }
+  .sol-badge{
+    grid-column:2; grid-row:1; align-self:center;
+    margin-top:0; font-size:9.5px; letter-spacing:.05em;
+  }
+  .bento-card h3{ grid-column:1 / -1; margin-top:7px; font-size:15px; line-height:1.2; }
+  .bento-lead h3{ font-size:15px; }
+  .sol-desc{
+    grid-column:1 / -1; margin-top:3px; font-size:11.8px; line-height:1.4;
+    display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden;
+  }
+  .sol-list{ margin-top:8px; gap:5px; }
+  .sol-list li{ font-size:11.5px; }
+  .sol-list svg{ width:13px; height:13px; margin-top:3px; }
 
   /* process */
   .steps{ gap:8px; }
@@ -1234,57 +1298,115 @@ h1,h2,h3,h4{ font-family:'General Sans', 'SF Pro Display', -apple-system, sans-s
   .step-icon svg{ width:17px; height:17px; }
   .step h3{ margin-top:9px; font-size:16.5px; }
   .step p:last-child{ font-size:13.2px; }
-  .sleep-panel{ margin-top:10px; padding:16px 14px; border-radius:22px; }
-  .sleep-head h3{ font-size:19px; }
-  .sleep-head p:last-child{ font-size:13.2px; }
-  .sleep-log{ margin-top:11px; }
-  .sleep-log li{ padding:8px 10px; grid-template-columns:58px 1fr; gap:9px; }
-  .log-body strong{ font-size:13px; }
-  .log-body{ font-size:12px; }
-  .sleep-stats{ margin-top:12px; padding-top:12px; gap:8px; }
-  .sleep-stats dd{ font-size:20px; }
+  .sleep-panel{ margin-top:9px; padding:11px 11px 12px; border-radius:16px; }
+  .sleep-head h3{ font-size:16.5px; line-height:1.18; }
+  .sleep-head p:last-child{ margin-top:4px; font-size:11.5px; }
+  .sleep-log{ margin-top:8px; gap:3px; }
+  .sleep-log li{ padding:6px 9px; grid-template-columns:44px 1fr; gap:7px; border-radius:9px; }
+  .log-time{ font-size:9.5px; padding-top:1px; }
+  .log-body strong{ font-size:11.8px; line-height:1.25; }
+  .log-body{ font-size:10.5px; line-height:1.3; }
+  /* four across, so the night's totals land on one row instead of two */
+  .sleep-stats{
+    grid-template-columns:repeat(4,1fr);
+    margin-top:9px; padding-top:9px; gap:6px;
+  }
+  .sleep-stats dt{ font-size:8.6px; line-height:1.2; }
+  .sleep-stats dd{ font-size:16px; margin-top:1px; }
 
   /* rails */
   .rail-inner{ gap:8px; }
-  .case-card{ width:min(78vw,274px); border-radius:18px; }
-  .case-visual{ padding:14px 13px 17px; }
-  .case-kpi{ font-size:28px; }
-  .case-body{ padding:13px; }
-  .case-compare{ padding:8px 9px; margin-top:9px; }
-  .case-compare strong{ font-size:13px; }
-  .case-delta{ font-size:18px; margin-top:9px; }
-  .case-card blockquote{ font-size:13px; margin-top:8px; }
-  .review{ width:min(78vw,268px); padding:16px 15px; border-radius:18px; }
-  .review blockquote{ font-size:14px; margin-top:9px; }
-  .review figcaption{ margin-top:13px; }
+  .rail{ padding-bottom:2px; }
+  .case-card{ width:min(76vw,258px); border-radius:14px; }
+  .case-visual{ padding:11px 12px 12px; }
+  .case-kpi{ font-size:24px; }
+  .case-kpi span{ font-size:11px; }
+  .case-kpi-label{ margin-top:2px; font-size:10px; }
+  .case-spark{ height:42px; width:58%; }
+  .case-body{ padding:11px; }
+  .case-type{ font-size:9.5px; letter-spacing:.06em; }
+  .case-compare{ padding:6px 8px; margin-top:7px; border-radius:9px; gap:6px; }
+  .case-compare span{ font-size:9px; }
+  .case-compare strong{ font-size:11.5px; }
+  .case-arrow{ width:14px; height:14px; }
+  .case-delta{ font-size:15px; margin-top:7px; }
+  .case-delta em{ font-size:10.5px; }
+  /* the whole card is a link, so this row only needs to be an affordance —
+     the 44px touch minimum was reserving more height than the text does */
+  .case-body .link-arrow{ min-height:0; margin-top:8px; font-size:11.5px; gap:5px; }
+  .case-body .link-arrow svg{ width:13px; height:13px; }
+  .case-card blockquote{ font-size:11.5px; margin-top:7px; line-height:1.45; }
+  .case-author{ margin-top:4px; margin-bottom:8px; font-size:10px; }
+  .rail-dots{ margin-top:2px; }
+  .rail-dots button{ height:36px; }
+  .review{ width:min(76vw,252px); padding:11px 12px 12px; border-radius:14px; }
+  .rq{ width:16px; height:16px; }
+  .review blockquote{ font-size:11.8px; line-height:1.42; margin-top:5px; }
+  .review figcaption{ margin-top:9px; gap:8px; }
+  .review figcaption strong{ font-size:11.5px; }
+  .review figcaption > span:last-child{ font-size:10px; }
+  .review .avatar{ width:30px; height:30px; font-size:10.5px; }
 
   /* work */
-  .live-grid, .system-grid{ gap:8px; }
-  .live-card{ padding:16px 15px; border-radius:18px; }
-  .live-card h4{ margin-top:9px; font-size:17.5px; }
-  .live-card > p{ font-size:13.2px; }
-  .system-card{ padding:14px 13px; border-radius:15px; }
-  .system-card h4{ font-size:15.5px; }
-  .system-card > p:nth-of-type(2){ font-size:12.5px; }
-  .sys-demo{ margin-top:8px; padding-top:8px; }
+  .live-grid, .system-grid{ gap:7px; }
+  .live-card{ padding:11px 12px 11px; border-radius:13px; }
+  .live-badge{ font-size:9px; padding:3px 7px; border-radius:6px; }
+  .live-card h4{ margin-top:7px; font-size:14.5px; line-height:1.2; }
+  .live-card > p{
+    margin-top:3px; font-size:11.3px; line-height:1.38;
+    display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden;
+  }
+  /* still a comfortable target, just not the full 44px reserve */
+  .live-card .live-link{ margin-top:8px; min-height:32px; font-size:11.5px; gap:5px; }
+  .live-card .live-link svg{ width:13px; height:13px; }
+  /* title and category tag share the top row, so each card loses a line */
+  .system-card{
+    padding:9px 11px 10px; border-radius:12px;
+    display:grid; grid-template-columns:1fr auto; column-gap:10px; align-content:start;
+  }
+  .sys-tag{ grid-column:2; grid-row:1; align-self:center; text-align:right; font-size:8.8px; }
+  /* /work renders these titles as h3, the home page as h4 */
+  .system-card h3, .system-card h4{
+    grid-column:1; grid-row:1; margin-top:0; font-size:13.5px; line-height:1.2;
+  }
+  .system-card > p:nth-of-type(2){
+    grid-column:1 / -1; grid-row:2; margin-top:3px; font-size:11px; line-height:1.35;
+  }
+  .sys-demo{ grid-column:1 / -1; grid-row:3; margin-top:6px; padding-top:6px; font-size:10px; }
+  .sys-demo svg{ width:10px; height:10px; }
+  .system-grid{ gap:6px; }
   .chip-row{ gap:6px; }
   .chip-row li{ padding:7px 12px; font-size:12.5px; }
+  .auto-grid{ gap:6px; }
+  .auto-card{ padding:8px 10px 8px 8px; border-radius:12px; column-gap:9px; }
+  .auto-icon{ width:29px; height:29px; border-radius:9px; }
+  .auto-icon svg{ width:15px; height:15px; }
+  .auto-card h3, .auto-card h4{ font-size:12.6px; }
+  .auto-card p{ font-size:10.3px; }
+  .auto-go{ width:20px; height:20px; }
+  .auto-go svg{ width:11px; height:11px; }
 
-  /* tech + team */
-  .tech-cell{ min-height:62px; font-size:14px; padding:10px 8px; }
-  .team-grid{ gap:8px; }
-  .team-card{ padding:12px 8px; border-radius:15px; }
-  .team-card .avatar{ width:38px; height:38px; }
+  /* team */
+  .team-card{ padding:9px 6px 10px; border-radius:12px; gap:0; }
+  /* the inner link carries a Tailwind gap-1.5 — tighten it here */
+  .team-card > a{ gap:2px; }
+  .team-card .avatar{ width:30px; height:30px; font-size:10.5px; margin-bottom:1px; }
+  .team-card strong{ font-size:11.5px; line-height:1.2; }
+  .team-card span:last-child{ font-size:9.5px; line-height:1.25; }
 
   /* cta + form */
-  .cta-title{ font-size:clamp(26px,7.4vw,34px); }
-  .cta-sub{ margin-top:9px; font-size:14.5px; }
-  .cta-points{ margin-top:13px; gap:7px; }
-  .cta-points li{ font-size:13.5px; }
-  .form-card{ padding:16px 14px; border-radius:22px; }
-  .form-card h3{ font-size:17.5px; margin-bottom:11px; }
-  .field{ margin-bottom:9px; }
-  .field label{ margin-bottom:4px; font-size:12px; }
+  .cta-title{ font-size:clamp(21px,6vw,28px); }
+  .cta-sub{ margin-top:6px; font-size:12.5px; line-height:1.5; }
+  .cta-points{ margin-top:10px; gap:5px; }
+  .cta-points li{ font-size:12px; gap:8px; }
+  .cta-points svg{ width:14px; height:14px; margin-top:3px; }
+  .form-card{ padding:12px 12px 13px; border-radius:16px; }
+  .form-card h3{ font-size:15px; margin-bottom:9px; }
+  .field{ margin-bottom:7px; }
+  .field-row{ gap:7px; }
+  .field label{ margin-bottom:3px; font-size:10.5px; }
+  /* inputs keep a 16px face — anything smaller makes iOS zoom on focus */
+  .field input, .field textarea{ padding:9px 11px; border-radius:11px; }
 
   /* footer */
   .footer-grid{ gap:18px; }
@@ -1328,31 +1450,53 @@ h1,h2,h3,h4{ font-family:'General Sans', 'SF Pro Display', -apple-system, sans-s
   .hero-proof{ max-width:620px; }
 }
 
+/* Platform chips: all six on a single line on phones. The type and padding
+   scale with the viewport so the row fits without wrapping; the scroll is a
+   safety valve for very narrow screens, not the intended state. */
+@media (max-width:639px){
+  .logo-row{
+    flex-wrap:nowrap;
+    justify-content:safe center;
+    gap:clamp(3px, .9vw, 6px);
+    overflow-x:auto;
+    scrollbar-width:none;
+    margin-inline:-18px;
+    padding-inline:18px;
+  }
+  .logo-row::-webkit-scrollbar{ display:none; }
+  .logo-row li{
+    flex:0 0 auto;
+    white-space:nowrap;
+    padding:5px clamp(5px, 1.6vw, 11px);
+    font-size:clamp(8.5px, 2.35vw, 12.5px);
+  }
+}
+
 /* Process: three steps side by side on phones too */
 @media (max-width:639px){
-  .steps{ grid-template-columns:repeat(3,1fr); gap:7px; }
-  .step{ padding:13px 9px 14px; text-align:center; border-radius:15px; }
-  .step-num{ margin-bottom:8px; font-size:11px; letter-spacing:.1em; }
-  .step-icon{ margin-inline:auto; width:34px; height:34px; }
-  .step-icon svg{ width:17px; height:17px; }
-  .step h3{ margin-top:9px; font-size:13.5px; letter-spacing:-.022em; }
-  .step p:last-child{ margin-top:5px; font-size:11px; line-height:1.42; }
+  .steps{ grid-template-columns:repeat(3,1fr); gap:6px; }
+  .step{ padding:9px 7px 10px; text-align:center; border-radius:12px; }
+  .step-num{ margin-bottom:6px; font-size:9px; letter-spacing:.1em; }
+  .step-icon{ margin-inline:auto; width:26px; height:26px; border-radius:9px; }
+  .step-icon svg{ width:13px; height:13px; }
+  .step h3{ margin-top:6px; font-size:12px; letter-spacing:-.022em; line-height:1.2; }
+  .step p:last-child{ margin-top:3px; font-size:9.8px; line-height:1.35; }
   .step::before{ inset:0 0 auto; }
 }
 
 /* Team: a horizontal, snapping rail on phones */
 @media (max-width:639px){
   .team-grid{
-    display:flex; gap:8px;
+    display:flex; gap:6px;
     overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding-inline:18px;
     -webkit-overflow-scrolling:touch; scrollbar-width:none;
     margin-inline:-18px; padding-inline:18px; padding-bottom:2px;
   }
   .team-grid::-webkit-scrollbar{ display:none; }
-  .team-card{ flex:0 0 128px; scroll-snap-align:start; }
-  .team-dots{ margin-top:10px; }
+  /* narrower cards put three and a bit on screen, so the rail reads as
+     scrollable without needing an indicator */
+  .team-card{ flex:0 0 106px; scroll-snap-align:start; }
 }
-@media (min-width:640px){ .team-dots{ display:none; } }
 
 /* =========================================================
    Clickable cards + detail sheet
@@ -2342,3 +2486,87 @@ h1,h2,h3,h4{ font-family:'General Sans', 'SF Pro Display', -apple-system, sans-s
 .rp-col-ghost .rp-val{ color:var(--muted); font-size:14px; }
 .rp-col-solo{ width:clamp(72px,22vw,110px); }
 .rp-plot{ transition:none; }
+
+/* =========================================================
+   Phone: results panel.
+   Lives at the end of the file because the panel's base rules
+   are declared further up and would otherwise win the cascade.
+   ========================================================= */
+@media (max-width:639px){
+  .results-panel{ border-radius:16px; }
+
+  /* ---- headline ---- */
+  .rp-chart{ padding:13px 13px 11px; }
+  .rp-kicker{ font-size:8.5px; letter-spacing:.12em; }
+  .rp-head{ margin-top:5px; gap:7px; }
+  .rp-num{ font-size:clamp(30px,8.6vw,38px); letter-spacing:-.05em; }
+  .rp-head-label{ font-size:11.5px; }
+  .rp-note{
+    margin-top:5px; font-size:11px; line-height:1.35; max-width:none;
+    display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden;
+  }
+
+  /* ---- plot ---- */
+  /* Bar heights are percentages, so halving the plot height keeps the
+     before/after ratio the chart is actually claiming. */
+  .rp-plot{ margin-top:11px; height:106px; padding-bottom:15px; gap:clamp(16px,6vw,30px); }
+  .rp-col{ width:clamp(46px,14vw,64px); }
+  .rp-col-solo{ width:clamp(60px,18vw,86px); }
+  .rp-val{ font-size:12px; margin-bottom:5px; }
+  .rp-col-ghost .rp-val{ font-size:11.5px; }
+  /* the winning number reads as a chip rather than loose text — it carries
+     the section at a glance now that the bars are short */
+  .rp-col-after .rp-val{
+    font-size:11.5px; color:#fff; padding:2.5px 8px; border-radius:999px;
+    background:linear-gradient(115deg,var(--brand),var(--accent));
+    box-shadow:0 7px 15px -8px rgba(59,130,246,.95);
+  }
+  .rp-bar{ border-radius:9px 9px 3px 3px; }
+  .rp-col-after .rp-bar{ box-shadow:0 10px 22px -12px rgba(59,130,246,.85); }
+  .rp-cap{ bottom:-14px; font-size:9.5px; }
+
+  /* ---- figures ---- */
+  /* Three across turns seven tiles into three rows instead of four. */
+  .rp-tiles{ grid-template-columns:repeat(3,1fr); }
+  .rt{ padding:9px 8px 10px; }
+  .rt-icon{ width:20px; height:20px; border-radius:6px; margin-bottom:5px; }
+  .rt-icon svg{ width:11px; height:11px; }
+  .rt-num{ font-size:clamp(17px,4.8vw,21px); letter-spacing:-.045em; }
+  .rt-label{ margin-top:3px; font-size:9.5px; line-height:1.25; }
+  /* No hover on touch, so the hint never fires — and it was reserving a
+     row in every tile. The sub-caption goes for the same reason. */
+  .rt-sub, .rt-hint{ display:none; }
+
+  .rt:last-child{ gap:9px; padding:9px 10px; }
+  .rt:last-child .rt-num{ font-size:19px; }
+}
+
+/* =========================================================
+   Touch: make what is tappable look tappable.
+   The card arrows sit at opacity:0 until :hover, and a touch screen
+   never fires hover — so on a phone none of these cards showed any
+   sign they were links. Last block in the file so it outranks the
+   two earlier copies of the arrow rules.
+   ========================================================= */
+@media (hover:none){
+  .goal-card::after, .bento-card::after, .system-card::after{
+    opacity:1; transform:none;
+  }
+  /* the figure tiles are switches that repaint the chart — a resting
+     underline reads as a row of controls rather than static stats */
+  .rt::after{ transform:scaleX(1); opacity:.2; }
+  .rt.is-active::after{ opacity:1; }
+}
+@media (hover:none) and (max-width:639px){
+  /* On phones the top-right corner is already taken: the bento card's
+     badge and the system card's tag both live there. So the bento arrow
+     joins the grid as its own column instead of overlapping, and the
+     cards that already carry a visible arrow or link row keep theirs. */
+  .bento-card{ grid-template-columns:28px 1fr auto; }
+  .bento-card h3, .sol-desc{ grid-column:1 / -1; }
+  .bento-card::after{
+    position:static; grid-column:3; grid-row:1; align-self:center;
+    width:20px; height:20px; background-size:10px 10px;
+  }
+  .goal-card::after, .system-card::after{ display:none; }
+}

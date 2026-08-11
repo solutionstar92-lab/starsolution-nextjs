@@ -1,7 +1,7 @@
 import { Hero } from '@/components/Hero';
 import { ResultsPanel } from '@/components/ResultsPanel';
 import { CTA } from '@/components/CTA';
-import { SectionHead, Goals, Solutions, Process, CaseStudies, Work, Testimonials, Tech, Team } from '@/components/sections';
+import { SectionHead, Goals, Solutions, Process, CaseStudies, Work, Testimonials, Team } from '@/components/sections';
 import {
   site, getSolutions, getGoals, getCaseStudies, getSystems, getAutomations, getTeam,
   getTestimonials, getProjects,
@@ -31,7 +31,6 @@ export default async function HomePage() {
       <CaseStudies cases={cases} />
       <Work projects={projects} systems={systems} automations={automations} />
       <Testimonials items={testimonials} />
-      <Tech platforms={site.platforms} />
       <Team team={team} />
       <CTA />
     </>
