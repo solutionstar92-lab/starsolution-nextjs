@@ -39,12 +39,18 @@ function VideoSlot({ entry }: { entry: Entry }) {
 
 export function EntryPage({
   entry, section, sectionHref, prev, next,
+  pointsTitle = 'What you get',
+  pointsAs = 'list',
 }: {
   entry: Entry;
   section: string;
   sectionHref: string;
   prev?: Entry | null;
   next?: Entry | null;
+  /** Heading above `points`. "What you get" suits a service; a person needs its own word. */
+  pointsTitle?: string;
+  /** Short labels read better as chips than as a checklist. */
+  pointsAs?: 'list' | 'chips';
 }) {
   return (
     <>
@@ -60,6 +66,8 @@ export function EntryPage({
           <div className="detail-layout">
             <div className="detail-body">
               <Reveal>
+                {entry.tagline && <p className="detail-tagline">{entry.tagline}</p>}
+
                 <VideoSlot entry={entry} />
 
                 {entry.stats && entry.stats.length > 0 && (
@@ -70,10 +78,16 @@ export function EntryPage({
 
                 {entry.points && entry.points.length > 0 && (
                   <>
-                    <h2>What you get</h2>
-                    <ul className="detail-points">
-                      {entry.points.map((p) => <li key={p}><Icon name="check" /> {p}</li>)}
-                    </ul>
+                    <h2>{pointsTitle}</h2>
+                    {pointsAs === 'chips' ? (
+                      <ul className="chip-row chip-row-static">
+                        {entry.points.map((p) => <li key={p}>{p}</li>)}
+                      </ul>
+                    ) : (
+                      <ul className="detail-points">
+                        {entry.points.map((p) => <li key={p}><Icon name="check" /> {p}</li>)}
+                      </ul>
+                    )}
                   </>
                 )}
               </Reveal>

@@ -98,9 +98,13 @@ create table if not exists public.team (
   role         text,
   initials     text,
   tone         text,
+  tagline      text,
   points       jsonb default '[]'::jsonb,
   sort_order   int  default 0
 );
+
+-- for projects created before `tagline` existed
+alter table public.team add column if not exists tagline text;
 
 create table if not exists public.testimonials (
   id           text primary key,

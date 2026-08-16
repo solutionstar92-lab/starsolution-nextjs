@@ -30,6 +30,8 @@ export interface Entry {
   /* team */
   initials?: string;
   role?: string;
+  /** A short line in the person's own voice, shown under the lede. */
+  tagline?: string;
 }
 
 export interface Project {

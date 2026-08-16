@@ -821,107 +821,115 @@
       "id": "team-heba",
       "slug": "heba-hesham",
       "initials": "HH",
-      "role": "Senior web developer",
+      "role": "Lead Full-Stack & App Developer",
       "tone": "#3B82F6",
       "eyebrow": "Team",
       "title": "Heba Hesham",
-      "summary": "Senior web developer. Builds and maintains the Shopify themes, custom storefronts and client systems.",
+      "summary": "Lead developer behind StarSolution's core systems. Builds custom Shopify stores, web apps, and backend automation systems (Accounting, Courier, & Logistics).",
       "points": [
-        "Shopify OS 2.0 theme development",
-        "Custom storefront and system builds",
-        "Performance and SEO implementation"
+        "Shopify",
+        "Next.js",
+        "Full-Stack App Dev",
+        "Systems Architecture",
+        "APIs"
       ],
-      "video": null
+      "video": null,
+      "tagline": "Building scalable web apps and custom e-commerce systems."
     },
     {
       "id": "team-hams",
       "slug": "hams",
       "initials": "HA",
-      "role": "Software engineer",
+      "role": "AI & Automation Engineer",
       "tone": "#7C6CFF",
       "eyebrow": "Team",
-      "title": "Hams",
-      "summary": "Software engineer. Works across the automation backends and integrations.",
+      "title": "Hams Assem",
+      "summary": "Specializes in workflow automation using n8n and AI integrations. Built custom chatbots and automated business systems.",
       "points": [
-        "Automation workflows and API integrations",
-        "Backend services and data pipelines"
+        "n8n",
+        "AI Chatbots",
+        "Workflow Automation",
+        "OpenAI API",
+        "Webhooks"
       ],
-      "video": null
+      "video": null,
+      "tagline": "Automating manual operations and building intelligent workflows."
     },
     {
       "id": "team-mera",
       "slug": "mera",
-      "initials": "ME",
-      "role": "Software engineer",
+      "initials": "MM",
+      "role": "E-commerce & Web Developer",
       "tone": "#38BDF8",
       "eyebrow": "Team",
-      "title": "Mera",
-      "summary": "Software engineer. Focused on dashboards, reporting and client-facing systems.",
+      "title": "Mira Markus",
+      "summary": "Specializes in Shopify stores and custom service websites. Developed solutions for e-commerce brands and web platforms.",
       "points": [
-        "Dashboard and reporting interfaces",
-        "System integrations and QA"
+        "Shopify",
+        "Web Development",
+        "E-commerce",
+        "Service Websites",
+        "Responsive Design"
       ],
-      "video": null
+      "video": null,
+      "tagline": "Building modern Shopify stores and high-performance websites."
+    },
+    {
+      "id": "team-martha",
+      "slug": "martha-talaat",
+      "initials": "MT",
+      "role": "Web Developer & E-commerce",
+      "tone": "#FBBF24",
+      "eyebrow": "Team",
+      "title": "Martha Talaat",
+      "summary": "Builds customized Shopify storefronts and dynamic service websites. Experienced in developing e-commerce platforms and digital tools.",
+      "points": [
+        "Shopify",
+        "Web Development",
+        "UI/UX Implementation",
+        "Service Platforms",
+        "E-commerce"
+      ],
+      "video": null,
+      "tagline": "Creating tailored web experiences for e-commerce and businesses."
     },
     {
       "id": "team-ganna",
       "slug": "ganna",
       "initials": "GA",
-      "role": "Content creator",
+      "role": "E-commerce Content & Copywriting Specialist",
       "tone": "#34D399",
       "eyebrow": "Team",
       "title": "Ganna",
-      "summary": "Content creator. Produces the copy and creative that the automations publish.",
+      "summary": "Creates conversion-focused product copy, website content, and automated campaign scripts tailored for e-commerce brands.",
       "points": [
-        "Product and campaign copy",
-        "Creative direction for social output"
+        "Content Strategy",
+        "Copywriting",
+        "Brand Voice",
+        "Product Storytelling",
+        "AI Content Tools"
       ],
-      "video": null
+      "video": null,
+      "tagline": "Crafting compelling content that turns visitors into buyers."
     },
     {
       "id": "team-ebtsam",
       "slug": "ebtsam",
       "initials": "EB",
-      "role": "Social media creator",
+      "role": "Social Media Growth & Performance Creator",
       "tone": "#F472B6",
       "eyebrow": "Team",
       "title": "Ebtsam",
-      "summary": "Social media creator. Runs the content calendars and engagement for client accounts.",
+      "summary": "Drives social media presence and growth strategy across platforms like TikTok and Instagram using automated workflows and trend analytics.",
       "points": [
-        "Content calendars for Instagram and TikTok",
-        "Engagement and community management"
+        "Social Media Growth",
+        "Visual Content",
+        "TikTok & Reels Strategy",
+        "Automated Posting",
+        "Engagement Analytics"
       ],
-      "video": null
-    },
-    {
-      "id": "team-amira",
-      "slug": "amira",
-      "initials": "AM",
-      "role": "Customer support",
-      "tone": "#FBBF24",
-      "eyebrow": "Team",
-      "title": "Amira",
-      "summary": "Customer support. First point of contact for clients, in Arabic and English.",
-      "points": [
-        "Client onboarding and day to day support",
-        "Escalation handling"
-      ],
-      "video": null
-    },
-    {
-      "id": "team-jumana",
-      "slug": "jumana",
-      "initials": "JU",
-      "role": "Customer support",
-      "tone": "#3B82F6",
-      "eyebrow": "Team",
-      "title": "Jumana",
-      "summary": "Customer support. Handles account questions and coordinates with the build team.",
-      "points": [
-        "Account and billing questions",
-        "Coordination between clients and engineers"
-      ],
-      "video": null
+      "video": null,
+      "tagline": "Scaling brand visibility and social engagement with data-driven content."
     }
   ],
   "charts": {
@@ -1149,18 +1157,18 @@
     {
       "id": "p-beauty",
       "slug": "beauty-bareg",
-      "badge": "Beauty & fashion",
+      "badge": "Beauty & Fashion (Luxury Bags & Accessories)",
       "title": "Beauty Bareg",
-      "short": "Store design, catalog and mobile-first UX.",
+      "short": "Shopify store design, product catalog and mobile-first UX.",
       "url": "https://beauty-bareg.net/",
       "accent": "#7C6CFF",
       "theme": "beauty",
-      "summary": "A luxury beauty and fashion storefront with a full catalog build, social integration and a mobile-first experience.",
+      "summary": "Custom Shopify store development for a luxury fashion brand featuring premium handbag collections (Chanel, Miu Miu, Louis Vuitton, Valentino). Focused on mobile-first user experience, high-speed catalog browsing, and seamless checkout optimization.",
       "points": [
-        "Full store design and build",
-        "Product catalog and merchandising",
-        "Social and campaign integration",
-        "Mobile-first experience"
+        "Shopify store setup and custom UI design",
+        "Catalog and product variant organization",
+        "Mobile-first navigation and high-speed performance",
+        "Sahel Summer Collection promo campaign setup"
       ]
     }
   ],

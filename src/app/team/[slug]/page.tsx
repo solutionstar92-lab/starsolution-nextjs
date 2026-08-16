@@ -26,6 +26,8 @@ export default async function TeamDetailPage({ params }: { params: { slug: strin
       sectionHref="/team"
       prev={items[index - 1] ?? null}
       next={items[index + 1] ?? null}
+      pointsTitle="Skills"
+      pointsAs="chips"
     />
   );
 }

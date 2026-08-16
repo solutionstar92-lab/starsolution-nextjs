@@ -35,8 +35,13 @@ export default async function ProjectPage({ params }: { params: { slug: string }
           <div className="detail-layout">
             <div className="detail-body">
               <Reveal>
-                <BeforeAfter theme={project.theme} label={`Compare ${project.title} before and after`} />
-                <h2>What we built</h2>
+                <BeforeAfter
+                  theme={project.theme}
+                  slug={project.slug}
+                  title={project.title}
+                  label={`Compare ${project.title} before and after`}
+                />
+                <h2>What we did</h2>
                 <ul className="detail-points">
                   {project.points.map((p) => <li key={p}><Icon name="check" /> {p}</li>)}
                 </ul>

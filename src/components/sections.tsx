@@ -181,7 +181,7 @@ export function Work({ projects, systems, automations }: { projects: Project[]; 
         <div className="live-grid">
           {projects.map((p, i) => (
             <Reveal as="article" key={p.id} className="live-card" delay={i * 0.08}>
-              <BeforeAfter theme={p.theme} label={`Compare ${p.title} before and after`} />
+              <BeforeAfter theme={p.theme} slug={p.slug} title={p.title} label={`Compare ${p.title} before and after`} />
               <span className="live-badge">{p.badge}</span>
               <h4><Link href={`/work/${p.slug}`}>{p.title}</Link></h4>
               <p>{p.short}</p>

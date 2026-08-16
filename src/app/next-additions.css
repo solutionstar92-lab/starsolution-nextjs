@@ -85,6 +85,21 @@
 }
 .detail-body h2{ font-size:20px; font-weight:600; letter-spacing:-.03em; margin-bottom:12px; }
 .detail-body h2:not(:first-child){ margin-top:28px; }
+/* A line in the person's own voice, sitting between the lede and the body.
+   Quiet rule instead of quote marks — the page already uses those on reviews. */
+.detail-tagline{
+  margin-bottom:20px; padding-left:14px;
+  border-left:2px solid var(--brand);
+  font-size:15.5px; line-height:1.5; color:var(--ink-2); font-style:italic;
+}
+@media (max-width:639px){
+  .detail-tagline{ margin-bottom:14px; padding-left:11px; font-size:13px; }
+}
+
+/* Short labels — skills, tools — read better as chips than as a checklist. */
+.chip-row-static li{ cursor:default; }
+.chip-row-static li:hover{ transform:none; border-color:var(--line); }
+
 .detail-points{ display:grid; gap:10px; }
 .detail-points li{ display:flex; gap:10px; align-items:flex-start; font-size:14.5px; color:var(--ink-2); line-height:1.55; }
 .detail-points svg{ width:16px; height:16px; margin-top:4px; color:var(--brand); flex:none; }

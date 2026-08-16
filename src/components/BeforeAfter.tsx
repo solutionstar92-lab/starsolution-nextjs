@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { Icon } from './Icon';
+import shots from '@/data/shots.json';
 
 const BEAUTY_TILES = [
   { src: 'https://beauty-bareg.net/cdn/shop/files/chanel-25-large-handbag-washed-denim-and-gold-tone-metal-1472295.webp?v=1784429243&width=200', brand: 'Chanel', price: 'LE 8,500' },
@@ -30,6 +31,34 @@ function BeforeFrame() {
         </div>
       </div>
       <div className="bf-foot">Best viewed in 1024x768 · Copyright 2014</div>
+    </div>
+  );
+}
+
+/**
+ * The finished site, as a full-page capture you can scroll inside the frame.
+ *
+ * Not an <iframe>: both storefronts send `x-frame-options: DENY` and
+ * `frame-ancestors 'none'`, so a browser refuses to embed them. `npm run shots`
+ * captures the pages instead — re-run it after a store redesign.
+ */
+function ShotFrame({ slug, title }: { slug: string; title: string }) {
+  const shot = (shots as Record<string, { width: number; height: number }>)[slug];
+  return (
+    <div className="ba-frame af-shot">
+      <div className="af-shot-scroll" tabIndex={0} role="group" aria-label={`${title} — scroll the live site`}>
+        {/* plain <img>: a pre-sized static capture, next/image adds nothing here */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={`/shots/${slug}.jpg`}
+          alt={`${title} storefront`}
+          width={shot?.width}
+          height={shot?.height}
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+      <span className="af-shot-hint" aria-hidden="true">Scroll ↕</span>
     </div>
   );
 }
@@ -92,11 +121,26 @@ function AfterFrame({ theme }: { theme: 'montre' | 'beauty' }) {
   );
 }
 
-/** Draggable before/after comparison. The clipped layer keeps the frame's full width. */
-export function BeforeAfter({ theme, label }: { theme: 'montre' | 'beauty'; label: string }) {
+/**
+ * Draggable before/after comparison. The clipped layer keeps the frame's full width.
+ *
+ * When a capture exists for `slug` the "after" side is the real storefront and
+ * scrolls inside the frame, so the drag control is confined to a strip along the
+ * bottom — a full-bleed range input would swallow every scroll gesture.
+ */
+export function BeforeAfter({
+  theme, label, slug, title,
+}: {
+  theme: 'montre' | 'beauty';
+  label: string;
+  slug?: string;
+  title?: string;
+}) {
   const [pos, setPos] = React.useState(50);
   const boxRef = React.useRef<HTMLDivElement>(null);
   const [width, setWidth] = React.useState(0);
+
+  const hasShot = Boolean(slug && slug in shots);
 
   React.useEffect(() => {
     const measure = () => setWidth(boxRef.current?.clientWidth ?? 0);
@@ -106,8 +150,14 @@ export function BeforeAfter({ theme, label }: { theme: 'montre' | 'beauty'; labe
   }, []);
 
   return (
-    <div className="ba" ref={boxRef} style={{ ['--pos' as string]: `${pos}%` }}>
-      <AfterFrame theme={theme} />
+    <div
+      className={`ba${hasShot ? ' ba-live' : ''}`}
+      ref={boxRef}
+      style={{ ['--pos' as string]: `${pos}%` }}
+    >
+      {hasShot
+        ? <ShotFrame slug={slug as string} title={title ?? 'Live site'} />
+        : <AfterFrame theme={theme} />}
       <div className="ba-clip">
         <div style={{ width: width ? `${width}px` : '100%', height: '100%' }}>
           <BeforeFrame />
