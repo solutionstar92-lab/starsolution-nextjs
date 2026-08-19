@@ -1140,18 +1140,18 @@
     {
       "id": "p-montre",
       "slug": "montre-co",
-      "badge": "E-commerce",
+      "badge": "Luxury Watches & Timepieces",
       "title": "Montre Co.",
-      "short": "Shopify build, custom UI and checkout.",
+      "short": "Full Shopify store build, custom watch customizer and checkout UX.",
       "url": "https://montre-co.com/",
       "accent": "#3B82F6",
       "theme": "montre",
-      "summary": "A premium watch store rebuilt on Shopify with a custom theme, redesigned product pages and a streamlined checkout.",
+      "summary": "Complete e-commerce store build for a luxury timepiece brand. Features custom automatic/chronograph watch showcases, interactive size selectors, high-converting checkout flows, and seamless mobile responsiveness.",
       "points": [
-        "Custom Shopify OS 2.0 theme",
-        "Product and collection page design",
-        "Checkout and cart flow rebuilt",
-        "Performance and SEO pass"
+        "Shopify custom theme development",
+        "Product filtering (Automatic, Chronograph, Diver, Dress)",
+        "Speed and conversion rate optimization (CRO)",
+        "Integrated automated order fulfillment and tracking"
       ]
     },
     {
@@ -1169,6 +1169,26 @@
         "Catalog and product variant organization",
         "Mobile-first navigation and high-speed performance",
         "Sahel Summer Collection promo campaign setup"
+      ]
+    },
+    {
+      "id": "p-hollywood",
+      "slug": "hollywood-clinics",
+      "badge": "Healthcare & Services",
+      "title": "Hollywood Clinics",
+      "short": "Modern clinic platform, online booking and UI redesign.",
+      "url": "https://hollywoodclinics.net/",
+      "beforeUrl": "https://website.hollywood-clinics.com/",
+      "accent": "#0E7C7B",
+      "theme": "clinic",
+      "tagline": "Transforming healthcare accessibility with a modern, patient-first web experience.",
+      "summary": "Complete digital transformation for a multi-specialty clinic network. Upgraded from an outdated legacy platform to a modern, responsive website featuring seamless appointment booking, doctor profiles, service showcases, and fast mobile performance.",
+      "points": [
+        "Complete website redesign and modern UI/UX implementation",
+        "Online appointment and booking system setup",
+        "Doctors and specialties directory structure",
+        "Mobile-first optimisation and page speed enhancement",
+        "Arabic and multi-language support integration"
       ]
     }
   ],

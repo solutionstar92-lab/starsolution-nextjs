@@ -12,7 +12,8 @@
  * Re-run after a store redesign; the output is committed to public/shots.
  */
 import { chromium } from 'playwright';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, writeFile, rm } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -23,7 +24,14 @@ const outDir = path.join(root, 'public', 'shots');
 /** Wide enough to render the desktop layout, narrow enough to stay legible
  *  once it is scaled down into the card. */
 const VIEWPORT = { width: 1200, height: 900 };
-const SCALE = 2;
+/**
+ * 1, not 2. These pages are 3000-9000px tall, so a 2x capture lands at 30-40
+ * megapixels — the browser needs seconds to rasterise one, and the comparison
+ * frame sits there blank until it does. At 1x a capture is still ~1200px wide
+ * against a frame that is 420px at its widest, so there is nothing to gain
+ * from the extra sampling.
+ */
+const SCALE = 1;
 
 /** Storefronts lazy-load below the fold, so walk the page before shooting. */
 async function scrollThrough(page) {
@@ -130,6 +138,48 @@ async function trimBlankTail(browser, buffer) {
   }
 }
 
+/**
+ * Re-encode to WebP and derive a tiny blurred stand-in.
+ *
+ * The frame is blank white until a ~1MB JPEG arrives, and that gap is the
+ * "lag" you notice on the after side — decoding is only ~100ms, the wait is
+ * the download. WebP takes 30-45% off the wire, and the stand-in is a 24px-wide
+ * copy inlined into the manifest as a data URI, so the frame paints the shape
+ * of the page immediately and the real capture replaces it when it lands.
+ */
+async function encodeAssets(browser, buffer) {
+  const page = await browser.newPage();
+  try {
+    return await page.evaluate(async (b64) => {
+      const res = await fetch(`data:image/jpeg;base64,${b64}`);
+      const bmp = await createImageBitmap(await res.blob());
+      const toB64 = async (blob) => {
+        const buf = new Uint8Array(await blob.arrayBuffer());
+        let s = '';
+        for (const byte of buf) s += String.fromCharCode(byte);
+        return btoa(s);
+      };
+
+      const full = new OffscreenCanvas(bmp.width, bmp.height);
+      full.getContext('2d').drawImage(bmp, 0, 0);
+      const webp = await toB64(await full.convertToBlob({ type: 'image/webp', quality: 0.8 }));
+
+      // Only the first screenful is ever visible before you scroll, so the
+      // stand-in covers that rather than the whole 9000px page — squeezing the
+      // full height into 24px wide would smear it into flat bands.
+      const lw = 24;
+      const lh = Math.max(1, Math.round((Math.min(bmp.height, bmp.width * 0.75) / bmp.width) * lw));
+      const tiny = new OffscreenCanvas(lw, lh);
+      tiny.getContext('2d').drawImage(bmp, 0, 0, bmp.width, Math.min(bmp.height, bmp.width * 0.75), 0, 0, lw, lh);
+      const lqip = await toB64(await tiny.convertToBlob({ type: 'image/webp', quality: 0.6 }));
+
+      return { webp, lqip: `data:image/webp;base64,${lqip}` };
+    }, buffer.toString('base64'));
+  } finally {
+    await page.close();
+  }
+}
+
 async function contentBottom(page) {
   return page.evaluate(() => {
     window.scrollTo(0, 0);
@@ -169,9 +219,17 @@ async function contentBottom(page) {
 const filter = process.argv.slice(2).filter((a) => !a.startsWith('-'));
 
 const site = JSON.parse(await readFile(path.join(root, 'src', 'data', 'site.json'), 'utf8'));
+
+// A project with `beforeUrl` gets a second capture, keyed `<slug>-before`. The
+// comparison then shows the real site we replaced rather than the generic
+// dated-web mock — worth it whenever the old one is still online.
 const targets = site.projects
   .filter((p) => p.url)
-  .filter((p) => !filter.length || filter.some((f) => p.slug.includes(f)));
+  .filter((p) => !filter.length || filter.some((f) => p.slug.includes(f)))
+  .flatMap((p) => [
+    { slug: p.slug, url: p.url },
+    ...(p.beforeUrl ? [{ slug: `${p.slug}-before`, url: p.beforeUrl }] : []),
+  ]);
 
 if (!targets.length) {
   console.error('No projects matched.', filter.length ? `Filter: ${filter.join(', ')}` : '');
@@ -226,12 +284,17 @@ for (const project of targets) {
       height = Math.round(trimmedShot.height / SCALE);
     }
 
-    await writeFile(path.join(outDir, `${project.slug}.jpg`), buf);
-    results.push({ slug: project.slug, width: VIEWPORT.width, height, kb: Math.round(buf.length / 1024) });
+    const { webp, lqip } = await encodeAssets(browser, buf);
+    const out = Buffer.from(webp, 'base64');
+    await writeFile(path.join(outDir, `${project.slug}.webp`), out);
+    // an earlier run of this script wrote JPEGs; drop the stale twin
+    await rm(path.join(outDir, `${project.slug}.jpg`), { force: true });
+    results.push({ slug: project.slug, width: VIEWPORT.width, height, lqip });
 
     const cut = scrollH - height;
     console.log(
-      `${VIEWPORT.width}×${height}  ${Math.round(buf.length / 1024)} KB` +
+      `${VIEWPORT.width}×${height}  ${Math.round(out.length / 1024)} KB` +
+      ` (jpeg was ${Math.round(buf.length / 1024)} KB)` +
       (cut > 50 ? `  (cut ${cut}px of blank tail)` : ''),
     );
   } catch (err) {
@@ -245,9 +308,29 @@ await browser.close();
 
 // The component imports this to know which projects have a capture and how
 // tall it is. Lives in src/data so it is a normal module import.
+//
+// Merged, not replaced: a filtered run (`npm run shots -- montre`) only holds
+// results for what it captured, and writing just those drops every other
+// project out of the manifest — the jpgs stay on disk but the component stops
+// believing in them. Entries whose jpg is gone are pruned.
+const manifestPath = path.join(root, 'src', 'data', 'shots.json');
+let manifest = {};
+try {
+  manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
+} catch {
+  // first run, or the file was removed by hand — start clean
+}
+for (const r of results) manifest[r.slug] = { width: r.width, height: r.height, lqip: r.lqip };
+for (const slug of Object.keys(manifest)) {
+  if (!existsSync(path.join(outDir, `${slug}.webp`))) delete manifest[slug];
+}
 await writeFile(
-  path.join(root, 'src', 'data', 'shots.json'),
-  JSON.stringify(Object.fromEntries(results.map((r) => [r.slug, { width: r.width, height: r.height }])), null, 2) + '\n',
+  manifestPath,
+  JSON.stringify(
+    Object.fromEntries(Object.keys(manifest).sort().map((k) => [k, manifest[k]])),
+    null,
+    2,
+  ) + '\n',
 );
 
 console.log(`\n${results.length}/${targets.length} captured → public/shots`);

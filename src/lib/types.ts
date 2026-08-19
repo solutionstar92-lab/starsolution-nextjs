@@ -36,9 +36,20 @@ export interface Entry {
 
 export interface Project {
   id: string; slug: string; badge: string; title: string; short: string;
-  url: string; accent: string; theme: 'montre' | 'beauty';
+  url: string; accent: string; theme: ProjectTheme;
   summary: string; points: string[];
+  /**
+   * The site this one replaced, when it is still online. Given one, `npm run
+   * shots` captures it as `<slug>-before.webp` and the comparison shows the real
+   * old site instead of the generic dated-web mock.
+   */
+  beforeUrl?: string;
+  /** One line in the client's words, shown under the comparison. */
+  tagline?: string;
 }
+
+/** Drives the mock "after" frame used when no capture exists yet. */
+export type ProjectTheme = 'montre' | 'beauty' | 'clinic';
 
 export interface Testimonial {
   id: string; initials: string; tone: string; name: string; role: string; quote: string;

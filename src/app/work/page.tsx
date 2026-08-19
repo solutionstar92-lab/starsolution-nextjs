@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { PageHead } from '@/components/PageHead';
 import { Reveal } from '@/components/Reveal';
 import { Icon } from '@/components/Icon';
-import { BeforeAfter } from '@/components/BeforeAfter';
+import { RealResults } from '@/components/RealResults';
 import { autoIcon, autoTone } from '@/components/sections';
 import { getProjects, getSystems, getAutomations } from '@/lib/content';
 
@@ -25,7 +25,6 @@ export default async function WorkIndexPage() {
           <div className="live-grid">
             {projects.map((p, i) => (
               <Reveal as="article" key={p.id} className="live-card" delay={i * 0.08}>
-                <BeforeAfter theme={p.theme} label={`Compare ${p.title} before and after`} />
                 <span className="live-badge">{p.badge}</span>
                 <h3><Link href={`/work/${p.slug}`}>{p.title}</Link></h3>
                 <p>{p.short}</p>
@@ -33,6 +32,8 @@ export default async function WorkIndexPage() {
               </Reveal>
             ))}
           </div>
+
+          <RealResults projects={projects} />
 
           <h2 className="group-label">Custom systems and dashboards</h2>
           <ul className="system-grid">

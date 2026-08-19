@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Icon } from './Icon';
 import { Reveal } from './Reveal';
 import { Rail } from './Rail';
-import { BeforeAfter } from './BeforeAfter';
+import { RealResults } from './RealResults';
 import type { Entry, Project, Testimonial } from '@/lib/types';
 
 /* Automations carry their own icon and tone in site.json, but the Supabase
@@ -181,7 +181,6 @@ export function Work({ projects, systems, automations }: { projects: Project[]; 
         <div className="live-grid">
           {projects.map((p, i) => (
             <Reveal as="article" key={p.id} className="live-card" delay={i * 0.08}>
-              <BeforeAfter theme={p.theme} slug={p.slug} title={p.title} label={`Compare ${p.title} before and after`} />
               <span className="live-badge">{p.badge}</span>
               <h4><Link href={`/work/${p.slug}`}>{p.title}</Link></h4>
               <p>{p.short}</p>
@@ -189,6 +188,8 @@ export function Work({ projects, systems, automations }: { projects: Project[]; 
             </Reveal>
           ))}
         </div>
+
+        <RealResults projects={projects} />
 
         <h3 className="group-label">Custom systems and dashboards</h3>
         <ul className="system-grid">

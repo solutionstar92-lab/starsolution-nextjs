@@ -124,11 +124,26 @@ create table if not exists public.projects (
   short        text,
   summary      text,
   url          text,
+  -- the site this one replaced, when it is still online; `npm run shots`
+  -- captures it so the comparison shows the real old site
+  before_url   text,
   accent       text,
-  theme        text check (theme in ('montre','beauty')),
+  theme        text check (theme in ('montre','beauty','clinic')),
+  tagline      text,
   points       jsonb default '[]'::jsonb,
   sort_order   int default 0
 );
+
+-- `create table if not exists` skips an existing table outright, so widening it
+-- has to be spelled out for anyone who ran an earlier version of this file.
+alter table public.projects add column if not exists before_url text;
+alter table public.projects add column if not exists tagline    text;
+do $$
+begin
+  alter table public.projects drop constraint if exists projects_theme_check;
+  alter table public.projects add  constraint projects_theme_check
+    check (theme in ('montre','beauty','clinic'));
+end $$;
 
 -- ---------- form submissions ----------
 create table if not exists public.leads (

@@ -2622,3 +2622,175 @@ h1,h2,h3,h4{ font-family:'General Sans', 'SF Pro Display', -apple-system, sans-s
   }
   .goal-card::after, .system-card::after{ display:none; }
 }
+/* =========================================================
+   Real results — before / after
+   A section of its own rather than a card ornament: divider,
+   centred head, then a row of draggable comparisons that snap
+   through horizontally on small screens and wrap on large ones.
+   ========================================================= */
+.rr{ margin-top:46px; }
+.rr-divider{
+  display:block; width:60px; height:1px; margin:0 auto 26px;
+  background:linear-gradient(90deg,transparent,var(--brand),transparent);
+}
+.rr-head{ text-align:center; margin-bottom:20px; }
+.rr-title{
+  margin-top:6px; font-size:26px; font-weight:600; letter-spacing:-.035em; color:var(--ink);
+}
+.rr-sub{ margin-top:7px; font-size:13.8px; color:var(--muted); }
+
+/* Mobile stacks: one comparison per row, full width. A side-by-side shelf
+   leaves both cards too narrow to drag, and the second one half off-screen. */
+.rr-row{
+  display:flex; flex-direction:column; align-items:center;
+  gap:30px; padding:4px 0 6px;
+}
+/* Capped, or a tablet-width viewport blows one comparison up to ~730px and the
+   section turns into two full screens of scrolling. */
+.rr-item{ width:100%; max-width:460px; display:flex; flex-direction:column; }
+@media (min-width:900px){
+  .rr-row{ flex-direction:row; flex-wrap:wrap; justify-content:center; gap:26px; }
+  .rr-item{ width:420px; max-width:100%; }
+}
+
+/* ---------- the comparison itself ---------- */
+.rr-slider{
+  position:relative; overflow:hidden; container-type:inline-size;
+  aspect-ratio:3 / 2; border-radius:16px;
+  border:1px solid var(--line); background:#fff; box-shadow:var(--shadow-sm);
+  user-select:none; -webkit-user-select:none;
+  --pos:50%;
+}
+.rr-slider:hover{ box-shadow:var(--shadow-md); }
+.rr-slider:focus-within{ box-shadow:var(--shadow-md); }
+/* Each layer rounds itself: a clip-path'd child escapes the parent's rounded
+   overflow clip in Chromium, which squares off the "before" corners. */
+.rr-layer{ position:absolute; inset:0; border-radius:inherit; overflow:hidden; }
+/* The "before" layer keeps its full width and is clipped, so the old site
+   never squashes as the divider moves.
+   `round` is doing real work: a clip-path'd element escapes the ancestor's
+   rounded overflow clip in Chromium, so the two left corners square off unless
+   the clip rounds them itself. Only the left pair — the right edge is the seam.
+   15px, not 16, because the layer sits inside the frame's 1px border. */
+/* The layer spans the whole frame but only its clipped child is real: without
+   pointer-events:none the uncut layer would sit over the live capture and eat
+   every scroll aimed at it. A clipped-away region does not hit-test, so the
+   "after" side stays directly scrollable. */
+.rr-before{ z-index:2; pointer-events:none; }
+.rr-before .ba-frame{ pointer-events:auto; }
+.rr-layer .ba-frame{ position:absolute; inset:0; }
+.rr-before .ba-frame{
+  clip-path:inset(0 calc(100% - var(--pos)) 0 0 round 15px 0 0 15px);
+}
+
+.rr-label{
+  position:absolute; top:3.2cqw; z-index:5; pointer-events:none;
+  padding:1cqw 1.9cqw; border-radius:5px;
+  font-family:'JetBrains Mono',monospace; font-size:2.2cqw;
+  font-weight:600; letter-spacing:.15em; text-transform:uppercase;
+}
+.rr-label-before{
+  left:3.2cqw; background:rgba(11,18,32,.7); color:#fff;
+  -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+}
+.rr-label-after{
+  right:3.2cqw; background:rgba(59,130,246,.92); color:#fff;
+  -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+}
+
+/* Hairline plus knob, sitting on the seam between the two layers.
+   The element is a 44px column, not the 2px line it draws — that column is the
+   grab target, wide enough for a thumb without covering the scrollable side. */
+.rr-handle{
+  position:absolute; top:0; bottom:0; left:var(--pos); z-index:10;
+  width:44px; transform:translateX(-50%);
+  padding:0; border:0; background:transparent; appearance:none;
+  cursor:ew-resize; touch-action:none;      /* the drag owns this column */
+}
+.rr-handle::before{
+  content:''; position:absolute; top:0; bottom:0; left:50%;
+  width:2px; margin-left:-1px; background:var(--brand);
+}
+.rr-handle::after{
+  content:'⇄'; position:absolute; top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  display:grid; place-items:center;
+  width:42px; height:42px; border-radius:50%;
+  background:var(--brand); color:#fff;
+  font-size:15px; font-weight:700; line-height:1;
+  box-shadow:0 4px 16px rgba(11,18,32,.25);
+}
+.rr-handle:focus-visible{ outline:none; }
+.rr-handle:focus-visible::after{ box-shadow:0 0 0 3px rgba(59,130,246,.45), 0 4px 16px rgba(11,18,32,.25); }
+
+/* ---------- how the tall capture behaves under a wheel / swipe ----------
+   The capture takes the wheel and hands off to the page once it reaches its
+   own top or bottom edge. `overscroll-behavior` must say `auto` out loud: the
+   base .af-shot-scroll rule sets `contain`, which stops the chain dead and
+   leaves the page frozen under the pointer. */
+.rr-slider .af-shot-scroll{ overflow-y:auto; overscroll-behavior:auto; }
+
+/* our own hint, so it can sit clear of the drag handle's column */
+.rr-slider .af-shot-hint{ display:none; }
+.rr-hint{
+  position:absolute; right:3.2cqw; bottom:3.2cqw; z-index:6; pointer-events:none;
+  padding:1cqw 1.9cqw; border-radius:99px;
+  background:rgba(11,18,32,.62); color:#fff;
+  font-family:'JetBrains Mono',monospace; font-size:2.1cqw; letter-spacing:.06em;
+}
+
+.rr-cap{ margin-top:12px; text-align:center; padding:0 6px; }
+.rr-cap .meta{
+  font-family:'JetBrains Mono',monospace; font-size:10.5px; font-weight:600;
+  letter-spacing:.15em; text-transform:uppercase; color:var(--brand);
+}
+.rr-cap .quote{
+  margin:5px 0 0; font-family:'General Sans','SF Pro Display',sans-serif;
+  font-size:17px; font-weight:600; letter-spacing:-.03em; color:var(--ink);
+}
+.rr-cap .author{ margin-top:3px; font-size:12.8px; color:var(--muted); line-height:1.5; }
+
+@media (max-width:520px){
+  .rr{ margin-top:32px; }
+  .rr-title{ font-size:20px; }
+  .rr-sub{ font-size:12.5px; }
+  .rr-handle::after{ width:34px; height:34px; }
+  .rr-handle::before{ font-size:13px; }
+  .rr-cap .quote{ font-size:15px; }
+}
+
+/* ---------- clinic theme for the mock "after" frame ----------
+   Only renders when a project has no capture yet; the real sites are
+   screenshotted by `npm run shots`. */
+.af-clinic .af-promo{ background:#0E7C7B; letter-spacing:.1em; }
+.af-clinic .af-logo i{ color:#0E7C7B; }
+.af-clinic .af-hero{ background:linear-gradient(160deg,#EFFAF9,#EAF3FF); }
+.af-clinic .af-kicker{ color:#6FA8A7; }
+.af-clinic .af-title i{ color:#0E7C7B; }
+.af-clinic .af-pill{ background:#0E7C7B; }
+.af-clinic .af-tile span{ color:#0E7C7B; }
+.af-doc{
+  flex:1; min-height:0; margin:1cqw auto .3cqw; width:auto; aspect-ratio:1;
+  border-radius:26% 26% 34% 34%;
+  background:radial-gradient(circle at 38% 26%, #fff, #DCEFEE 58%, #B8DAD8);
+  box-shadow:inset 0 0 0 .5cqw #fff, 0 .6cqw 1.4cqw -.6cqw rgba(11,18,32,.35);
+}
+.af-doc-2{ background:radial-gradient(circle at 38% 26%, #fff, #E3ECFB 58%, #C2D3EE); }
+.af-doc-3{ background:radial-gradient(circle at 38% 26%, #fff, #F3E7EE 58%, #DCC4D2); }
+.af-doc-4{ background:radial-gradient(circle at 38% 26%, #fff, #EAF3E4 58%, #C9DEBE); }
+
+/* a capture used as the "before" sliver: pinned to its top, never scrolls */
+.af-shot-fixed .af-shot-scroll{ overflow:hidden; }
+.rr-tagline{
+  margin-top:9px; padding-top:9px; border-top:1px solid var(--line);
+  font-size:12.6px; font-style:italic; color:var(--ink-2); line-height:1.55;
+}
+
+/* The capture's stand-in: a 24px-wide copy inlined in the manifest, stretched
+   across the top of the frame. It paints on the first frame and the real
+   capture covers it once decoded, so the after side is never a white panel. */
+.af-shot-scroll img{
+  background-repeat:no-repeat;
+  background-position:top center;
+  background-size:100% auto;
+}

@@ -3,6 +3,10 @@
 import * as React from 'react';
 import { Icon } from './Icon';
 import shots from '@/data/shots.json';
+import type { ProjectTheme } from '@/lib/types';
+
+/** One entry in `src/data/shots.json`, written by `npm run shots`. */
+type Shot = { width: number; height: number; lqip?: string };
 
 const BEAUTY_TILES = [
   { src: 'https://beauty-bareg.net/cdn/shop/files/chanel-25-large-handbag-washed-denim-and-gold-tone-metal-1472295.webp?v=1784429243&width=200', brand: 'Chanel', price: 'LE 8,500' },
@@ -11,7 +15,7 @@ const BEAUTY_TILES = [
   { src: 'https://beauty-bareg.net/cdn/shop/files/valentino-garavani-viva-superstar-large-raffia-shopping-bag-natural-2149193.png?v=1784141530&width=200', brand: 'Valentino', price: 'LE 7,500' },
 ];
 
-function BeforeFrame() {
+export function BeforeFrame() {
   return (
     <div className="ba-frame bf">
       <div className="bf-banner">★★★ WELCOME TO OUR WEBSITE ★★★</div>
@@ -42,28 +46,42 @@ function BeforeFrame() {
  * `frame-ancestors 'none'`, so a browser refuses to embed them. `npm run shots`
  * captures the pages instead — re-run it after a store redesign.
  */
-function ShotFrame({ slug, title }: { slug: string; title: string }) {
-  const shot = (shots as Record<string, { width: number; height: number }>)[slug];
+export function ShotFrame({
+  slug, title, scroll = true,
+}: {
+  slug: string; title: string;
+  /** The "before" capture is a clipped sliver — two scrollers in one frame
+   *  reads as a bug, so only the live side takes the wheel. */
+  scroll?: boolean;
+}) {
+  const shot = (shots as Record<string, Shot>)[slug];
   return (
-    <div className="ba-frame af-shot">
-      <div className="af-shot-scroll" tabIndex={0} role="group" aria-label={`${title} — scroll the live site`}>
-        {/* plain <img>: a pre-sized static capture, next/image adds nothing here */}
+    <div className={`ba-frame af-shot${scroll ? '' : ' af-shot-fixed'}`}>
+      <div
+        className="af-shot-scroll"
+        {...(scroll ? { tabIndex: 0, role: 'group', 'aria-label': `${title} — scroll the live site` } : {})}
+      >
+        {/* plain <img>: a pre-sized static capture, next/image adds nothing here.
+            The 24px stand-in from the manifest sits behind it as a background,
+            so the frame shows the shape of the page from the first paint
+            instead of a white panel until the capture downloads. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={`/shots/${slug}.jpg`}
+          src={`/shots/${slug}.webp`}
           alt={`${title} storefront`}
           width={shot?.width}
           height={shot?.height}
           loading="lazy"
           decoding="async"
+          style={shot?.lqip ? { backgroundImage: `url(${shot.lqip})` } : undefined}
         />
       </div>
-      <span className="af-shot-hint" aria-hidden="true">Scroll ↕</span>
+      {scroll && <span className="af-shot-hint" aria-hidden="true">Scroll ↕</span>}
     </div>
   );
 }
 
-function AfterFrame({ theme }: { theme: 'montre' | 'beauty' }) {
+export function AfterFrame({ theme }: { theme: ProjectTheme }) {
   if (theme === 'beauty') {
     return (
       <div className="ba-frame af af-beauty">
@@ -84,6 +102,37 @@ function AfterFrame({ theme }: { theme: 'montre' | 'beauty' }) {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={t.src} alt={`${t.brand} bag`} loading="lazy" decoding="async" />
               <figcaption><b>{t.brand}</b><span>{t.price}</span></figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (theme === 'clinic') {
+    const cards = [
+      { cls: '', name: 'Dental', meta: 'Implants · Veneers' },
+      { cls: ' af-doc-2', name: 'Dermatology', meta: 'Laser · Peels' },
+      { cls: ' af-doc-3', name: 'Aesthetics', meta: 'Fillers · Botox' },
+      { cls: ' af-doc-4', name: 'Nutrition', meta: 'Plans · Follow-up' },
+    ];
+    return (
+      <div className="ba-frame af af-clinic">
+        <div className="af-promo">BOOK ONLINE · SAME-DAY APPOINTMENTS</div>
+        <div className="af-nav">
+          <span className="af-logo">Hollywood<i>Clinics</i></span>
+          <span className="af-links">SERVICES · DOCTORS · العربية</span>
+        </div>
+        <div className="af-hero">
+          <span className="af-kicker">MULTI-SPECIALTY CARE</span>
+          <span className="af-title">Book in <i>three taps</i></span>
+          <span className="af-pill">BOOK APPOINTMENT</span>
+        </div>
+        <div className="af-grid">
+          {cards.map((c) => (
+            <figure className="af-tile af-mock" key={c.name}>
+              <span className={`af-doc${c.cls}`} />
+              <figcaption><b>{c.name}</b><span>{c.meta}</span></figcaption>
             </figure>
           ))}
         </div>
@@ -128,10 +177,13 @@ function AfterFrame({ theme }: { theme: 'montre' | 'beauty' }) {
  * scrolls inside the frame, so the drag control is confined to a strip along the
  * bottom — a full-bleed range input would swallow every scroll gesture.
  */
+/** True when `npm run shots` has captured this storefront. */
+export const hasShot = (slug?: string) => Boolean(slug && slug in shots);
+
 export function BeforeAfter({
   theme, label, slug, title,
 }: {
-  theme: 'montre' | 'beauty';
+  theme: ProjectTheme;
   label: string;
   slug?: string;
   title?: string;
@@ -140,7 +192,7 @@ export function BeforeAfter({
   const boxRef = React.useRef<HTMLDivElement>(null);
   const [width, setWidth] = React.useState(0);
 
-  const hasShot = Boolean(slug && slug in shots);
+  const shotReady = hasShot(slug);
 
   React.useEffect(() => {
     const measure = () => setWidth(boxRef.current?.clientWidth ?? 0);
@@ -151,11 +203,11 @@ export function BeforeAfter({
 
   return (
     <div
-      className={`ba${hasShot ? ' ba-live' : ''}`}
+      className={`ba${shotReady ? ' ba-live' : ''}`}
       ref={boxRef}
       style={{ ['--pos' as string]: `${pos}%` }}
     >
-      {hasShot
+      {shotReady
         ? <ShotFrame slug={slug as string} title={title ?? 'Live site'} />
         : <AfterFrame theme={theme} />}
       <div className="ba-clip">
