@@ -31,7 +31,26 @@ export const getSystems = () => fromTable<Entry>('systems', local.systems);
 export const getAutomations = () => fromTable<Entry>('automations', local.automations);
 export const getTeam = () => fromTable<Entry>('team', local.team);
 export const getTestimonials = () => fromTable('testimonials', local.testimonials);
-export const getProjects = () => fromTable('projects', local.projects);
+/**
+ * Projects come from the repo, not the database — the one content type that
+ * does.
+ *
+ * A project is not just a row: each one is joined to `public/shots/<slug>.webp`,
+ * an entry in `src/data/shots.json` carrying that capture's dimensions and
+ * placeholder, and a theme that maps to a hand-built mock frame in
+ * `BeforeAfter.tsx`. All of that is versioned with the code, so a row added to
+ * the database alone renders a project whose capture does not exist, and a
+ * project added to the repo alone stays invisible however many times you
+ * deploy — which is exactly what happened to Hollywood Clinics.
+ *
+ * `generateStaticParams` reads this too, so a repo-only project would not even
+ * get a detail route built. Serving the seed keeps the row, the capture and the
+ * frame shipping together in one commit.
+ *
+ * The `projects` table is still defined and seeded in `supabase/`, so it stays
+ * usable for anything else that wants it; the site just no longer reads it.
+ */
+export const getProjects = async () => local.projects;
 
 export const site = local;
 
