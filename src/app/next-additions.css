@@ -126,14 +126,6 @@
 .detail-aside p{ margin-top:8px; font-size:13.5px; color:var(--muted); line-height:1.55; }
 .detail-aside .btn{ margin-top:14px; width:100%; }
 
-.detail-video{
-  position:relative; margin-top:20px; border-radius:18px; overflow:hidden;
-  aspect-ratio:16 / 9; background:var(--soft); border:1px solid var(--line);
-}
-.detail-video video, .detail-video iframe{
-  position:absolute; inset:0; width:100%; height:100%; border:0; display:block; object-fit:cover;
-}
-
 /* ---------- next/prev ---------- */
 .pager{ display:grid; gap:10px; margin-top:34px; }
 @media (min-width:640px){ .pager{ grid-template-columns:repeat(2,1fr); } }
@@ -182,3 +174,54 @@
 }
 .source-flag i{ width:6px; height:6px; border-radius:50%; background:#22C55E; }
 .source-flag.is-seed i{ background:#FBBF24; }
+
+/* ---------- expandable project cards ----------
+   The home page and /work both show the full project write-up in place, so a
+   visitor can read what we built without leaving the page they are on. */
+.live-card h3{ margin-top:11px; font-size:19px; font-weight:600; letter-spacing:-.03em; }
+
+.live-toggle{
+  display:inline-flex; align-items:center; gap:7px; align-self:flex-start; margin-top:13px;
+  font-size:13.5px; font-weight:600; color:var(--brand-deep);
+  background:none; border:0; padding:0; cursor:pointer;
+}
+.live-toggle:hover{ color:var(--brand); }
+.live-chev{
+  width:15px; height:15px; transform:rotate(90deg);
+  transition:transform .3s var(--ease);
+}
+.live-card.is-open .live-chev{ transform:rotate(-90deg); }
+
+.live-more{ flex:none; min-height:0; }
+.live-more-inner{ padding-top:14px; margin-top:14px; border-top:1px solid var(--line); }
+.live-summary{ font-size:14px; color:var(--ink-2); line-height:1.62; }
+.live-tagline{
+  margin-top:10px; padding-left:11px; border-left:2px solid var(--brand);
+  font-size:13.5px; font-style:italic; color:var(--muted); line-height:1.55;
+}
+.live-sub{
+  margin:16px 0 9px; font-family:'JetBrains Mono',monospace; font-size:10px;
+  letter-spacing:.12em; text-transform:uppercase; color:var(--muted);
+}
+.live-more .detail-points li{ font-size:13.8px; }
+
+.live-actions{
+  display:flex; flex-wrap:wrap; align-items:center; gap:8px 20px; margin-top:16px;
+}
+.live-actions .live-link{ margin-top:0; }
+.live-link-muted{ color:var(--muted); }
+.live-link-muted:hover{ color:var(--brand-deep); }
+
+@media (max-width:639px){
+  .live-card h3{ margin-top:7px; font-size:14.5px; line-height:1.2; }
+  .live-toggle{ margin-top:8px; min-height:32px; font-size:11.5px; gap:5px; }
+  .live-chev{ width:13px; height:13px; }
+  .live-more-inner{ padding-top:10px; margin-top:10px; }
+  .live-summary{ font-size:12.4px; line-height:1.5; }
+  .live-tagline{ font-size:12px; }
+  .live-more .detail-points{ gap:7px; }
+  .live-more .detail-points li{ font-size:12.4px; line-height:1.45; }
+  .live-more .detail-points svg{ width:14px; height:14px; margin-top:3px; }
+  .live-actions{ gap:6px 14px; margin-top:12px; }
+  .live-actions .live-link{ min-height:32px; font-size:11.5px; gap:5px; }
+}

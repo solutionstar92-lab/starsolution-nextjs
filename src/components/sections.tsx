@@ -3,10 +3,13 @@ import { Icon } from './Icon';
 import { Reveal } from './Reveal';
 import { Rail } from './Rail';
 import { RealResults } from './RealResults';
+import { ProjectCard } from './ProjectCard';
 import type { Entry, Project, Testimonial } from '@/lib/types';
 
-/* Automations carry their own icon and tone in site.json, but the Supabase
-   table has no such columns — these keep the cards coloured either way. */
+/* Every automation carries its own icon and tone, in site.json and — since the
+   schema gained the columns — in Supabase too. These remain as a fallback for a
+   row that arrives without them, but note it is a guess from array position, so
+   it only lands correctly while the order matches the ring below. */
 const AUTO_TONES = ['#3B82F6', '#34D399', '#FBBF24', '#F472B6', '#38BDF8', '#7C6CFF'];
 const AUTO_ICONS = ['revenue', 'whatsapp', 'package', 'play', 'bot', 'build'];
 export const autoTone = (i: number) => AUTO_TONES[i % AUTO_TONES.length];
@@ -180,12 +183,7 @@ export function Work({ projects, systems, automations }: { projects: Project[]; 
         <h3 className="group-label">Live websites</h3>
         <div className="live-grid">
           {projects.map((p, i) => (
-            <Reveal as="article" key={p.id} className="live-card" delay={i * 0.08}>
-              <span className="live-badge">{p.badge}</span>
-              <h4><Link href={`/work/${p.slug}`}>{p.title}</Link></h4>
-              <p>{p.short}</p>
-              <Link className="live-link" href={`/work/${p.slug}`}>View project <Icon name="link" /></Link>
-            </Reveal>
+            <ProjectCard key={p.id} project={p} delay={i * 0.08} heading="h4" />
           ))}
         </div>
 
@@ -199,7 +197,6 @@ export function Work({ projects, systems, automations }: { projects: Project[]; 
                 <p className="sys-tag">{s.tag}</p>
                 <h4>{s.title}</h4>
                 <p>{s.short}</p>
-                <p className="sys-demo"><Icon name="play" /> Watch the walkthrough</p>
               </Link>
             );
             // The first system is always on screen. The rest fade in as they

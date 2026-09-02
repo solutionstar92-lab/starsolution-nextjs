@@ -4,39 +4,6 @@ import { PageHead } from './PageHead';
 import { Reveal } from './Reveal';
 import type { Entry } from '@/lib/types';
 
-function VideoSlot({ entry }: { entry: Entry }) {
-  const v = entry.video;
-  if (v === null || v === undefined) return null;
-  if (v.youtube) {
-    return (
-      <div className="detail-video">
-        <iframe
-          src={`https://www.youtube.com/embed/${v.youtube}`}
-          title={`${entry.title} walkthrough`}
-          loading="lazy"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture"
-          allowFullScreen
-        />
-      </div>
-    );
-  }
-  if (v.src) {
-    return (
-      <div className="detail-video">
-        <video src={v.src} poster={v.poster} controls preload="metadata" playsInline />
-      </div>
-    );
-  }
-  return (
-    <div className="detail-video">
-      <div className="video-soon">
-        <span className="video-play" aria-hidden="true" />
-        <p>Walkthrough video coming soon</p>
-      </div>
-    </div>
-  );
-}
-
 export function EntryPage({
   entry, section, sectionHref, prev, next,
   pointsTitle = 'What you get',
@@ -67,8 +34,6 @@ export function EntryPage({
             <div className="detail-body">
               <Reveal>
                 {entry.tagline && <p className="detail-tagline">{entry.tagline}</p>}
-
-                <VideoSlot entry={entry} />
 
                 {entry.stats && entry.stats.length > 0 && (
                   <dl className="detail-stats">

@@ -514,30 +514,34 @@
     {
       "id": "sys-accounting",
       "slug": "accounting-system",
-      "tag": "SaaS system",
-      "short": "Invoicing, expenses and reports.",
-      "eyebrow": "Custom system · SaaS",
+      "tag": "Finance",
+      "short": "Invoicing, receivables and ETA e-invoicing.",
+      "eyebrow": "Custom system · Finance",
       "title": "Accounting System",
-      "summary": "Invoicing, expense tracking, financial reports and multi-user access, built for small and medium businesses.",
+      "summary": "A centralized financial system that replaces spreadsheets and manual reconciliation with a single source of truth for revenue, costs and receivables. It runs the full cycle from quotation to collection: issuing invoices, recording payments across cash, bank transfer, card and COD, tracking outstanding balances per customer, and closing periods with a clear audit trail.",
       "stats": [
         [
-          "Users",
-          "Multi-user"
+          "Compliance",
+          "ETA e-invoicing"
         ],
         [
-          "Reports",
-          "Automated"
+          "Base currency",
+          "EGP"
         ],
         [
-          "Demo",
-          "On request"
+          "Access",
+          "Role-based"
         ]
       ],
       "points": [
-        "Invoice generation and payment tracking",
-        "Expense categories and receipt capture",
-        "Monthly and quarterly financial reports",
-        "Role based access for accountants and owners"
+        "ETA e-invoicing compliance — Egyptian Tax Authority submission and status tracking",
+        "Chart of accounts, journal entries and automated posting rules",
+        "Customer and supplier ledgers with aging reports on receivables and payables",
+        "Invoicing and credit notes in EGP, with multi-currency support where needed",
+        "Expense capture with category and cost-center allocation",
+        "VAT handling and tax reporting",
+        "Role-based access so staff see only what their function requires",
+        "Dashboards and exportable reports: P&L, cash position, collections, revenue by channel"
       ],
       "video": {}
     },
@@ -575,59 +579,34 @@
       "id": "sys-courier",
       "slug": "courier-system",
       "tag": "Logistics",
-      "short": "Dispatch, tracking and notifications.",
+      "short": "Dispatch, COD settlement and proof of delivery.",
       "eyebrow": "Custom system · Logistics",
       "title": "Courier System",
-      "summary": "Order dispatch, driver tracking, real-time status and automated customer notifications.",
+      "summary": "An operations system covering the shipment lifecycle from pickup request to proof of delivery and cash settlement. It gives dispatch a live view of every order, gives couriers a mobile task list, and gives your customers automated status updates without manual follow-up.",
       "stats": [
+        [
+          "COD settlement",
+          "Daily"
+        ],
         [
           "Tracking",
           "Real time"
         ],
         [
           "Notifications",
-          "Automated"
-        ],
-        [
-          "Demo",
-          "On request"
+          "WhatsApp + SMS"
         ]
       ],
       "points": [
-        "Dispatch orders to available drivers automatically",
-        "Live map tracking for every delivery",
-        "Status updates pushed to the customer",
-        "Delivery performance reporting by driver and zone"
-      ],
-      "video": {}
-    },
-    {
-      "id": "sys-trading",
-      "slug": "trading-system",
-      "tag": "Fintech",
-      "short": "Live data, signals and execution.",
-      "eyebrow": "Custom system · Fintech",
-      "title": "Trading System",
-      "summary": "Live market data, portfolio tracking, buy and sell signals and automated execution.",
-      "stats": [
-        [
-          "Data",
-          "Live"
-        ],
-        [
-          "Execution",
-          "Automated"
-        ],
-        [
-          "Demo",
-          "On request"
-        ]
-      ],
-      "points": [
-        "Live market data feeds",
-        "Portfolio performance tracking",
-        "Signal generation from configurable rules",
-        "Automated execution with manual override"
+        "Order intake via dashboard, bulk upload or API from your sales channels",
+        "Automated AWB generation and printable labels",
+        "Zone and weight-based pricing rules with configurable rate cards",
+        "Assignment and routing — shipments allocated to couriers by zone, capacity or manual override",
+        "Courier mobile view for status updates, delivery attempts and proof of delivery (signature or photo)",
+        "Real-time tracking page for end customers, plus WhatsApp and SMS status notifications",
+        "Returns and failed-delivery handling with reattempt scheduling",
+        "COD collection tracking per courier, with daily settlement and remittance reports",
+        "Performance reporting: delivery success rate, average transit time, courier productivity, zone profitability"
       ],
       "video": {}
     },
@@ -635,110 +614,71 @@
       "id": "sys-analytics",
       "slug": "google-analytics-system",
       "tag": "Analytics",
-      "short": "Traffic, funnels and alerts.",
+      "short": "GA4, Clarity, Search Console and Ads in one view.",
       "eyebrow": "Custom system · Analytics",
       "title": "Google Analytics System",
-      "summary": "GA4 traffic insights, conversion funnels, real-time reports and automated alerts.",
+      "summary": "Most businesses have one dashboard and half the answer. This is five tools wired together — traffic, behaviour, search and ads in one connected picture instead of five disconnected logins, so you can see who visited, what they clicked, where they dropped off, and what your ad spend actually returned.",
       "stats": [
         [
-          "Platform",
-          "GA4"
+          "Tools connected",
+          "5"
         ],
         [
-          "Alerts",
-          "Automated"
+          "Reporting",
+          "Day, week, month"
         ],
         [
-          "Demo",
-          "On request"
+          "Setup",
+          "No code changes"
         ]
       ],
       "points": [
-        "Traffic and acquisition breakdowns",
-        "Conversion funnel analysis",
-        "Real-time reporting dashboards",
-        "Alerts when a metric moves outside its range"
+        "Google Analytics 4 — how many visitors, where they came from, and how your traffic moves over time",
+        "Google Tag Manager — the wiring: every tool connected and firing correctly, with no code changes",
+        "Microsoft Clarity — session recordings and heatmaps showing how far each visitor scrolled, what they clicked, and where they gave up",
+        "Google Search Console — which keywords you rank for, which pages perform, and which pages Google cannot reach",
+        "Google Ads — paid campaigns running on the same data, so spend follows what is actually converting"
       ],
-      "video": {}
+      "video": {},
+      "tagline": "Know exactly where every customer came from — and what they did next."
     }
   ],
   "automations": [
     {
-      "id": "auto-stripe",
-      "slug": "stripe-payment-automation",
-      "eyebrow": "Automation",
-      "title": "Stripe payment automation",
-      "summary": "Payments, receipts, refunds and reconciliation handled without anyone opening the dashboard.",
-      "stats": [
-        [
-          "Setup",
-          "3–5 days"
-        ],
-        [
-          "Manual work",
-          "0"
-        ]
-      ],
-      "points": [
-        "Automatic receipts and invoices",
-        "Failed payment retry sequences",
-        "Refunds synced back to your store",
-        "Daily reconciliation report"
-      ],
-      "video": {},
-      "icon": "revenue",
-      "tone": "#3B82F6"
-    },
-    {
       "id": "auto-whatsapp",
       "slug": "whatsapp-ai-system",
       "eyebrow": "Automation",
-      "title": "WhatsApp AI system",
-      "summary": "An AI agent on WhatsApp Business handling orders, questions and confirmations in Arabic and English.",
+      "title": "Smart Multi-Number WhatsApp Inbox",
+      "summary": "A unified, real-time inbox that connects many WhatsApp numbers into one screen, where AI tags every conversation, classifies intent and sentiment, and prioritizes the queue so your team manages by exception.",
       "stats": [
         [
-          "Reply time",
-          "under 2s"
+          "Connection",
+          "Cloud API or QR"
         ],
         [
-          "Automated",
-          "80%"
+          "Sync",
+          "Real time"
+        ],
+        [
+          "Triage",
+          "AI automated"
         ]
       ],
       "points": [
-        "Order confirmation and rescheduling flows",
-        "Live order status lookups",
-        "Escalation to your team with full context",
-        "Broadcast campaigns to opted-in customers"
+        "Connects multiple WhatsApp business numbers into one dashboard — official Meta Cloud API numbers and QR-linked numbers, added in minutes",
+        "Each number managed independently: connect, rename, enable, disable, or disconnect cleanly along with all of its conversations",
+        "One unified inbox across every connected number, filtered instantly to all numbers at once or a single number",
+        "Live two-way message sync, with delivery and read status tracked on every message",
+        "Accurate unread tracking and full-text search across customers, phone numbers and message content",
+        "A customer profile beside each chat — lifetime orders, lifetime value, notes and history",
+        "Automatic tagging: the AI flags conversations as NEED HUMAN, records outcomes such as exchange happened, and categorizes customers on its own",
+        "Intent and sentiment detection on every conversation — price, product, order, return, complaint or tracking, positive through angry, each with a confidence score",
+        "Tag totals computed across all conversations rather than only those on screen, so urgent and VIP chats surface automatically"
       ],
       "video": {},
       "icon": "whatsapp",
-      "tone": "#34D399"
-    },
-    {
-      "id": "auto-courier",
-      "slug": "courier-and-delivery-system",
-      "eyebrow": "Automation",
-      "title": "Courier and delivery system",
-      "summary": "Connects your store to your courier so dispatch, tracking and notifications happen on their own.",
-      "stats": [
-        [
-          "Setup",
-          "5–7 days"
-        ],
-        [
-          "Tracking",
-          "Automatic"
-        ]
-      ],
-      "points": [
-        "Shipments created the moment an order is paid",
-        "Tracking numbers returned to the customer",
-        "Delivery exceptions flagged to your team"
-      ],
-      "video": {},
-      "icon": "package",
-      "tone": "#FBBF24"
+      "tone": "#34D399",
+      "tagline": "Organization is almost entirely AI-automated: the AI reads every incoming conversation and classifies it in real time, removing the manual triage work."
     },
     {
       "id": "auto-youtube",
@@ -763,32 +703,47 @@
       ],
       "video": {},
       "icon": "play",
-      "tone": "#F472B6"
+      "tone": "#F472B6",
+      "hidden": true
     },
     {
       "id": "auto-chatbot",
       "slug": "ecommerce-chatbot",
       "eyebrow": "Automation",
       "title": "E-commerce chatbot",
-      "summary": "An on-site assistant that answers product questions and guides visitors to checkout.",
+      "summary": "An all-in-one, AI-powered platform that unifies customer messaging, order management, marketing and analytics into a single operations hub — turning conversations into orders, and data into decisions.",
       "stats": [
         [
-          "Handled",
-          "80%"
+          "Coverage",
+          "24/7"
         ],
         [
-          "Languages",
-          "Arabic + English"
+          "Language",
+          "Egyptian Arabic"
+        ],
+        [
+          "Orders",
+          "Live Shopify"
         ]
       ],
       "points": [
-        "Trained on your catalog and policies",
-        "Product recommendations inside the chat",
-        "Handover to a human when needed"
+        "Omnichannel inbox — multiple WhatsApp numbers, Messenger and Instagram in one real-time screen, with delivery and read tracking, full-text search and rich customer profiles",
+        "The AI classifies every conversation by intent and sentiment, applies operational tags such as NEED HUMAN or exchange happened, and pushes urgent and VIP customers to the top",
+        "A 24/7 AI agent that replies instantly in natural Egyptian Arabic and carries the full sales conversation end to end",
+        "Understands text, product photos and voice notes — identifies products from images and answers pricing, availability and policy questions from live store data",
+        "Hands off to a person when a case genuinely needs one, with the conversation flagged and already in context",
+        "Creates real Shopify orders from the conversation — product, size, address and payment collected and confirmed, with extra items added to the existing order instead of fragmenting into duplicates",
+        "Deposits and payment-screenshot verification, exchanges, returns and order tracking, all applied by business rules",
+        "WhatsApp broadcast campaigns — text or image-and-button templates, sent on demand or scheduled to targeted lists",
+        "Campaign analytics through to revenue: sent, delivered, read and orders generated, attributed to purchases by discount code",
+        "Real-time operations metrics — conversations handled, automation rate, response coverage and staff performance",
+        "AI business analytics on demand: top products and categories customers ask for, most common questions, demand trends and tag insights",
+        "Built for volume — automatic retries and a background worker that catches anything slipping through, plus per-channel on/off, staff assignment and role-based views"
       ],
       "video": {},
       "icon": "bot",
-      "tone": "#38BDF8"
+      "tone": "#38BDF8",
+      "tagline": "The AI agent replies instantly in natural Egyptian Arabic, around the clock, and resolves the majority of conversations without anyone on your team touching them."
     },
     {
       "id": "auto-custom",
@@ -798,22 +753,35 @@
       "summary": "If it happens more than twice a week and follows rules, it can be automated. Tell us the workflow.",
       "stats": [
         [
-          "Scope",
-          "Anything repeatable"
+          "Confirmation",
+          "Automatic, 24/7"
         ],
         [
-          "Start",
-          "Free audit"
+          "Delivery slot",
+          "Customer picks"
+        ],
+        [
+          "Languages",
+          "Arabic or English"
         ]
       ],
       "points": [
+        "Order confirmation flow — every new order confirmed on WhatsApp instantly, around the clock, with no agent making a call",
+        "The customer books their own delivery slot inside the chat: date, time and location",
+        "Returning customers get a smooth, friction-free confirmation, while risky first-time COD orders outside your delivery zone are asked for a deposit before the order ships",
+        "Lower return rates — fewer packages coming back unopened, and no shipping paid twice",
+        "Faster deliveries, because you already know when and where the customer wants it",
+        "Fewer staff hours: no confirmation calls, no back-and-forth, no manual follow-up",
+        "Instant replies in Arabic or English, on the app your customers already use",
+        "Every order, every reply and every delivery slot recorded and reportable",
         "We map the workflow before building anything",
         "Built on the tools you already pay for",
         "Documented and handed over, not locked in"
       ],
       "video": {},
       "icon": "build",
-      "tone": "#7C6CFF"
+      "tone": "#7C6CFF",
+      "tagline": "Cash on delivery is where the losses are. The flow tells a returning customer from a first-time one, and asks the risky orders for a deposit before anything ships."
     }
   ],
   "team": [

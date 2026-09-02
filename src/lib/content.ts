@@ -12,15 +12,26 @@ const local = seed as unknown as SiteContent;
  * That means `npm run dev` works immediately after clone, and pointing it at a
  * real project is a matter of filling in .env.local.
  */
+/**
+ * Drops anything flagged `hidden`. Applied to both the database result and the
+ * seed, so an entry stays unpublished whichever source is live. Every surface
+ * reads through here — the home page grids, the index pages and
+ * `generateStaticParams` — so one flag takes an entry off the site completely
+ * rather than leaving an orphan route nothing links to.
+ */
+function visible<T>(rows: T[]): T[] {
+  return rows.filter((row) => !(row as { hidden?: boolean }).hidden);
+}
+
 async function fromTable<T>(table: string, fallback: T[]): Promise<T[]> {
   const db = getSupabase();
-  if (!db) return fallback;
+  if (!db) return visible(fallback);
   try {
     const { data, error } = await db.from(table).select('*').order('sort_order', { ascending: true });
-    if (error || !data || data.length === 0) return fallback;
-    return data as T[];
+    if (error || !data || data.length === 0) return visible(fallback);
+    return visible(data as T[]);
   } catch {
-    return fallback;
+    return visible(fallback);
   }
 }
 

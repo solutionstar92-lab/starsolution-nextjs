@@ -14,7 +14,7 @@ export default async function SystemsIndexPage() {
       <PageHead
         eyebrow="Custom systems"
         title="Systems and dashboards we build"
-        lede="Invoicing, logistics, SEO, trading and analytics platforms, built to order."
+        lede="Invoicing, logistics, SEO and analytics platforms, built to order."
         crumbs={[{ href: '/', label: 'Home' }, { label: 'Systems' }]}
       />
       <section className="section">

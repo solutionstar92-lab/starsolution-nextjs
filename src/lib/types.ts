@@ -10,6 +10,12 @@ export interface Entry {
   stats?: Stat[];
   points?: string[];
   video?: { src?: string; poster?: string; youtube?: string } | null;
+  /**
+   * Unpublished. The entry stays in the data but is filtered out of every listing
+   * and of `generateStaticParams`, so its detail route is not built either.
+   * Flip it back to publish; nothing else needs touching.
+   */
+  hidden?: boolean;
   icon?: string;
   tone?: string;
   badge?: string;

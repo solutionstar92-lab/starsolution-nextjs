@@ -4,6 +4,7 @@ import { PageHead } from '@/components/PageHead';
 import { Reveal } from '@/components/Reveal';
 import { Icon } from '@/components/Icon';
 import { RealResults } from '@/components/RealResults';
+import { ProjectCard } from '@/components/ProjectCard';
 import { autoIcon, autoTone } from '@/components/sections';
 import { getProjects, getSystems, getAutomations } from '@/lib/content';
 
@@ -24,12 +25,7 @@ export default async function WorkIndexPage() {
           <h2 className="group-label">Live websites</h2>
           <div className="live-grid">
             {projects.map((p, i) => (
-              <Reveal as="article" key={p.id} className="live-card" delay={i * 0.08}>
-                <span className="live-badge">{p.badge}</span>
-                <h3><Link href={`/work/${p.slug}`}>{p.title}</Link></h3>
-                <p>{p.short}</p>
-                <Link className="live-link" href={`/work/${p.slug}`}>View project <Icon name="link" /></Link>
-              </Reveal>
+              <ProjectCard key={p.id} project={p} delay={i * 0.08} heading="h3" />
             ))}
           </div>
 
@@ -43,7 +39,6 @@ export default async function WorkIndexPage() {
                   <p className="sys-tag">{s.tag}</p>
                   <h3>{s.title}</h3>
                   <p>{s.short}</p>
-                  <p className="sys-demo"><Icon name="play" /> Watch the walkthrough</p>
                 </Link>
               </Reveal>
             ))}
