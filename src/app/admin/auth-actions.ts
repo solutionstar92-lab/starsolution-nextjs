@@ -2,6 +2,7 @@
 
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
+import { authLog } from '@/lib/supabase/cookies';
 
 export interface AuthState {
   error?: string;
@@ -23,7 +24,14 @@ export async function signIn(_prev: AuthState, formData: FormData): Promise<Auth
   if (!email || !password) return { error: 'Enter your email and password.' };
 
   const supabase = createClient();
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  const started = Date.now();
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  authLog('signin', error ? 'failed' : 'ok', {
+    email,
+    ms: Date.now() - started,
+    session: data?.session ? 'issued' : 'none',
+    ...(error ? { reason: error.message } : {}),
+  });
 
   // Deliberately vague: distinguishing "no such user" from "wrong password"
   // tells an attacker which emails are real.

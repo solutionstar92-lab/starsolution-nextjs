@@ -66,7 +66,16 @@ export function Sidebar({ email, fullName }: { email: string; fullName?: string 
                   ? pathname === '/admin'
                   : pathname.startsWith(item.href);
                 return (
-                  <Link key={item.href} href={item.href} className={active ? 'is-active' : undefined}>
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    // Every admin route is force-dynamic, so a prefetch costs a
+                    // full server render — session lookup and admins query
+                    // included — for a payload that is barely cached. Ten nav
+                    // links meant ten of those on hover.
+                    prefetch={false}
+                    className={active ? 'is-active' : undefined}
+                  >
                     <Icon name={item.icon} /> {item.label}
                   </Link>
                 );
