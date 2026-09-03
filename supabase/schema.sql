@@ -98,16 +98,6 @@ alter table public.automations add column if not exists icon text;
 alter table public.automations add column if not exists tone text;
 alter table public.automations add column if not exists tagline text;
 
--- `visible()` in lib/content.ts filters these out of every listing and route,
--- so each content table needs somewhere to say so
-alter table public.solutions    add column if not exists hidden boolean default false;
-alter table public.goals        add column if not exists hidden boolean default false;
-alter table public.case_studies add column if not exists hidden boolean default false;
-alter table public.systems      add column if not exists hidden boolean default false;
-alter table public.automations  add column if not exists hidden boolean default false;
-alter table public.team         add column if not exists hidden boolean default false;
-alter table public.testimonials add column if not exists hidden boolean default false;
-
 create table if not exists public.team (
   id           text primary key,
   slug         text not null unique,
@@ -163,6 +153,16 @@ begin
   alter table public.projects add  constraint projects_theme_check
     check (theme in ('montre','beauty','clinic'));
 end $$;
+
+-- `visible()` in lib/content.ts filters these out of every listing and route,
+-- so each content table needs somewhere to say so
+alter table public.solutions    add column if not exists hidden boolean default false;
+alter table public.goals        add column if not exists hidden boolean default false;
+alter table public.case_studies add column if not exists hidden boolean default false;
+alter table public.systems      add column if not exists hidden boolean default false;
+alter table public.automations  add column if not exists hidden boolean default false;
+alter table public.team         add column if not exists hidden boolean default false;
+alter table public.testimonials add column if not exists hidden boolean default false;
 
 -- ---------- form submissions ----------
 create table if not exists public.leads (
