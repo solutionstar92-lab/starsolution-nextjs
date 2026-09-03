@@ -136,8 +136,10 @@ export function EntityForm({
         ))}
       </div>
 
-      {state.error && <p className="admin-alert is-error">{state.error}</p>}
-      {state.ok && <p className="admin-alert is-ok">{state.ok}</p>}
+      {/* createRow ends in redirect(), and an action that redirects resolves
+          with no state, so this render sees undefined rather than {}. */}
+      {state?.error && <p className="admin-alert is-error">{state.error}</p>}
+      {state?.ok && <p className="admin-alert is-ok">{state.ok}</p>}
 
       <div className="admin-form-foot">
         <Save label={mode === 'create' ? `Create ${entity.singular}` : 'Save changes'} />

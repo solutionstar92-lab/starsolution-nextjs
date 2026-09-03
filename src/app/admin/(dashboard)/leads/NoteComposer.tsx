@@ -20,8 +20,8 @@ export function NoteComposer({ leadId }: { leadId: string }) {
   const formRef = React.useRef<HTMLFormElement>(null);
 
   React.useEffect(() => {
-    if (state.ok) formRef.current?.reset();
-  }, [state.ok]);
+    if (state?.ok) formRef.current?.reset();
+  }, [state?.ok]);
 
   return (
     <form action={action} ref={formRef} className="admin-note-form">
@@ -36,7 +36,7 @@ export function NoteComposer({ leadId }: { leadId: string }) {
       />
       <div className="admin-note-actions">
         <SubmitNote />
-        {state.error && <p className="admin-alert is-error">{state.error}</p>}
+        {state?.error && <p className="admin-alert is-error">{state.error}</p>}
       </div>
     </form>
   );

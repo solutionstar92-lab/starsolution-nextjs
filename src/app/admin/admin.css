@@ -448,3 +448,89 @@
 /* the table needs a min-width to stay readable; min-width:0 on the ancestors
    keeps that width scrolling inside the wrapper instead of the whole page */
 .admin-table td span.admin-muted{ display:block; margin-top:2px; font-size:11.5px; }
+
+/* ---------- loading skeletons ---------- */
+.admin-skeleton{
+  display:block; border-radius:8px;
+  background:linear-gradient(90deg, var(--soft) 25%, #EEF2F8 37%, var(--soft) 63%);
+  background-size:400% 100%;
+  animation:adminShimmer 1.4s ease-in-out infinite;
+}
+@keyframes adminShimmer{ 0%{ background-position:100% 50%; } 100%{ background-position:0 50%; } }
+@media (prefers-reduced-motion:reduce){ .admin-skeleton{ animation:none; } }
+.admin-skeleton-row{
+  display:flex; align-items:center; justify-content:space-between; gap:14px;
+  padding:13px 0; border-bottom:1px solid var(--line);
+}
+.admin-skeleton-row:last-child{ border-bottom:0; }
+
+/* =========================================================
+   Layout containment
+   ---------------------------------------------------------
+   Grid and flex children default to min-width:auto, which is the intrinsic
+   width of their content, not zero. One long id, URL or summary therefore
+   widens its column, pushes the layout past the viewport, and the
+   overflow-x:hidden further up crops it — text disappearing off the right
+   edge rather than wrapping or scrolling.
+
+   The cure is min-width:0 on every container in the chain, so a child is
+   allowed to be narrower than its content, plus explicit wrapping for the
+   long unbroken strings the CMS is full of.
+   ========================================================= */
+.admin-body > *,
+.admin-card,
+.admin-detail-main,
+.admin-detail-side,
+.admin-detail-side > *,
+.admin-columns > *,
+.admin-form-grid > *,
+.admin-form-field,
+.admin-stat,
+.admin-toolbar > *{
+  min-width: 0;
+}
+
+/* Ids, slugs and URLs have no spaces to break at, so they need permission to
+   break mid-token rather than run past the edge. */
+.admin-head p,
+.admin-help,
+.admin-alert,
+.admin-muted,
+.admin-list-main span,
+.admin-facts dd{
+  overflow-wrap: anywhere;
+}
+
+.admin-head h1{
+  overflow-wrap: anywhere;
+  /* long CMS titles should wrap, not be truncated */
+  white-space: normal;
+}
+
+.admin-alert code{ overflow-wrap: anywhere; }
+
+/* The title bar puts an action button beside the heading; below the breakpoint
+   they need to stack or the button squeezes the title into a sliver. */
+.admin-subhead{
+  display: flex; flex-wrap: wrap; align-items: flex-start;
+  justify-content: space-between; gap: 12px;
+}
+.admin-subhead > div:first-child{ min-width: 0; flex: 1 1 220px; }
+
+/* Inputs are width:100% of a track that may itself be too narrow; box-sizing
+   keeps padding inside the track instead of adding to it. */
+.admin-form-field input,
+.admin-form-field textarea,
+.admin-form-field select{ box-sizing: border-box; max-width: 100%; }
+
+/* The table is the one thing deliberately wider than the viewport. It scrolls
+   inside its own wrapper, which only works while the wrapper can shrink. */
+.admin-table-wrap{ min-width: 0; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+/* Sidebar names and emails truncate rather than widening the fixed column. */
+.admin-user-meta strong,
+.admin-user-meta span{
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.admin-nav a{ min-width: 0; }
+.admin-nav a span{ overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

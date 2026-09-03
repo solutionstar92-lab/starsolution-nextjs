@@ -31,8 +31,8 @@ export function StatusPicker({ id, status }: { id: string; status: LeadStatus })
         </select>
         <AutoSubmit />
       </div>
-      {state.error && <p className="admin-alert is-error">{state.error}</p>}
-      {state.ok && <p className="admin-alert is-ok">{state.ok}</p>}
+      {state?.error && <p className="admin-alert is-error">{state.error}</p>}
+      {state?.ok && <p className="admin-alert is-ok">{state.ok}</p>}
     </form>
   );
 }
