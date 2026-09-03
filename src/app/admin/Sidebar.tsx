@@ -4,11 +4,18 @@ import * as React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Icon } from '@/components/Icon';
+import { ENTITIES } from '@/lib/admin/entities';
 import { signOut } from './auth-actions';
 
 const NAV = [
   { group: 'Overview', items: [{ href: '/admin', label: 'Dashboard', icon: 'chart' }] },
   { group: 'Enquiries', items: [{ href: '/admin/leads', label: 'Leads', icon: 'mail' }] },
+  {
+    group: 'Content',
+    // Straight from the CMS registry, so a new content type appears here the
+    // moment it is declared rather than needing a second edit.
+    items: ENTITIES.map((e) => ({ href: `/admin/${e.key}`, label: e.label, icon: e.icon })),
+  },
 ];
 
 function initialsOf(name: string, email: string) {

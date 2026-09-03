@@ -1,0 +1,219 @@
+/**
+ * The CMS, described as data.
+ *
+ * Eight tables with different shapes would otherwise mean eight near-identical
+ * sets of list/create/edit pages. Instead each table is declared here and one
+ * dynamic route renders them all, so adding a column is a line in this file
+ * rather than a new page.
+ *
+ * Field names are the database column names verbatim — the form posts them
+ * straight through, and supabase/schema.sql is the authority on what exists.
+ */
+
+export type FieldKind =
+  | 'text'
+  | 'textarea'
+  | 'number'
+  | 'boolean'
+  | 'lines'   // jsonb array of strings, one per line
+  | 'pairs'   // jsonb array of [label, value], "Label | Value" per line
+  | 'select'
+  | 'color';
+
+export interface Field {
+  name: string;
+  label: string;
+  kind: FieldKind;
+  required?: boolean;
+  help?: string;
+  options?: readonly string[];
+  /** Full width in the two-column form grid. */
+  wide?: boolean;
+}
+
+export interface Entity {
+  key: string;
+  table: string;
+  label: string;
+  singular: string;
+  icon: string;
+  /** Column holding the human name — title everywhere except testimonials. */
+  titleField: 'title' | 'name';
+  /** Testimonials have no slug, so no detail route and no slug field. */
+  slugField?: 'slug';
+  /** Prefix used when deriving an id for a new row, e.g. sys- plus the slug. */
+  idPrefix: string;
+  fields: Field[];
+  /** Column shown as the second line of a list row. */
+  subtitleField?: string;
+  /** Live routes to revalidate after a write. :slug is substituted. */
+  revalidate: string[];
+  /** Shown on the page when the public site does not read this table. */
+  notice?: string;
+}
+
+const SORT: Field = {
+  name: 'sort_order', label: 'Sort order', kind: 'number',
+  help: 'Lowest first. Controls the order on the public site.',
+};
+const HIDDEN: Field = {
+  name: 'hidden', label: 'Hidden', kind: 'boolean',
+  help: 'Keeps the row in the database but off the public site entirely, including its detail page.',
+};
+const POINTS: Field = {
+  name: 'points', label: 'Points', kind: 'lines', wide: true,
+  help: 'One per line. Renders as the checklist under the heading.',
+};
+const STATS: Field = {
+  name: 'stats', label: 'Stats', kind: 'pairs', wide: true,
+  help: 'One per line as Label | Value, for example: Coverage | 24/7. Three fill the row neatly.',
+};
+const SUMMARY: Field = {
+  name: 'summary', label: 'Summary', kind: 'textarea', wide: true,
+  help: 'The lede under the title, and the description search engines show.',
+};
+const TAGLINE: Field = {
+  name: 'tagline', label: 'Tagline', kind: 'textarea', wide: true,
+  help: 'Optional. Renders in italic between the lede and the stats.',
+};
+
+export const ENTITIES: Entity[] = [
+  {
+    key: 'systems', table: 'systems', label: 'Systems', singular: 'system',
+    icon: 'build', titleField: 'title', slugField: 'slug', idPrefix: 'sys-',
+    subtitleField: 'short',
+    revalidate: ['/', '/work', '/systems', '/systems/:slug'],
+    fields: [
+      { name: 'title', label: 'Title', kind: 'text', required: true },
+      { name: 'slug', label: 'Slug', kind: 'text', required: true, help: 'URL segment: /systems/<slug>' },
+      { name: 'tag', label: 'Tag', kind: 'text', help: 'Short category shown on the card, for example: Finance.' },
+      { name: 'eyebrow', label: 'Eyebrow', kind: 'text', help: 'Small line above the title.' },
+      { name: 'short', label: 'Short', kind: 'text', wide: true, help: 'One line on the card. Clamped to two lines on mobile.' },
+      SUMMARY, TAGLINE, STATS, POINTS, SORT, HIDDEN,
+    ],
+  },
+  {
+    key: 'automations', table: 'automations', label: 'Automations', singular: 'automation',
+    icon: 'bot', titleField: 'title', slugField: 'slug', idPrefix: 'auto-',
+    subtitleField: 'summary',
+    revalidate: ['/', '/work', '/automations', '/automations/:slug'],
+    fields: [
+      { name: 'title', label: 'Title', kind: 'text', required: true },
+      { name: 'slug', label: 'Slug', kind: 'text', required: true, help: 'URL segment: /automations/<slug>' },
+      { name: 'eyebrow', label: 'Eyebrow', kind: 'text' },
+      { name: 'icon', label: 'Icon', kind: 'text', help: 'Icon name: bot, whatsapp, package, revenue, build or play.' },
+      { name: 'tone', label: 'Tone', kind: 'color', help: 'Card accent colour.' },
+      SUMMARY, TAGLINE, STATS, POINTS, SORT, HIDDEN,
+    ],
+  },
+  {
+    key: 'team', table: 'team', label: 'Team', singular: 'team member',
+    icon: 'headset', titleField: 'title', slugField: 'slug', idPrefix: 'team-',
+    subtitleField: 'role',
+    revalidate: ['/', '/about', '/team', '/team/:slug'],
+    fields: [
+      { name: 'title', label: 'Name', kind: 'text', required: true },
+      { name: 'slug', label: 'Slug', kind: 'text', required: true, help: 'URL segment: /team/<slug>' },
+      { name: 'role', label: 'Role', kind: 'text' },
+      { name: 'initials', label: 'Initials', kind: 'text', help: 'Two letters for the avatar.' },
+      { name: 'tone', label: 'Tone', kind: 'color' },
+      { name: 'eyebrow', label: 'Eyebrow', kind: 'text' },
+      SUMMARY, TAGLINE,
+      { ...POINTS, label: 'Skills', help: 'One per line. Rendered as chips.' },
+      SORT, HIDDEN,
+    ],
+  },
+  {
+    key: 'case-studies', table: 'case_studies', label: 'Case studies', singular: 'case study',
+    icon: 'chart', titleField: 'title', slugField: 'slug', idPrefix: 'case-',
+    subtitleField: 'type',
+    revalidate: ['/', '/results', '/case-studies', '/case-studies/:slug'],
+    fields: [
+      { name: 'title', label: 'Title', kind: 'text', required: true },
+      { name: 'slug', label: 'Slug', kind: 'text', required: true },
+      { name: 'type', label: 'Type', kind: 'text', help: 'For example: Beauty brand.' },
+      { name: 'eyebrow', label: 'Eyebrow', kind: 'text' },
+      { name: 'kpi', label: 'KPI value', kind: 'text', help: 'The headline number, for example: 18K.' },
+      { name: 'kpiUnit', label: 'KPI unit', kind: 'text', help: 'Appended to the number, for example: followers.' },
+      { name: 'kpiLabel', label: 'KPI label', kind: 'text', wide: true },
+      { name: 'before', label: 'Before', kind: 'text' },
+      { name: 'after', label: 'After', kind: 'text' },
+      { name: 'delta', label: 'Change', kind: 'text', help: 'For example: +800%.' },
+      { name: 'period', label: 'Period', kind: 'text', help: 'For example: in 3 months.' },
+      { name: 'c1', label: 'Colour 1', kind: 'color' },
+      { name: 'c2', label: 'Colour 2', kind: 'color' },
+      SUMMARY, STATS, POINTS, SORT, HIDDEN,
+    ],
+  },
+  {
+    key: 'solutions', table: 'solutions', label: 'Solutions', singular: 'solution',
+    icon: 'rocket', titleField: 'title', slugField: 'slug', idPrefix: 'sol-',
+    subtitleField: 'short',
+    revalidate: ['/', '/solutions', '/solutions/:slug'],
+    fields: [
+      { name: 'title', label: 'Title', kind: 'text', required: true },
+      { name: 'slug', label: 'Slug', kind: 'text', required: true },
+      { name: 'eyebrow', label: 'Eyebrow', kind: 'text' },
+      { name: 'badge', label: 'Badge', kind: 'text', help: 'For example: +45% AOV.' },
+      { name: 'icon', label: 'Icon', kind: 'text' },
+      { name: 'tone', label: 'Tone', kind: 'color' },
+      { name: 'short', label: 'Short', kind: 'text', wide: true },
+      SUMMARY, STATS, POINTS, SORT, HIDDEN,
+    ],
+  },
+  {
+    key: 'goals', table: 'goals', label: 'Goals', singular: 'goal',
+    icon: 'target', titleField: 'title', slugField: 'slug', idPrefix: 'goal-',
+    subtitleField: 'short',
+    revalidate: ['/', '/goals', '/goals/:slug'],
+    fields: [
+      { name: 'title', label: 'Title', kind: 'text', required: true },
+      { name: 'slug', label: 'Slug', kind: 'text', required: true },
+      { name: 'eyebrow', label: 'Eyebrow', kind: 'text' },
+      { name: 'metric', label: 'Metric', kind: 'text', help: 'The big number, for example: +45%.' },
+      { name: 'metricLabel', label: 'Metric label', kind: 'text' },
+      { name: 'icon', label: 'Icon', kind: 'text' },
+      { name: 'tone', label: 'Tone', kind: 'color' },
+      { name: 'short', label: 'Short', kind: 'text', wide: true },
+      SUMMARY, STATS, POINTS, SORT, HIDDEN,
+    ],
+  },
+  {
+    key: 'testimonials', table: 'testimonials', label: 'Testimonials', singular: 'testimonial',
+    icon: 'quote', titleField: 'name', idPrefix: 'rev-',
+    subtitleField: 'role',
+    revalidate: ['/'],
+    fields: [
+      { name: 'name', label: 'Name', kind: 'text', required: true },
+      { name: 'role', label: 'Role', kind: 'text', help: 'Shown under the name.' },
+      { name: 'initials', label: 'Initials', kind: 'text' },
+      { name: 'tone', label: 'Tone', kind: 'color' },
+      { name: 'quote', label: 'Quote', kind: 'textarea', required: true, wide: true },
+      SORT, HIDDEN,
+    ],
+  },
+  {
+    key: 'projects', table: 'projects', label: 'Projects', singular: 'project',
+    icon: 'bag', titleField: 'title', slugField: 'slug', idPrefix: 'p-',
+    subtitleField: 'short',
+    revalidate: ['/', '/work', '/work/:slug'],
+    notice:
+      'The public site serves projects from src/data/site.json, not this table. getProjects() in lib/content.ts returns the bundled seed because each project is joined to a screenshot in public/shots and a theme in BeforeAfter.tsx that ship with the code. Edits here are saved, but will not reach the live site until that function is switched to read the database.',
+    fields: [
+      { name: 'title', label: 'Title', kind: 'text', required: true },
+      { name: 'slug', label: 'Slug', kind: 'text', required: true },
+      { name: 'badge', label: 'Badge', kind: 'text', help: 'Category shown above the title.' },
+      { name: 'url', label: 'Live URL', kind: 'text' },
+      { name: 'before_url', label: 'Previous site URL', kind: 'text', help: 'Optional. Captured for the before and after comparison.' },
+      { name: 'accent', label: 'Accent', kind: 'color' },
+      { name: 'theme', label: 'Theme', kind: 'select', options: ['montre', 'beauty', 'clinic'], help: 'Drives the mock frame when no screenshot exists.' },
+      { name: 'short', label: 'Short', kind: 'text', wide: true },
+      SUMMARY, TAGLINE, POINTS, SORT, HIDDEN,
+    ],
+  },
+];
+
+export const entityByKey = (key: string) => ENTITIES.find((e) => e.key === key);
+
+/** jsonb columns need parsing on the way in and stringifying on the way out. */
+export const isJsonField = (f: Field) => f.kind === 'lines' || f.kind === 'pairs';

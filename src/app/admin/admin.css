@@ -381,3 +381,70 @@
 .admin-shell{ overflow-x:hidden; }
 .admin-main, .admin-canvas, .admin-body, .admin-detail-main{ min-width:0; }
 .admin-table-wrap{ max-width:100%; }
+
+/* =========================================================
+   CMS — forms, visibility toggle, destructive confirm
+   ========================================================= */
+.admin-form-grid{ display:grid; gap:14px; }
+@media (min-width:820px){ .admin-form-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+.admin-form-field.is-wide{ grid-column:1 / -1; }
+
+.admin-form-field label{
+  display:block; font-size:12.5px; font-weight:500; color:var(--ink-2); margin-bottom:5px;
+}
+.admin-form-field label span{ color:var(--brand); }
+.admin-form-field input[type="text"],
+.admin-form-field input[type="number"],
+.admin-form-field textarea,
+.admin-form-field select{
+  width:100%; padding:10px 12px; font-size:15px; font-family:inherit; color:var(--ink);
+  background:#fff; border:1px solid var(--line); border-radius:12px;
+  transition:border-color .2s var(--ease), box-shadow .2s var(--ease);
+}
+.admin-form-field input:focus,
+.admin-form-field textarea:focus,
+.admin-form-field select:focus{
+  outline:none; border-color:var(--brand); box-shadow:0 0 0 4px rgba(59,130,246,.12);
+}
+.admin-form-field input:disabled{ background:var(--soft); color:var(--muted); }
+/* the one-per-line formats line up only in a monospace face */
+.admin-mono{ font-family:'JetBrains Mono',ui-monospace,monospace !important; font-size:13px !important; line-height:1.55; }
+
+.admin-help{ margin-top:5px; font-size:11.5px; color:var(--muted); line-height:1.45; }
+
+.admin-check{ display:flex; align-items:center; gap:9px; min-height:40px; cursor:pointer; }
+.admin-check input{ width:17px; height:17px; accent-color:var(--brand); }
+.admin-check span{ font-size:13.5px; font-weight:500; color:var(--ink-2); }
+
+.admin-form-foot{
+  display:flex; justify-content:flex-end; gap:10px;
+  margin-top:18px; padding-top:16px; border-top:1px solid var(--line);
+}
+
+/* ---------- publish / hide ---------- */
+.admin-toggle{
+  display:inline-flex; align-items:center; gap:6px;
+  padding:5px 10px; min-height:32px; border-radius:999px; cursor:pointer;
+  background:#ECFDF3; border:1px solid #CBEFD9; color:#15803D;
+  font-size:12px; font-weight:600;
+  transition:background .2s var(--ease), border-color .2s, color .2s;
+}
+.admin-toggle svg{ width:14px; height:14px; }
+.admin-toggle:hover{ background:#D6F5E2; }
+.admin-toggle.is-hidden{ background:var(--soft); border-color:var(--line); color:var(--muted); }
+.admin-toggle.is-hidden:hover{ background:#EEF2F8; color:var(--ink-2); }
+.admin-toggle:disabled{ opacity:.6; cursor:default; }
+
+/* ---------- typed delete confirmation ---------- */
+.admin-confirm p{ font-size:12.5px; color:var(--ink-2); line-height:1.5; }
+.admin-confirm em{ font-style:normal; font-weight:600; }
+.admin-confirm-row{ display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:9px; }
+.admin-confirm-row input{
+  flex:1 1 130px; min-width:0; padding:8px 11px; font-size:14px; font-family:inherit;
+  background:#fff; border:1px solid var(--line); border-radius:10px;
+}
+.admin-confirm-row input:focus{ outline:none; border-color:#E5484D; box-shadow:0 0 0 4px rgba(229,72,77,.1); }
+
+/* the table needs a min-width to stay readable; min-width:0 on the ancestors
+   keeps that width scrolling inside the wrapper instead of the whole page */
+.admin-table td span.admin-muted{ display:block; margin-top:2px; font-size:11.5px; }
