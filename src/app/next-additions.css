@@ -277,3 +277,50 @@
   .node header{ font-size: 9.4px; }
   .node-value{ font-size: 14px; }
 }
+
+/* =========================================================
+   Platform row — brand marks instead of chips
+   ---------------------------------------------------------
+   Identical bordered pills read as tags; a logo row reads as real tools.
+   Marks keep their own brand colour, the name sits beside them in the site's
+   ink, and nothing has a border or a background of its own.
+   ========================================================= */
+.platform-row{
+  display: flex; flex-wrap: wrap; justify-content: center;
+  align-items: center; gap: 10px 26px;
+}
+.platform-row li{
+  display: inline-flex; align-items: center; gap: 8px;
+  opacity: .82;
+  transition: opacity .25s var(--ease), transform .25s var(--ease);
+}
+.platform-row li:hover{ opacity: 1; transform: translateY(-1px); }
+
+.platform-mark{ display: grid; place-items: center; flex: none; }
+.platform-mark svg{ width: 19px; height: 19px; display: block; }
+
+.platform-name{
+  font-size: 14.5px; font-weight: 600; letter-spacing: -.018em;
+  color: var(--ink); white-space: nowrap;
+}
+
+/* Narrow phones: the marks alone. Six logos with names beside them need
+   about 560px, so below that the row either scrolls — which looks truncated
+   rather than compact — or sheds the names. The names go: a logo strip is
+   legible on its own, and the label above already says what it is. */
+@media (max-width:559px){
+  .platform-row{ flex-wrap: nowrap; justify-content: center; gap: clamp(14px, 5vw, 24px); }
+  .platform-row li{ flex: 0 0 auto; gap: 0; }
+  .platform-name{
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip-path: inset(50%); white-space: nowrap;   /* still read aloud */
+  }
+  .platform-mark svg{ width: 20px; height: 20px; }
+}
+
+/* Larger phones and small tablets: names fit, just tighter. */
+@media (min-width:560px) and (max-width:767px){
+  .platform-row{ gap: 8px 16px; }
+  .platform-mark svg{ width: 16px; height: 16px; }
+  .platform-name{ font-size: 12.5px; }
+}

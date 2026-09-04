@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import * as React from 'react';
 import { Icon } from './Icon';
 import { Reveal } from './Reveal';
+import { PlatformRow } from './PlatformRow';
 import type { HeroNode } from '@/lib/types';
 
 /** Keeps the H1 on exactly one line whatever font ends up loading. */
@@ -190,7 +191,7 @@ export function Hero({ nodes, stats, platforms }: { nodes: HeroNode[]; stats: [s
 
         <Reveal className="hero-logos" delay={0.22}>
           <p className="logo-label">Platforms we automate</p>
-          <ul className="logo-row">{platforms.map((p) => <li key={p}>{p}</li>)}</ul>
+          <PlatformRow platforms={platforms} />
         </Reveal>
       </div>
     </section>
