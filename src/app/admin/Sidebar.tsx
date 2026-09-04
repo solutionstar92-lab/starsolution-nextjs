@@ -5,18 +5,18 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Icon } from '@/components/Icon';
 import { AdminNavLink } from './AdminNavLink';
-import { ENTITIES } from '@/lib/admin/entities';
+import { entityGroups } from '@/lib/admin/entities';
 import { signOut } from './auth-actions';
 
 const NAV = [
   { group: 'Overview', items: [{ href: '/admin', label: 'Dashboard', icon: 'chart' }] },
   { group: 'Enquiries', items: [{ href: '/admin/leads', label: 'Leads', icon: 'mail' }] },
-  {
-    group: 'Content',
-    // Straight from the CMS registry, so a new content type appears here the
-    // moment it is declared rather than needing a second edit.
-    items: ENTITIES.map((e) => ({ href: `/admin/${e.key}`, label: e.label, icon: e.icon })),
-  },
+  // Straight from the CMS registry, grouped by each entity's `group`, so a new
+  // table appears in the right section the moment it is declared.
+  ...entityGroups().map(({ group, items }) => ({
+    group,
+    items: items.map((e) => ({ href: `/admin/${e.key}`, label: e.label, icon: e.icon })),
+  })),
 ];
 
 function initialsOf(name: string, email: string) {

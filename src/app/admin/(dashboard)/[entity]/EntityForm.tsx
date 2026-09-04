@@ -102,6 +102,8 @@ export function EntityForm({
       )}
 
       <div className="admin-form-grid">
+        {/* Nothing to show when the database assigns the key itself. */}
+        {!entity.generatedId && (
         <div className="admin-form-field">
           <label htmlFor="f-id">Id</label>
           {mode === 'create' ? (
@@ -118,6 +120,7 @@ export function EntityForm({
               : 'Primary keys are not editable — delete and recreate to change one.'}
           </p>
         </div>
+        )}
 
         {entity.fields.map((field) => (
           <div key={field.name} className={`admin-form-field${field.wide ? ' is-wide' : ''}`}>

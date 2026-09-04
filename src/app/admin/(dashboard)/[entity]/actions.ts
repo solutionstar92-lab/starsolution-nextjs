@@ -79,21 +79,33 @@ export async function createRow(_prev: CmsState, formData: FormData): Promise<Cm
   const invalid = validate(entity, row);
   if (invalid) return { error: invalid };
 
-  // An explicit id wins; otherwise derive one from the slug or title so the
-  // text primary keys stay readable (sys-accounting-system, not a uuid).
-  const typedId = String(formData.get('id') ?? '').trim();
-  const basis = String(row[entity.slugField ?? entity.titleField] ?? '');
-  const id = typedId || `${entity.idPrefix}${slugify(basis)}`;
-  if (!id || id === entity.idPrefix) return { error: 'Could not derive an id. Enter one explicitly.' };
+  /* Tables with a generated primary key must not be sent one — a uuid column
+     rejects the readable text id the content tables use. Everywhere else an
+     explicit id wins, and otherwise one is derived from the slug or title so
+     the keys stay legible (sys-accounting-system, not a uuid). */
+  let id: string | null = null;
+  if (!entity.generatedId) {
+    const typedId = String(formData.get('id') ?? '').trim();
+    const basis = String(row[entity.slugField ?? entity.titleField] ?? '');
+    id = typedId || `${entity.idPrefix}${slugify(basis)}`;
+    if (!id || id === entity.idPrefix) {
+      return { error: 'Could not derive an id. Enter one explicitly.' };
+    }
+  }
 
-  const { error } = await supabase.from(entity.table).insert({ ...row, id });
+  const { data: created, error } = await supabase
+    .from(entity.table)
+    .insert(id ? { ...row, id } : row)
+    .select('id')
+    .maybeSingle();
   if (error) {
     if (error.code === '23505') return { error: 'That id or slug is already taken.' };
     return { error: `Could not create the ${entity.singular}: ${error.message}` };
   }
 
   refresh(entity, row.slug as string | undefined);
-  redirect(`/admin/${entity.key}?created=${encodeURIComponent(id)}`);
+  const newId = id ?? String((created as { id?: unknown } | null)?.id ?? '');
+  redirect(`/admin/${entity.key}?created=${encodeURIComponent(newId)}`);
 }
 
 export async function updateRow(_prev: CmsState, formData: FormData): Promise<CmsState> {

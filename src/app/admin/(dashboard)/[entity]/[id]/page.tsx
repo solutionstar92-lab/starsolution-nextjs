@@ -30,6 +30,7 @@ export default async function EditEntityPage({
   const { data } = await supabase.from(entity.table).select('*').eq('id', id).maybeSingle();
   if (!data) notFound();
 
+  const hideable = entity.hideable !== false;
   const row = data as Record<string, unknown>;
   const title = String(row[entity.titleField] ?? id);
   const slug = entity.slugField ? String(row.slug ?? '') : null;
@@ -61,6 +62,7 @@ export default async function EditEntityPage({
           </div>
 
           <aside className="admin-detail-side">
+            {hideable && (
             <div className="admin-card">
               <div className="admin-card-head"><h2>Visibility</h2></div>
               <VisibilityToggle
@@ -87,6 +89,7 @@ export default async function EditEntityPage({
                 </p>
               )}
             </div>
+            )}
 
             <div className="admin-card admin-card-danger">
               <div className="admin-card-head"><h2>Delete</h2></div>

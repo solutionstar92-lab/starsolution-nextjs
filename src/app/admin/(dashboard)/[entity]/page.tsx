@@ -29,11 +29,15 @@ export default async function EntityListPage({
   const entity = entityByKey(params.entity);
   if (!entity) notFound();
 
+  const hideable = entity.hideable !== false;
+
   const supabase = rscSupabase();
   const { data, error } = await supabase
     .from(entity.table)
     .select('*')
-    .order('sort_order', { ascending: true });
+    // Not every table has sort_order; ordering by a column that does not
+    // exist fails the whole query with 42703.
+    .order(entity.orderBy ?? 'sort_order', { ascending: true });
 
   const rows = (data ?? []) as Record<string, unknown>[];
   const live = rows.filter((r) => !r.hidden).length;
@@ -45,7 +49,9 @@ export default async function EntityListPage({
         subtitle={
           error
             ? 'Could not load this table.'
-            : `${rows.length} row${rows.length === 1 ? '' : 's'}, ${live} live on the site.`
+            : hideable
+              ? `${rows.length} row${rows.length === 1 ? '' : 's'}, ${live} live on the site.`
+              : `${rows.length} row${rows.length === 1 ? '' : 's'}.`
         }
         action={
           <Link href={`/admin/${entity.key}/new`} className="btn btn-primary btn-sm">
@@ -78,9 +84,9 @@ export default async function EntityListPage({
               <thead>
                 <tr>
                   <th>{entity.titleField === 'name' ? 'Name' : 'Title'}</th>
-                  <th>Slug</th>
-                  <th>Order</th>
-                  <th>Visibility</th>
+                  {entity.slugField && <th>Slug</th>}
+                  {hideable && <th>Order</th>}
+                  {hideable && <th>Visibility</th>}
                   <th className="admin-table-end">Edit</th>
                 </tr>
               </thead>
@@ -97,18 +103,22 @@ export default async function EntityListPage({
                         </Link>
                         {subtitle ? <span className="admin-muted">{String(subtitle)}</span> : null}
                       </td>
-                      <td className="admin-muted">
-                        {entity.slugField ? String(row.slug ?? '—') : '—'}
-                      </td>
-                      <td className="admin-muted">{String(row.sort_order ?? 0)}</td>
-                      <td>
-                        <VisibilityToggle
-                          entityKey={entity.key}
-                          id={id}
-                          slug={entity.slugField ? String(row.slug ?? '') : null}
-                          hidden={Boolean(row.hidden)}
-                        />
-                      </td>
+                      {entity.slugField && (
+                        <td className="admin-muted">{String(row.slug ?? '—')}</td>
+                      )}
+                      {hideable && (
+                        <td className="admin-muted">{String(row.sort_order ?? 0)}</td>
+                      )}
+                      {hideable && (
+                        <td>
+                          <VisibilityToggle
+                            entityKey={entity.key}
+                            id={id}
+                            slug={entity.slugField ? String(row.slug ?? '') : null}
+                            hidden={Boolean(row.hidden)}
+                          />
+                        </td>
+                      )}
                       <td className="admin-table-end">
                         <Link href={`/admin/${entity.key}/${encodeURIComponent(id)}`} className="admin-link">
                           Edit
