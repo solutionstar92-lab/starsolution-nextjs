@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Icon } from './Icon';
+import { LogoStatic } from './ui/LogoStatic';
 import { site } from '@/lib/content';
 
 export function SiteFooter() {
@@ -9,9 +10,8 @@ export function SiteFooter() {
       <div className="footer-shell">
         <div className="footer-grid">
           <div className="footer-brand">
-            <Link href="/" className="brand" aria-label="StarSolution.ai home">
-              <span className="brand-mark"><Icon name="star" className="h-[18px] w-[18px]" /></span>
-              <span className="brand-word">StarSolution<span className="text-brand">.ai</span></span>
+            <Link href="/" className="brand" aria-label="Star Solution — home">
+              <LogoStatic size={34} showTagline={false} variant="dark" />
             </Link>
             <p>Automate your business, grow your revenue.</p>
             <Link href="/contact" className="btn btn-primary btn-sm mt-5">Get free audit</Link>

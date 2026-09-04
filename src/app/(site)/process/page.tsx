@@ -15,7 +15,7 @@ export default function ProcessPage() {
         lede="Most clients are live in under 14 days. Here is exactly how it runs."
         crumbs={[{ href: '/', label: 'Home' }, { label: 'How it works' }]}
       />
-      <Process steps={site.process} log={site.nightLog} stats={site.nightStats} />
+      <Process steps={site.process} log={site.nightLog} stats={site.nightStats} bare />
       <CTA />
     </>
   );

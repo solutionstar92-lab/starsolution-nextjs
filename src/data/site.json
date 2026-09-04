@@ -229,7 +229,7 @@
     {
       "id": "goal-ops",
       "slug": "automate-operations",
-      "icon": "package",
+      "icon": "bolt",
       "metric": "20hrs",
       "metricLabel": "saved every week",
       "tone": "#7C6CFF",
@@ -261,7 +261,7 @@
     {
       "id": "goal-support",
       "slug": "improve-customer-support",
-      "icon": "headset",
+      "icon": "chat",
       "metric": "80%",
       "metricLabel": "of questions handled",
       "tone": "#38BDF8",
@@ -293,7 +293,7 @@
     {
       "id": "goal-decisions",
       "slug": "make-better-decisions",
-      "icon": "chart",
+      "icon": "gauge",
       "metric": "4.2x",
       "metricLabel": "ROAS on managed ads",
       "tone": "#34D399",
@@ -1120,7 +1120,8 @@
         "Product filtering (Automatic, Chronograph, Diver, Dress)",
         "Speed and conversion rate optimization (CRO)",
         "Integrated automated order fulfillment and tracking"
-      ]
+      ],
+      "hidden": true
     },
     {
       "id": "p-beauty",
@@ -1137,7 +1138,8 @@
         "Catalog and product variant organization",
         "Mobile-first navigation and high-speed performance",
         "Sahel Summer Collection promo campaign setup"
-      ]
+      ],
+      "beforeUrl": "https://gm5cog3vmqsl6j9m-48454893719.shopifypreview.com"
     },
     {
       "id": "p-hollywood",
@@ -1234,8 +1236,8 @@
   ],
   "heroNodes": [
     {
-      "icon": "bag",
-      "tone": "#34D399",
+      "icon": "shopify",
+      "tone": "#7AB55C",
       "source": "Shopify store",
       "label": "Orders today",
       "value": "342",
@@ -1243,8 +1245,8 @@
       "spark": "0,20 15,18 30,14 45,15 60,9 75,6 90,2"
     },
     {
-      "icon": "eye",
-      "tone": "#3B82F6",
+      "icon": "meta",
+      "tone": "#0467DF",
       "source": "Store traffic",
       "label": "Visitors today",
       "value": "1,892",
@@ -1358,7 +1360,7 @@
     "email": "info@starsolution.ai",
     "phone": "+20 123 456 7890",
     "whatsapp": "https://wa.me/+201234567890",
-    "locations": "USA & UAE",
+    "locations": "Cairo, Egypt",
     "offer": "STAR15"
   }
 }

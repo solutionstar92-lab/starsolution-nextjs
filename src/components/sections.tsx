@@ -2,7 +2,6 @@ import Link from 'next/link';
 import { Icon } from './Icon';
 import { Reveal } from './Reveal';
 import { Rail } from './Rail';
-import { RealResults } from './RealResults';
 import { ProjectCard } from './ProjectCard';
 import type { Entry, Project, Testimonial } from '@/lib/types';
 
@@ -87,21 +86,32 @@ export function Solutions({ solutions }: { solutions: Entry[] }) {
 }
 
 /* ---------------- Process ---------------- */
-export function Process({ steps, log, stats }: {
+export function Process({ steps, log, stats, bare = false }: {
   steps: { num: string; icon: string; title: string; text: string }[];
   log: { time: string; title: string; text: string }[];
   stats: [string, string][];
+  /**
+   * Drop the section head. /process already states "Simple process — Three
+   * steps to automated growth" in its PageHead, so rendering it again here put
+   * the same eyebrow and the same H1-sized title twice, one directly under the
+   * other.
+   */
+  bare?: boolean;
 }) {
   return (
-    <section id="how" className="section" aria-labelledby="howTitle">
+    <section id="how" className="section" aria-labelledby={bare ? undefined : 'howTitle'}>
       <div className="mx-auto max-w-shell px-5 lg:px-8">
-        <SectionHead id="howTitle" eyebrow="Simple process" title="Three steps to automated growth" sub="Most clients are live in under 14 days." />
+        {!bare && (
+          <SectionHead id="howTitle" eyebrow="Simple process" title="Three steps to automated growth" sub="Most clients are live in under 14 days." />
+        )}
+        {/* With the section head suppressed there is no h2 between the page's
+            h1 and these, so they step up to keep the outline contiguous. */}
         <ol className="steps">
           {steps.map((s, i) => (
             <Reveal as="li" key={s.num} className="step" delay={i * 0.08}>
               <p className="step-num">{s.num}</p>
               <span className="step-icon"><Icon name={s.icon} /></span>
-              <h3>{s.title}</h3>
+              {bare ? <h2>{s.title}</h2> : <h3>{s.title}</h3>}
               <p>{s.text}</p>
             </Reveal>
           ))}
@@ -110,7 +120,9 @@ export function Process({ steps, log, stats }: {
         <Reveal className="sleep-panel">
           <div className="sleep-head">
             <p className="eyebrow eyebrow-invert"><span className="eyebrow-dot" aria-hidden="true" /> While you sleep</p>
-            <h3>Your automations don&apos;t clock out</h3>
+            {bare
+              ? <h2>Your automations don&apos;t clock out</h2>
+              : <h3>Your automations don&apos;t clock out</h3>}
             <p>One night, one account.</p>
           </div>
           <ol className="sleep-log">
@@ -186,8 +198,6 @@ export function Work({ projects, systems, automations }: { projects: Project[]; 
             <ProjectCard key={p.id} project={p} delay={i * 0.08} heading="h4" />
           ))}
         </div>
-
-        <RealResults projects={projects} />
 
         <h3 className="group-label">Custom systems and dashboards</h3>
         <ul className="system-grid">

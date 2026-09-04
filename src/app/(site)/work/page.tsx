@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { PageHead } from '@/components/PageHead';
 import { Reveal } from '@/components/Reveal';
 import { Icon } from '@/components/Icon';
-import { RealResults } from '@/components/RealResults';
 import { ProjectCard } from '@/components/ProjectCard';
 import { autoIcon, autoTone } from '@/components/sections';
 import { getProjects, getSystems, getAutomations } from '@/lib/content';
@@ -28,8 +27,6 @@ export default async function WorkIndexPage() {
               <ProjectCard key={p.id} project={p} delay={i * 0.08} heading="h3" />
             ))}
           </div>
-
-          <RealResults projects={projects} />
 
           <h2 className="group-label">Custom systems and dashboards</h2>
           <ul className="system-grid">

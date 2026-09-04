@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
 import * as React from 'react';
 import { Icon } from './Icon';
+import { LogoStatic } from './ui/LogoStatic';
 
 const NAV = [
   { href: '/solutions', label: 'Solutions' },
@@ -16,7 +17,8 @@ const NAV = [
   { href: '/about', label: 'About' },
 ];
 
-export function SiteHeader() {
+/** `whatsapp` is passed in rather than imported — see StickyBar. */
+export function SiteHeader({ whatsapp }: { whatsapp: string }) {
   const [open, setOpen] = React.useState(false);
   const [stuck, setStuck] = React.useState(false);
   const pathname = usePathname();
@@ -48,9 +50,12 @@ export function SiteHeader() {
 
       <header id="siteHeader" className={`site-header${stuck ? ' is-stuck' : ''}`}>
         <div className="header-shell">
-          <Link href="/" className="brand" aria-label="StarSolution.ai home">
-            <span className="brand-mark"><Icon name="star" className="h-[18px] w-[18px]" /></span>
-            <span className="brand-word">StarSolution<span className="text-brand">.ai</span></span>
+          {/* aria-label rather than bare content: the link needs to say where
+              it goes, and "Star Solution" alone does not. It opens with the
+              visible wordmark so it still satisfies Label in Name. The tagline
+              is off — at 34px it would be 5px of letterspaced caps. */}
+          <Link href="/" className="brand" aria-label="Star Solution — home">
+            <LogoStatic size={34} showTagline={false} />
           </Link>
 
           <nav className="desktop-nav" aria-label="Primary">
@@ -103,7 +108,7 @@ export function SiteHeader() {
               transition={{ duration: 0.32, ease: [0.22, 0.75, 0.24, 1] }}
             >
               <div className="flex items-center justify-between px-5 py-4">
-                <span className="brand-word text-[17px]">StarSolution<span className="text-brand">.ai</span></span>
+                <LogoStatic size={28} showTagline={false} />
                 <button type="button" className="nav-toggle" aria-label="Close menu" onClick={() => setOpen(false)}>
                   <Icon name="close" className="h-6 w-6" />
                 </button>
@@ -121,7 +126,7 @@ export function SiteHeader() {
 
               <div className="mt-auto grid gap-3 px-5 pb-8">
                 <Link href="/contact" className="btn btn-primary btn-lg w-full">Get free audit</Link>
-                <a href="https://wa.me/+201234567890" className="btn btn-ghost btn-lg w-full">
+                <a href={whatsapp} className="btn btn-ghost btn-lg w-full">
                   <Icon name="whatsapp" className="h-5 w-5 text-[#25D366]" /> WhatsApp us
                 </a>
               </div>

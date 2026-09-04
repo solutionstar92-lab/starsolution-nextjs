@@ -1,6 +1,7 @@
 import { SiteHeader } from '@/components/SiteHeader';
 import { SiteFooter } from '@/components/SiteFooter';
 import { NotFoundBody } from '@/components/NotFoundBody';
+import { site } from '@/lib/content';
 
 /**
  * The boundary for a URL that matches no route at all.
@@ -12,7 +13,7 @@ import { NotFoundBody } from '@/components/NotFoundBody';
 export default function RootNotFound() {
   return (
     <>
-      <SiteHeader />
+      <SiteHeader whatsapp={site.contact.whatsapp} />
       <main id="main"><NotFoundBody /></main>
       <SiteFooter />
     </>

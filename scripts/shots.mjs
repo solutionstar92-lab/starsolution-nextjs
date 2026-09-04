@@ -21,17 +21,27 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const outDir = path.join(root, 'public', 'shots');
 
-/** Wide enough to render the desktop layout, narrow enough to stay legible
- *  once it is scaled down into the card. */
-const VIEWPORT = { width: 1200, height: 900 };
 /**
- * 1, not 2. These pages are 3000-9000px tall, so a 2x capture lands at 30-40
- * megapixels — the browser needs seconds to rasterise one, and the comparison
- * frame sits there blank until it does. At 1x a capture is still ~1200px wide
- * against a frame that is 420px at its widest, so there is nothing to gain
- * from the extra sampling.
+ * A phone, not a desktop.
+ *
+ * The comparison frames are ~260-350px wide wherever they appear, so a
+ * 1200px-wide desktop capture arrived scaled to a quarter size — you saw the
+ * top-left corner of a page and had to guess the rest. At 390px the capture is
+ * already the width of the frame, so the whole layout reads, and it is the
+ * layout most of these stores are actually visited in.
  */
-const SCALE = 1;
+const VIEWPORT = { width: 390, height: 844 };
+const USER_AGENT =
+  'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15' +
+  ' (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1';
+/**
+ * 2, now that the viewport is a phone. At 1x a 390px-wide capture would be
+ * displayed at roughly 1:1 in CSS pixels and land soft on every retina screen.
+ * A 390-wide page at 2x is still fewer pixels than the 1200-wide desktop
+ * capture it replaces, so nothing gets slower. The manifest keeps CSS
+ * dimensions — see the /SCALE on the trimmed height below.
+ */
+const SCALE = 2;
 
 /** Storefronts lazy-load below the fold, so walk the page before shooting. */
 async function scrollThrough(page) {
@@ -58,19 +68,51 @@ async function scrollThrough(page) {
  * Anything pinned to the viewport — cookie bars, chat bubbles, back-to-top —
  * is painted once over the whole length of a full-page capture. Drop them.
  * Headers get un-pinned rather than removed so the page still reads correctly.
+ *
+ * The size test on that exemption is load-bearing. Matching "nav" anywhere in a
+ * class name also matches a closed off-canvas drawer — Beauty Bar's theme calls
+ * its one `mobile-nav-wrapper` — and those are a full viewport tall. Un-pinning
+ * one drops 844px of empty white into the flow above the fold, which is exactly
+ * what it did: the capture came back as a header, then most of a screen of
+ * nothing. A header is short and at the top; anything else pinned goes.
  */
 async function dismissOverlays(page) {
   await page.evaluate(() => {
-    const isHeader = (el) =>
+    const named = (el) =>
       el.tagName === 'HEADER' || /header|nav|announcement|topbar/i.test(el.className || '');
+    const headerShaped = (r) => r.height <= innerHeight * 0.4 && r.top < innerHeight * 0.5;
 
     for (const el of document.querySelectorAll('body *')) {
       const s = getComputedStyle(el);
       if (s.position !== 'fixed' && s.position !== 'sticky') continue;
       const r = el.getBoundingClientRect();
       if (r.width < 2 || r.height < 2) continue;
-      if (isHeader(el)) { el.style.position = 'relative'; continue; }
+      if (named(el) && headerShaped(r)) { el.style.position = 'relative'; continue; }
       el.remove();
+    }
+  });
+}
+
+/**
+ * Swap any <video> for its poster frame.
+ *
+ * A hero video is a blank box in a screenshot — headless Chromium will not
+ * decode one, and autoplay never starts. Themes that use one nearly always give
+ * it a poster, which is the frame a real visitor sees first anyway.
+ */
+async function freezeVideo(page) {
+  await page.evaluate(() => {
+    for (const v of document.querySelectorAll('video')) {
+      const poster = v.getAttribute('poster');
+      if (!poster) continue;
+      const img = document.createElement('img');
+      img.src = poster;
+      for (const k of ['width', 'height']) {
+        const val = getComputedStyle(v)[k];
+        if (val) img.style[k] = val;
+      }
+      img.style.objectFit = getComputedStyle(v).objectFit || 'cover';
+      v.replaceWith(img);
     }
   });
 }
@@ -225,6 +267,8 @@ const site = JSON.parse(await readFile(path.join(root, 'src', 'data', 'site.json
 // dated-web mock — worth it whenever the old one is still online.
 const targets = site.projects
   .filter((p) => p.url)
+  // a hidden project is off the site; no need to spend a capture on it
+  .filter((p) => !p.hidden)
   .filter((p) => !filter.length || filter.some((f) => p.slug.includes(f)))
   .flatMap((p) => [
     { slug: p.slug, url: p.url },
@@ -245,9 +289,12 @@ for (const project of targets) {
   const page = await browser.newPage({
     viewport: VIEWPORT,
     deviceScaleFactor: SCALE,
+    // isMobile/hasTouch matter as much as the width: a Shopify theme picks its
+    // mobile nav and grid off the touch capability, not the viewport alone
+    isMobile: true,
+    hasTouch: true,
     // a real UA: some themes serve a stripped page to headless clients
-    userAgent:
-      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+    userAgent: USER_AGENT,
   });
 
   try {
@@ -263,7 +310,8 @@ for (const project of targets) {
     await dismissOverlays(page);
     await scrollThrough(page);
     await dismissOverlays(page);
-    await page.waitForTimeout(600);
+    await freezeVideo(page);
+    await page.waitForTimeout(900);
 
     const scrollH = await page.evaluate(() => document.documentElement.scrollHeight);
     const domHeight = Math.min(await contentBottom(page), scrollH);

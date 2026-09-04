@@ -8,7 +8,15 @@ import { Reveal } from './Reveal';
 import { PlatformRow } from './PlatformRow';
 import type { HeroNode } from '@/lib/types';
 
-/** Keeps the H1 on exactly one line whatever font ends up loading. */
+/**
+ * Keeps the H1 on exactly one line whatever font ends up loading.
+ *
+ * Tablet and up only. On a phone, one line of "More orders. More revenue. Less
+ * work." only fits at ~21px — smaller than the body copy beneath it, so it
+ * reads as a caption rather than a headline. Below 640px the title wraps onto
+ * two lines and CSS sizes it, so the fit pass bows out and clears whatever
+ * inline size it left behind on the way down from a wider layout.
+ */
 function useHeadlineFit(ref: React.RefObject<HTMLHeadingElement>) {
   React.useEffect(() => {
     const el = ref.current;
@@ -17,6 +25,7 @@ function useHeadlineFit(ref: React.RefObject<HTMLHeadingElement>) {
     const fit = () => {
       const parent = el.parentElement;
       if (!parent || !parent.clientWidth) return;
+      if (!window.matchMedia('(min-width:640px)').matches) { el.style.fontSize = ''; return; }
       el.style.fontSize = '100px';
       const natural = el.scrollWidth;
       if (!natural) return;
@@ -118,8 +127,17 @@ export function Hero({ nodes, stats, platforms }: { nodes: HeroNode[]; stats: [s
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: [0.16, 0.84, 0.3, 1] }}
           >
-            More orders. More revenue. <span className="grad-text">Less work.</span>
+            <span className="hero-title-line">More orders. More revenue.</span>{' '}
+            <span className="grad-text">Less work.</span>
           </motion.h1>
+          <motion.p
+            className="hero-sub"
+            initial={reduce ? false : { opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.08, ease: [0.16, 0.84, 0.3, 1] }}
+          >
+            AI agents that sell, reply and report &mdash; <strong>24/7</strong>.
+          </motion.p>
         </div>
 
         <Reveal className="hero-visual">
@@ -189,7 +207,10 @@ export function Hero({ nodes, stats, platforms }: { nodes: HeroNode[]; stats: [s
           ))}
         </Reveal>
 
-        <Reveal className="hero-logos" delay={0.22}>
+        {/* y is trimmed from the default 18: .hero is overflow:hidden and this
+            is its last child, so a taller lift-in starts the block below the
+            clip — where its own reveal observer can never see it. */}
+        <Reveal className="hero-logos" delay={0.22} y={10}>
           <p className="logo-label">Platforms we automate</p>
           <PlatformRow platforms={platforms} />
         </Reveal>

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Icon } from './Icon';
 import { PageHead } from './PageHead';
 import { Reveal } from './Reveal';
+import { site } from '@/lib/content';
 import type { Entry } from '@/lib/types';
 
 export function EntryPage({
@@ -75,7 +76,7 @@ export function EntryPage({
               <h2>Start with a free audit</h2>
               <p>We analyze your store, ads and workflows and send back a written growth plan. No commitment.</p>
               <Link href="/contact" className="btn btn-primary btn-lg">Get free audit</Link>
-              <a href="https://wa.me/+201234567890" className="btn btn-ghost btn-lg mt-2 w-full">
+              <a href={site.contact.whatsapp} className="btn btn-ghost btn-lg mt-2 w-full">
                 <Icon name="whatsapp" className="h-5 w-5 text-[#25D366]" /> WhatsApp
               </a>
             </aside>

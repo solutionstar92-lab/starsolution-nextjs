@@ -12,7 +12,12 @@ const REST = 35;
 const clamp = (n: number) => Math.max(MIN, Math.min(MAX, n));
 
 /**
- * One before/after comparison.
+ * One before/after comparison — the top of a project card.
+ *
+ * It used to live in a "Real results" section of its own, below a grid of
+ * project cards that already carried the same badge, title and one-liner. The
+ * section said everything twice and put the picture a screen away from the
+ * words describing it. Now the card is the whole thing.
  *
  * The drag lives on the handle rather than on the whole frame. Grabbing the
  * picture anywhere reads better, but the "after" side is a tall capture of the
@@ -20,7 +25,7 @@ const clamp = (n: number) => Math.max(MIN, Math.min(MAX, n));
  * swallows every wheel and swipe aimed at it. The handle is a 44px column, so
  * it is still an easy target, and everywhere else stays free to scroll.
  */
-function Comparison({ project }: { project: Project }) {
+export function Comparison({ project }: { project: Project }) {
   const [pos, setPos] = React.useState(50);
   const boxRef = React.useRef<HTMLDivElement>(null);
   const dragging = React.useRef(false);
@@ -86,12 +91,15 @@ function Comparison({ project }: { project: Project }) {
   const beforeSlug = `${project.slug}-before`;
   const realBefore = hasShot(beforeSlug);
   return (
-    <figure className="rr-item">
-      <div
-        ref={boxRef}
-        className="rr-slider"
-        style={{ ['--pos' as string]: `${pos}%` }}
-      >
+    /* .rr-phone is the device shell drawn around the comparison on phones. It
+       is display:contents above 640px, so on desktop this element has no box
+       and the layout is identical to having no wrapper here. */
+    <div className="rr-phone">
+    <div
+      ref={boxRef}
+      className="rr-slider"
+      style={{ ['--pos' as string]: `${pos}%` }}
+    >
         <div className="rr-layer rr-after">
           {shot
             ? <ShotFrame slug={project.slug} title={project.title} />
@@ -129,33 +137,6 @@ function Comparison({ project }: { project: Project }) {
           onPointerCancel={() => { dragging.current = false; }}
         />
       </div>
-      <figcaption className="rr-cap">
-        <p className="meta">{project.badge}</p>
-        <p className="quote">{project.title}</p>
-        <p className="author">{project.short}</p>
-        {project.tagline && <p className="rr-tagline">{project.tagline}</p>}
-      </figcaption>
-    </figure>
-  );
-}
-
-/**
- * "Real results" — the before/after comparisons as their own section rather
- * than an ornament on a project card, so each one gets the width it needs.
- */
-export function RealResults({ projects }: { projects: Project[] }) {
-  if (!projects.length) return null;
-  return (
-    <section className="rr" aria-labelledby="rrTitle">
-      <span className="rr-divider" aria-hidden="true" />
-      <header className="rr-head">
-        <p className="eyebrow"><span className="eyebrow-dot" aria-hidden="true" /> Real results</p>
-        <h3 id="rrTitle" className="rr-title">Before &amp; After</h3>
-        <p className="rr-sub">Drag to see the site we inherited turn into the one we shipped.</p>
-      </header>
-      <div className="rr-row">
-        {projects.map((p) => <Comparison key={p.id} project={p} />)}
-      </div>
-    </section>
+    </div>
   );
 }

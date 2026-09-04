@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { Icon } from './Icon';
 import { Reveal } from './Reveal';
+import { Comparison } from './RealResults';
 import type { Project } from '@/lib/types';
 
 /**
@@ -17,6 +18,11 @@ import type { Project } from '@/lib/types';
  * we actually built. So the full write-up (the summary and the "what we did"
  * points that the detail page shows) now expands in place, and the detail page
  * link stays for anyone who wants the before/after comparison too.
+ *
+ * The before/after comparison sits at the top of the card. It used to be a
+ * separate "Real results" section underneath, which repeated this card's badge,
+ * title and one-liner verbatim under every slider — the same project written
+ * out twice, with the picture a screen away from the words.
  *
  * `heading` exists because the card sits under an `h3` group label on the home
  * page and an `h2` on `/work`; the outline has to stay legal in both.
@@ -38,6 +44,7 @@ export function ProjectCard({
 
   return (
     <Reveal as="article" className={`live-card${open ? ' is-open' : ''}`} delay={delay}>
+      <Comparison project={project} />
       <span className="live-badge">{project.badge}</span>
       <H><Link href={`/work/${project.slug}`}>{project.title}</Link></H>
       <p>{project.short}</p>
@@ -75,12 +82,15 @@ export function ProjectCard({
                 ))}
               </ul>
 
+              {/* "See the before & after" used to live here; the comparison is
+                  now at the top of this card, so the link went to the one thing
+                  the detail page still adds. */}
               <div className="live-actions">
                 <a href={project.url} target="_blank" rel="noopener noreferrer" className="live-link">
                   Visit the live site <Icon name="link" />
                 </a>
                 <Link className="live-link live-link-muted" href={`/work/${project.slug}`}>
-                  See the before &amp; after <Icon name="arrow" />
+                  Full project page <Icon name="arrow" />
                 </Link>
               </div>
             </div>
@@ -88,11 +98,10 @@ export function ProjectCard({
         )}
       </AnimatePresence>
 
-      {!open && (
-        <Link className="live-link" href={`/work/${project.slug}`}>
-          View project <Icon name="link" />
-        </Link>
-      )}
+      {/* The closed card used to carry "View project" as well as the toggle
+          above it — two links, a gap between them, both leading to the same
+          write-up. The toggle opens it in place; the title is still a link to
+          the detail page for anyone who wants the route. */}
     </Reveal>
   );
 }

@@ -60,8 +60,13 @@ export const getTestimonials = () => fromTable('testimonials', local.testimonial
  *
  * The `projects` table is still defined and seeded in `supabase/`, so it stays
  * usable for anything else that wants it; the site just no longer reads it.
+ *
+ * Still through visible(), like every other getter: this was the one that
+ * returned the seed raw, so `"hidden": true` on a project was read by nothing
+ * and the project stayed on the site — including in generateStaticParams,
+ * which built it a route.
  */
-export const getProjects = async () => local.projects;
+export const getProjects = async () => visible(local.projects);
 
 export const site = local;
 

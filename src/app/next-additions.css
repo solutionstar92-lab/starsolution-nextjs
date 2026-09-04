@@ -227,42 +227,123 @@
 }
 
 /* =========================================================
-   Phones — a smaller hero banner
+   Hero sub — what the agents actually do
+   ---------------------------------------------------------
+   The eyebrow names the category and the headline makes the promise; neither
+   says what is being sold. One line between them carries it, and it is the
+   line the banner underneath is a picture of.
+   ========================================================= */
+.hero-sub{
+  margin-inline: auto;
+  /* one line of 45 characters; the 34ch/44ch defaults broke it into three */
+  max-width: 46ch;
+}
+.hero-sub strong{
+  font-weight: 600; color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+/* =========================================================
+   Phones — the whole hero above the fold
    ---------------------------------------------------------
    The composition is unchanged: agent in the middle, four cards at the
-   corners. It was simply running at full container width, so the stage alone
-   took 315px of an 844px screen and the cards crowded the headline. Holding
-   the stage to a narrower box scales the whole thing down together — cards,
-   links and orb keep their proportions, they just take far less room.
+   corners, still reading top to bottom as headline -> what we do -> picture ->
+   call to action -> proof. It is simply held to about a third of the screen
+   instead of two thirds.
+
+   Three things bought the height back.
+
+   The stage was tall and narrow — 272px wide inside a 354px column, on a
+   640/415 frame. Landscape is the cheaper shape for it: run it edge to edge
+   and squash the frame, and the four cards come out *wider* (120px, up from
+   92) and easier to read while the block drops from 176px to ~135. Nothing
+   reflows; only the box the same composition sits in changes.
+
+   The headline was fit to one line by useHeadlineFit — ~21px on a 390px
+   screen, smaller than the body copy under it. It wraps here instead: the
+   promise on one line, the payoff on its own in the gradient.
+
+   And two lines were carrying nothing the rest of the hero doesn't already
+   say. The eyebrow ("AI automation for e-commerce brands") is the sub's
+   sentence with the verbs taken out, and "Live client dashboard" labels a
+   picture that is plainly a dashboard. Both come back at 640px, where the
+   height is free.
    ========================================================= */
 @media (max-width:639px){
-  .agent-stage{
-    max-width: 320px;
-    /* shorter than the 640/560 desktop frame: the corner cards sit closer in */
-    aspect-ratio: 640 / 470;
+  /* Bottom padding stays >= the 10px reveal offset on .hero-logos: .hero is
+     overflow:hidden, and a last child that lifts in from below the clip can
+     never be seen by its own observer, so it would sit at opacity 0 forever. */
+  .hero-shell{ gap: 4px; padding: 4px 18px 11px; }
+
+  /* Redundant against the sub and the picture respectively. */
+  .hero-copy .eyebrow{ display: none; }
+  .orbit-hint{ display: none; }
+
+  /* The one block the page repeats. Two of these three figures — "Businesses
+     scaled 150+" and "Client rating 4.9" — are in site.figures verbatim, and
+     the results section renders them a screen further down. The platform marks
+     below are not repeated anywhere, which is why they stay and this goes.
+     Delete this line to bring the row back at ~45px. */
+  .hero-proof{ display: none; }
+
+  .hero-title{
+    /* beats the nowrap the centred one-line hero sets at every width */
+    white-space: normal;
+    text-wrap: balance;
+    /* min 19px: at 320px anything larger tips "More orders. More revenue."
+       onto a third line and the hero grows back by ~20px */
+    font-size: clamp(19px, 5.6vw, 26px);
+    line-height: 1.04;
+    letter-spacing: -.038em;
   }
-  .hero-visual{ gap: 2px; }
+  /* Two deliberate lines rather than wherever the words happen to break. */
+  .hero-title-line{ display: block; }
 
-  /* Type inside the cards, stepped down with them so nothing wraps at the
-     narrower width. */
-  .node{ padding: 6px 7px 7px; border-radius: 11px; }
-  .node header{ font-size: 8.8px; gap: 4px; }
-  .node-icon{ width: 15px; height: 15px; border-radius: 5px; }
-  .node-label{ margin-top: 4px; font-size: 8.2px; }
-  .node-value{ font-size: 13px; }
-  .node-delta{ font-size: 8.2px; }
+  .hero-sub{
+    /* 34ch broke it after "report", orphaning "— 24/7." onto its own line */
+    margin-top: 3px; max-width: 46ch;
+    font-size: 12px; line-height: 1.38; text-wrap: balance;
+  }
 
-  .agent-name{ font-size: 8px; letter-spacing: .12em; }
-  .orbit-hint{ font-size: 9px; letter-spacing: .06em; }
+  /* Landscape frame, full width: shorter block, larger cards. */
+  .agent-stage{
+    max-width: none;
+    aspect-ratio: 640 / 245;
+    /* A card is ~61px whatever the stage does — its height comes from the type
+       inside it, not from the frame. Two of them stack on each side, so below
+       ~430px the ratio alone hands back less height than they need and the top
+       and bottom cards run into each other. This is that floor: two cards plus
+       a gap. Move it in step with the .node type below, never on its own. */
+    min-height: 134px;
+  }
+  .hero-visual{ gap: 0; }
+  /* The ring is 172% of the orb; at the old size it reached into the cards
+     once they moved this close to the middle. */
+  .agent-orb{ width: clamp(44px, 12.5vw, 56px); }
+
+  /* All four lines stay — the label says what the number is and the delta is
+     the only place "80% fully automated" and "4.2x ROAS on ads" appear. They
+     are simply set tighter, which is what buys the shorter frame above. */
+  .node{ padding: 4px 6px 5px; border-radius: 9px; line-height: 1.2; }
+  .node header{ font-size: 8.6px; gap: 4px; }
+  /* Brand marks are denser than the line icons they replaced, so the glyph
+     gets a point back inside the same chip. */
+  .node-icon{ width: 15px; height: 15px; border-radius: 4px; }
+  .node-icon svg{ width: 10px; height: 10px; }
+  .node-label{ margin-top: 1px; font-size: 8px; line-height: 1.2; }
+  .node-value{ font-size: 12px; }
+  .node-delta{ margin-top: 0; font-size: 8px; line-height: 1.2; }
+  .agent-name{ font-size: 7.5px; letter-spacing: .12em; }
 
   /* Trim the stacking between the banner and what follows it. */
-  .hero-shell{ gap: 7px; padding-bottom: 2px; }
-  .hero-actions{ margin-top: 10px; }
-  .hero-proof{ margin-top: 9px; padding: 7px 0; }
+  /* 42px is already under the 44px touch-target floor; it does not go lower. */
+  .hero-actions{ margin-top: 4px; gap: 7px; }
+  .hero-actions .btn-lg{ height: 42px; font-size: 14px; }
 
-  /* The platform line: same single scrolling row, just quieter. */
-  .hero-logos{ margin-top: 7px; }
-  .logo-label{ margin-bottom: 4px; font-size: 8px; }
+  /* The platform line: same single scrolling row, just quieter. The marks are
+     legible as themselves here, so the label above them is a spare line. */
+  .hero-logos{ margin-top: 4px; }
+  .hero-logos .logo-label{ display: none; }
   .logo-row li{
     padding: 4px clamp(5px, 1.5vw, 9px);
     font-size: clamp(8px, 2.2vw, 11px);
@@ -272,10 +353,12 @@
 
 /* The 430px step already adds a little air back; keep it in proportion. */
 @media (min-width:430px) and (max-width:639px){
-  .agent-stage{ max-width: 350px; }
-  .node{ padding: 7px 8px 8px; }
-  .node header{ font-size: 9.4px; }
-  .node-value{ font-size: 14px; }
+  .node{ padding: 5px 8px 6px; }
+  .node header{ font-size: 9.2px; }
+  .node-value{ font-size: 13px; }
+  .node-label, .node-delta{ font-size: 8.4px; }
+  /* the larger type here makes a card ~66px, so the floor moves up with it */
+  .agent-stage{ min-height: 144px; }
 }
 
 /* =========================================================
@@ -332,3 +415,345 @@
 }
 
 
+
+/* =========================================================
+   Goals — spend the tone each card already carries
+   ---------------------------------------------------------
+   Every goal ships a --tone (blue, violet, sky, green) and all of it went on a
+   36px icon chip, so the four cards read as one white box repeated. The metric
+   is the most interesting thing on a card — "+45%", "20hrs", "80%", "4.2x" —
+   so it takes the tone, and the row gets its colour from the content instead
+   of from decoration. The action stays brand blue in all four: colour marks
+   the number, never the thing you click.
+
+   The row was also ragged. "Improve customer support" wraps to two lines,
+   which pushed its divider and metric ~23px below its neighbours', while the
+   three short cards stopped ~23px above the bottom of the row because the <a>
+   never filled the <li> the grid had stretched. Filling the card and pinning
+   the metric block to its foot lines all four up whatever the titles do.
+   ========================================================= */
+
+/* The grid stretches the li; this passes that height through to the card. */
+.goal-grid > li{ display: flex; }
+.goal-card{ flex: 1; }
+
+/* .link-arrow already carries margin-top:auto — two auto margins in one
+   column would split the slack between them and float the metric mid-card, so
+   the metric takes the slack and the link follows it at a fixed gap. */
+.goal-card .goal-metric{ margin-top: auto; }
+.goal-card .link-arrow{ margin-top: 10px; }
+
+/* auto collapses to nothing on the card with the two-line title, which put its
+   divider on the descenders of "recovery." / "autopilot." / "night.". This is
+   the floor the slack is measured from; :not() keeps it off .goal-metric,
+   which is also a > p here. */
+.goal-card > p:not(.goal-metric){ margin-bottom: 10px; }
+
+.goal-card{
+  /* a wash of the card's own colour, off the corner the icon sits in */
+  background:
+    radial-gradient(120% 85% at 100% 0%,
+      color-mix(in srgb, var(--tone, var(--brand)) 10%, transparent), transparent 62%),
+    #fff;
+}
+
+.goal-metric{
+  border-top-color: color-mix(in srgb, var(--tone, var(--brand)) 24%, var(--line));
+}
+.goal-metric span{
+  color: var(--tone, var(--ink));
+  font-size: 24px;
+}
+
+.goal-icon{
+  box-shadow: 0 5px 14px -7px color-mix(in srgb, var(--tone, var(--brand)) 85%, transparent);
+  transition: transform .35s var(--ease-out), box-shadow .35s var(--ease-out);
+}
+.goal-card:hover .goal-icon{
+  transform: translateY(-2px) scale(1.06);
+  box-shadow: 0 9px 20px -8px color-mix(in srgb, var(--tone, var(--brand)) 85%, transparent);
+}
+
+/* The shared card hover is a generic brand-blue hairline and a brand-blue
+   edge; on these four it becomes the card's own tone. */
+.goal-card::before{
+  background: linear-gradient(90deg, transparent,
+    color-mix(in srgb, var(--tone, var(--brand)) 70%, #fff), transparent);
+}
+.goal-card:hover{
+  border-color: color-mix(in srgb, var(--tone, var(--brand)) 36%, var(--line));
+}
+.goal-card::after{
+  background-color: color-mix(in srgb, var(--tone, var(--brand)) 15%, #fff);
+}
+
+@media (max-width:639px){
+  /* Two per row at this width, so the metric is what carries the card from
+     across the page — it can afford to be the largest thing on it. */
+  .goal-metric span{ font-size: 19px; }
+  .goal-card .link-arrow{ margin-top: 7px; }
+  .goal-card > p:not(.goal-metric){ margin-bottom: 7px; }
+}
+
+/* =========================================================
+   Portfolio — the comparison is the card
+   ---------------------------------------------------------
+   The section used to be a grid of text-only project cards followed by a
+   separate "Real results" block that repeated each card's badge, title and
+   one-liner under its slider. Same words twice, and the picture a screen below
+   the words describing it. The slider now sits at the top of its own card, and
+   the duplicate caption, the section header, the divider and the second
+   "View project" link are gone with it.
+
+   The captures behind it are the phone layout now (see VIEWPORT in
+   scripts/shots.mjs), so the frame is portrait rather than 3:2 landscape — at
+   the old ratio a 1200px-wide desktop page arrived scaled to a quarter and you
+   read the top-left corner of it.
+   ========================================================= */
+
+.rr-slider{
+  /*
+   * 5/4, not the 4/5 this started at. A phone capture is portrait, so a
+   * portrait frame was the obvious shape — but it made each card 594px on a
+   * phone and the two of them two thirds of the whole section. The frame is a
+   * window onto the capture, not the whole of it: the after side scrolls and
+   * the drag is the point, so what it has to show is the header and the top of
+   * the hero on both sides. 5/4 does that in 155px less per card.
+   */
+  aspect-ratio: 5 / 4;
+  /* Never wider than the capture itself: a 390px shot stretched across a
+     590px card on desktop is just a blurry one. Past that it centres. */
+  width: 100%; max-width: 390px;
+  margin: 0 auto 12px;
+}
+
+/* On a phone the card is narrower than the capture anyway, so the frame goes
+   full-bleed to the card's edges and takes its top corners. */
+@media (max-width:639px){
+  .live-card .rr-slider{
+    max-width: none; width: auto;
+    margin: -13px -13px 10px;
+    border-width: 0 0 1px;
+    border-radius: var(--r-lg) var(--r-lg) 0 0;
+    box-shadow: none;
+    /* Shallower again on a phone, where the section is competing with the rest
+       of the page for the same screen. 3/2 still clears the header and most of
+       the hero on both sides, which is what the comparison turns on. */
+    aspect-ratio: 3 / 2;
+  }
+}
+
+/* The badge follows the frame rather than the card's top padding. */
+.rr-slider + .live-badge{ margin-top: 2px; }
+
+/* =========================================================
+   Phones — the portfolio card
+   ---------------------------------------------------------
+   The picture is the card's reason to exist; the type around it is a caption
+   and is set like one. The one-liner is clamped because "Shopify store design,
+   product catalog and mobile-first UX." runs to three lines at the old size and
+   only the first two carry anything.
+   ========================================================= */
+@media (max-width:639px){
+  .live-grid{ gap: 10px; }
+  .live-card{ padding: 13px 13px 12px; overflow: hidden; }
+  .live-badge{ font-size: 8.6px; padding: 2px 6px; letter-spacing: .04em; }
+  .live-card h3, .live-card h4{ margin-top: 5px; font-size: 15.5px; line-height: 1.18; }
+  .live-card > p{
+    margin-top: 3px; font-size: 12px; line-height: 1.38;
+    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;
+  }
+  .live-toggle{ margin-top: 6px; min-height: 28px; }
+
+  /* The three group labels and the gaps around them were carrying desktop
+     spacing on a phone. */
+  #work .group-label{ margin: 11px 0 5px; }
+
+  /* "Websites, systems and automations." is the three group labels below it
+     read out as a sentence. On a phone the labels are the better version. */
+  #work .section-head .section-sub{ display: none; }
+}
+
+/* =========================================================
+   The comparison as a phone, on phones
+   ---------------------------------------------------------
+   The captures are the storefronts' mobile layouts, but a capture in a plain
+   rectangle is just a picture — nothing on it says which layout you are
+   looking at. A device shell says it without needing a caption.
+
+   Above 640px the shell is display:contents: no box, no padding, no stacking
+   context, so the desktop rendering resolves exactly as it did before the
+   wrapper existed. Nothing here reaches it.
+
+   Height is a wash on purpose. The shell adds 14px of bezel top and bottom,
+   and its 8px sides take 16px off the frame's width — which at 3/2 takes ~27px
+   off the frame's height. The two very nearly cancel.
+   ========================================================= */
+.rr-phone{ display: contents; }
+
+@media (max-width:639px){
+  .rr-phone{
+    display: block;
+    position: relative;
+    margin: 0 0 10px;
+    padding: 14px 8px;
+    border-radius: 26px;
+    background: linear-gradient(168deg, #1E293B 0%, #0F172A 55%, #131C2E 100%);
+    box-shadow:
+      0 14px 30px -18px rgba(11,18,32,.7),
+      inset 0 1px 0 rgba(255,255,255,.14);
+  }
+
+  /* earpiece slit */
+  .rr-phone::before{
+    content: ""; position: absolute; top: 6px; left: 50%;
+    width: 38px; height: 3.5px; margin-left: -19px; border-radius: 99px;
+    background: rgba(255,255,255,.26);
+  }
+  /* home indicator */
+  .rr-phone::after{
+    content: ""; position: absolute; bottom: 5.5px; left: 50%;
+    width: 62px; height: 3px; margin-left: -31px; border-radius: 99px;
+    background: rgba(255,255,255,.22);
+  }
+
+  /* The frame is the screen now: it drops the card-edge bleed, the hairline
+     border and the shadow it carried while it was the card's own top edge. */
+  .live-card .rr-slider{
+    max-width: none; width: auto;
+    margin: 0;
+    border: 0;
+    border-radius: 13px;
+    box-shadow: none;
+    aspect-ratio: 3 / 2;
+  }
+
+  /* The card's top padding comes back — the frame no longer bleeds into it. */
+  .live-card{ padding-top: 13px; }
+  .rr-phone + .live-badge{ margin-top: 0; }
+}
+
+/* =========================================================
+   CTA — the alternative action goes after the thing it replaces
+   ---------------------------------------------------------
+   "WhatsApp us instead" is a fallback for the form. On a phone the shell is a
+   single column, so it was rendering above the form and the word "instead"
+   pointed at something the reader had not seen yet. It is its own grid child
+   now: last on a phone, and placed back under the checklist on desktop.
+   ========================================================= */
+.cta-alt{ margin-top: 4px; }
+.cta-alt .btn{ width: 100%; }
+
+@media (min-width:1024px){
+  /* auto/1fr matters: the form spans both rows, and without an explicit track
+     list a spanning item hands part of its height to row 1 — which pushed the
+     WhatsApp link most of a form's length below the checklist it belongs to. */
+  .cta-shell{ grid-template-rows: auto 1fr; }
+  .cta-copy{ grid-column: 1; grid-row: 1; }
+  .cta-form{ grid-column: 2; grid-row: 1 / span 2; }
+  .cta-alt{ grid-column: 1; grid-row: 2; align-self: start; margin-top: 26px; }
+  .cta-alt .btn{ width: auto; }
+}
+
+/* =========================================================
+   One primary call to action on screen at a time
+   ---------------------------------------------------------
+   The sticky bottom bar is phone-only, and its "Get free audit" is the same
+   link, to the same page, as the one in the sticky header — so on a phone both
+   were on screen together, permanently, saying the same thing. The bar's
+   version is the bigger target and sits under the thumb, so the header keeps
+   its CTA on desktop (where the bar does not exist) and yields on a phone.
+   That also gives the cramped mobile header its width back: it was logo +
+   button + hamburger inside 390px.
+
+   To go back to the old arrangement, delete this rule.
+   ========================================================= */
+@media (max-width:767px){
+  .site-header .header-cta{ display: none; }
+}
+
+/* =========================================================
+   Carousel dots: a real tap target
+   ---------------------------------------------------------
+   26px of button in a 36px box is under every published minimum (44px), and
+   these are the only control for the rails on a phone. The dot itself stays
+   the size it was — the hit area around it grows.
+   ========================================================= */
+.rail-dots button{ width: 44px; height: 44px; }
+.rail-dots{ gap: 0; margin-top: 8px; }
+
+/* =========================================================
+   Text links that are also tap targets
+   ---------------------------------------------------------
+   The footer's nav columns and the breadcrumb are plain text links at ~21px
+   tall — fine with a mouse, a poor target with a thumb, and they are the only
+   navigation at the bottom of a long page. The row grows; the type does not.
+   .live-toggle goes back to 34px: 28 was mine, from the pass that compacted
+   the portfolio card, and it is the card's only control.
+   ========================================================= */
+@media (max-width:767px){
+  /* the columns are plain <nav><ul><li><a>, with no class of their own */
+  .site-footer nav ul a,
+  .footer-contact a{
+    display: inline-flex; align-items: center; min-height: 36px;
+  }
+  .crumbs a, .crumbs span{ display: inline-flex; align-items: center; min-height: 32px; }
+  .live-toggle{ min-height: 34px; }
+}
+
+
+/* =========================================================
+   The brand lockup is LogoStatic now
+   ---------------------------------------------------------
+   .brand used to be a flex row of .brand-mark + .brand-word and owned the gap
+   between them. LogoStatic is a single child that brings its own internal
+   spacing, so the row gap here would only ever pad one element against nothing.
+
+   min-height stays: the link is a 44px target on a phone whatever is inside it.
+   ========================================================= */
+.brand{ gap: 0; }
+
+
+/* =========================================================
+   First-load splash
+   ---------------------------------------------------------
+   The dismissal lives here, not in the component. A full-screen overlay that
+   depends on JavaScript to leave is an overlay that can strand the whole site
+   behind a failed bundle, a thrown hydration error, or a browser with scripting
+   off. This animation ends at visibility:hidden with fill-mode forwards, so the
+   splash clears itself on time under every one of those. SiteSplash then
+   unmounts the node; if it never gets the chance, nothing is blocked.
+
+   1.29s of hold, then a 0.61s fade. The hold is set from the lockup, not
+   chosen: the mark draws in 0.7s and the tagline settles at ~1.11s, so the fade
+   cannot start before that or the finished logo is never actually on screen.
+   Short enough not to be a toll booth.
+   ========================================================= */
+.site-splash{
+  position: fixed; inset: 0; z-index: 200;
+  display: grid; place-items: center;
+  background:
+    radial-gradient(58% 42% at 50% 42%, rgba(6,182,255,.13), transparent 70%),
+    #0B1026;
+  animation: splash-out 1.9s cubic-bezier(.16,.84,.3,1) forwards;
+}
+
+@keyframes splash-out{
+  0%, 68%   { opacity: 1; }
+  100%      { opacity: 0; visibility: hidden; }
+}
+
+/* Already seen this session — hidden before the first paint by the inline
+   script in the root layout, so there is no flash to fade. */
+.splash-done .site-splash{ display: none; }
+
+/* A full-screen animation is exactly what this setting is asking us not to do,
+   and it is CSS rather than JS so it applies before hydration too. */
+@media (prefers-reduced-motion: reduce){
+  .site-splash{ display: none; }
+}
+
+/* =========================================================
+   Admin sign-in
+   ========================================================= */
+.admin-auth-logo{ display: flex; margin: 0 auto 18px; }

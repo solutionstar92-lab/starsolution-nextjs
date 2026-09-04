@@ -15,6 +15,8 @@ const config: Config = {
         display: ['General Sans', 'SF Pro Display', '-apple-system', 'Segoe UI', 'sans-serif'],
         sans: ['Satoshi', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
         mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+        // the logo face; var() is set by next/font in the root layout
+        jakarta: ['var(--font-jakarta)', 'Plus Jakarta Sans', 'Satoshi', 'sans-serif'],
       },
       maxWidth: { shell: '1200px' },
     },

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { supabaseConfigured } from '@/lib/supabase';
 import { LoginForm } from './LoginForm';
+import { LogoAnimated } from '@/components/ui/LogoAnimated';
 
 export const metadata: Metadata = { title: 'Sign in' };
 
@@ -21,6 +22,9 @@ export default function LoginPage({
   return (
     <main className="admin-auth">
       <div className="admin-auth-card">
+        {/* The one screen on the site with nothing else happening on it, and
+            the one people stare at while typing a password. */}
+        <LogoAnimated size={46} layout="stacked" className="admin-auth-logo" />
         <h1>Admin sign in</h1>
         <p className="admin-auth-lede">Manage leads and site content.</p>
 

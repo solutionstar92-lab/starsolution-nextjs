@@ -1,4 +1,16 @@
 import * as React from 'react';
+import { BRANDS } from './brands';
+
+/**
+ * Brand marks, reusing the platform row's paths rather than a second copy of
+ * each — so the Shopify on a hero card and the Shopify in the row below it are
+ * the same geometry, and there is one place to correct if a mark changes.
+ *
+ * They are filled where the rest of this set is stroked, so each carries its
+ * own fill/stroke pair to override the <svg> defaults. Used nominatively, as
+ * in brands.ts: these are the platforms we automate.
+ */
+const mark = (key: string) => <path d={BRANDS[key].path ?? ''} fill="currentColor" stroke="none" />;
 
 const paths: Record<string, React.ReactNode> = {
   star: <path d="M12 2.4c.6 3.9 2.2 6.4 5.9 7.3 1.1.3 1.1 1.3 0 1.6-3.7.9-5.3 3.4-5.9 7.3-.1.9-1.2.9-1.4 0-.6-3.9-2.2-6.4-5.9-7.3-1.1-.3-1.1-1.3 0-1.6 3.7-.9 5.3-3.4 5.9-7.3.2-.9 1.3-.9 1.4 0Z" fill="currentColor" />,
@@ -28,6 +40,32 @@ const paths: Record<string, React.ReactNode> = {
   link: <><path d="M14 6h4v4" /><path d="M18 6 11 13" /><path d="M17 14.5V18a1.8 1.8 0 0 1-1.8 1.8H6A1.8 1.8 0 0 1 4.2 18V8.8A1.8 1.8 0 0 1 6 7h3.6" /></>,
   eye: <><path d="M2.5 12S6 5.8 12 5.8 21.5 12 21.5 12 18 18.2 12 18.2 2.5 12 2.5 12Z" /><circle cx="12" cy="12" r="3" /></>,
   play: <path fill="currentColor" stroke="none" d="M8.4 5.6a1 1 0 0 1 1.5-.87l8.2 4.9a1 1 0 0 1 0 1.72l-8.2 4.9a1 1 0 0 1-1.5-.87Z" />,
+
+  /* Goal glyphs — each names what its card actually does. "package" said the
+     parcel and not the autopilot; "headset" said a call centre where the copy
+     promises AI replies; "chart" said any chart where the copy promises one
+     live dashboard. */
+  bolt: <path d="M13 2.6 4 13.8h8.1l-.9 7.6 9-11.2h-8.1l.9-7.6Z" />,
+  chat: <>
+    <path d="M20 14.4a2.6 2.6 0 0 1-2.6 2.6H9.2L5 20.6V6.6A2.6 2.6 0 0 1 7.6 4h9.8A2.6 2.6 0 0 1 20 6.6Z" />
+    <circle cx="9.2" cy="10.5" r="1" fill="currentColor" stroke="none" />
+    <circle cx="12.5" cy="10.5" r="1" fill="currentColor" stroke="none" />
+    <circle cx="15.8" cy="10.5" r="1" fill="currentColor" stroke="none" />
+  </>,
+  gauge: <>
+    <path d="M4.6 18.2a9 9 0 1 1 14.8 0" />
+    <path d="M12 13 16.6 8.2" />
+    <circle cx="12" cy="13" r="1.5" fill="currentColor" stroke="none" />
+  </>,
+
+  /* Platform marks — see mark() above. WhatsApp keeps its own drawing: it is
+     already a filled WhatsApp glyph and it is used at 20px in buttons across
+     the site, where this set's weight suits it better. */
+  shopify: mark('Shopify'),
+  meta: mark('Meta Ads'),
+  googleads: mark('Google Ads'),
+  tiktok: mark('TikTok'),
+  n8n: mark('n8n'),
 };
 
 export type IconName = keyof typeof paths;
