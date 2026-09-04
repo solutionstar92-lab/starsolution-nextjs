@@ -225,3 +225,55 @@
   .live-actions{ gap:6px 14px; margin-top:12px; }
   .live-actions .live-link{ min-height:32px; font-size:11.5px; gap:5px; }
 }
+
+/* =========================================================
+   Phones — a smaller hero banner
+   ---------------------------------------------------------
+   The composition is unchanged: agent in the middle, four cards at the
+   corners. It was simply running at full container width, so the stage alone
+   took 315px of an 844px screen and the cards crowded the headline. Holding
+   the stage to a narrower box scales the whole thing down together — cards,
+   links and orb keep their proportions, they just take far less room.
+   ========================================================= */
+@media (max-width:639px){
+  .agent-stage{
+    max-width: 320px;
+    /* shorter than the 640/560 desktop frame: the corner cards sit closer in */
+    aspect-ratio: 640 / 470;
+  }
+  .hero-visual{ gap: 2px; }
+
+  /* Type inside the cards, stepped down with them so nothing wraps at the
+     narrower width. */
+  .node{ padding: 6px 7px 7px; border-radius: 11px; }
+  .node header{ font-size: 8.8px; gap: 4px; }
+  .node-icon{ width: 15px; height: 15px; border-radius: 5px; }
+  .node-label{ margin-top: 4px; font-size: 8.2px; }
+  .node-value{ font-size: 13px; }
+  .node-delta{ font-size: 8.2px; }
+
+  .agent-name{ font-size: 8px; letter-spacing: .12em; }
+  .orbit-hint{ font-size: 9px; letter-spacing: .06em; }
+
+  /* Trim the stacking between the banner and what follows it. */
+  .hero-shell{ gap: 7px; padding-bottom: 2px; }
+  .hero-actions{ margin-top: 10px; }
+  .hero-proof{ margin-top: 9px; padding: 7px 0; }
+
+  /* The platform line: same single scrolling row, just quieter. */
+  .hero-logos{ margin-top: 7px; }
+  .logo-label{ margin-bottom: 4px; font-size: 8px; }
+  .logo-row li{
+    padding: 4px clamp(5px, 1.5vw, 9px);
+    font-size: clamp(8px, 2.2vw, 11px);
+    border-radius: 999px;
+  }
+}
+
+/* The 430px step already adds a little air back; keep it in proportion. */
+@media (min-width:430px) and (max-width:639px){
+  .agent-stage{ max-width: 350px; }
+  .node{ padding: 7px 8px 8px; }
+  .node header{ font-size: 9.4px; }
+  .node-value{ font-size: 14px; }
+}
