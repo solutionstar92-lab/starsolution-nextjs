@@ -534,3 +534,71 @@
 }
 .admin-nav a{ min-width: 0; }
 .admin-nav a span{ overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* =========================================================
+   Clipping, take two
+   ---------------------------------------------------------
+   The public header and the transformed PageTransition wrapper used to sit
+   above these pages. A transform makes an ancestor the containing block for
+   position:fixed, so the sidebar was measured against that wrapper rather than
+   the viewport: the grid track and the sidebar disagreed about where column
+   one ended, which shifted the content left (clipping "Id" to "d") and pushed
+   the right-hand column past the edge. Both are gone from /admin now, and
+   these rules keep the geometry honest on their own terms.
+   ========================================================= */
+
+/* Every admin box measures padding inside its width, so a 100% field can
+   never be wider than the track holding it. */
+.admin-shell *,
+.admin-shell *::before,
+.admin-shell *::after,
+.admin-auth *,
+.admin-auth *::before,
+.admin-auth *::after{
+  box-sizing: border-box;
+}
+
+/* The grid owns both tracks; nothing inside may widen them. Overflow is
+   visible so a stray wide child shows up instead of being silently cropped —
+   the wide table still scrolls inside .admin-table-wrap. */
+.admin-shell{ overflow-x: clip; }
+@media (min-width:1024px){
+  .admin-shell{ grid-template-columns: 250px minmax(0, 1fr); }
+}
+.admin-main{ min-width: 0; overflow: visible; }
+.admin-canvas{ min-width: 0; }
+
+/* Left inset: the first column of a form or card must not start under the
+   sidebar edge, and its label needs room to render in full. */
+.admin-body{ min-width: 0; }
+.admin-form{ min-width: 0; }
+.admin-form-grid{ min-width: 0; }
+.admin-form-field{ min-width: 0; padding-left: 1px; }
+.admin-form-field > label{ padding-left: 1px; }
+
+/* Right column: a fixed 300px track has no give, so on anything narrower than
+   the sum of both tracks it is the one that gets pushed out. Let it flex. */
+@media (min-width:1024px){
+  .admin-detail{ grid-template-columns: minmax(0, 1fr) minmax(240px, 300px); }
+}
+.admin-detail{ min-width: 0; }
+.admin-detail-side{ min-width: 0; }
+.admin-detail-side .admin-card{ min-width: 0; }
+.admin-detail-side .admin-link,
+.admin-detail-side .admin-toggle{ max-width: 100%; }
+.admin-detail-side .admin-link{ display: inline-flex; align-items: center; gap: 6px; }
+
+/* ---------- pending navigation ---------- */
+.admin-nav a{ position: relative; }
+.admin-nav a.is-pending{ background: var(--soft); color: var(--ink); }
+.admin-nav-spin{
+  width: 12px; height: 12px; margin-left: auto; flex: none;
+  border: 2px solid color-mix(in srgb, var(--brand) 30%, transparent);
+  border-top-color: var(--brand);
+  border-radius: 50%;
+  animation: adminSpin .7s linear infinite;
+}
+@keyframes adminSpin{ to{ transform: rotate(360deg); } }
+@media (prefers-reduced-motion:reduce){
+  .admin-nav-spin{ animation: none; border-top-color: color-mix(in srgb, var(--brand) 30%, transparent); }
+}

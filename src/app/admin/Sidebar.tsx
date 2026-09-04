@@ -4,6 +4,7 @@ import * as React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Icon } from '@/components/Icon';
+import { AdminNavLink } from './AdminNavLink';
 import { ENTITIES } from '@/lib/admin/entities';
 import { signOut } from './auth-actions';
 
@@ -65,19 +66,15 @@ export function Sidebar({ email, fullName }: { email: string; fullName?: string 
                 const active = item.href === '/admin'
                   ? pathname === '/admin'
                   : pathname.startsWith(item.href);
-                return (
-                  <Link
+                  return (
+                  <AdminNavLink
                     key={item.href}
                     href={item.href}
-                    // Every admin route is force-dynamic, so a prefetch costs a
-                    // full server render — session lookup and admins query
-                    // included — for a payload that is barely cached. Ten nav
-                    // links meant ten of those on hover.
-                    prefetch={false}
-                    className={active ? 'is-active' : undefined}
-                  >
-                    <Icon name={item.icon} /> {item.label}
-                  </Link>
+                    label={item.label}
+                    icon={item.icon}
+                    active={active}
+                    onNavigate={() => setOpen(false)}
+                  />
                 );
               })}
             </div>
