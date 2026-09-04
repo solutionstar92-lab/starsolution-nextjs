@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Icon } from '@/components/Icon';
-import { createClient } from '@/lib/supabase/server';
+import { rscSupabase } from '@/lib/admin/session';
 import { AdminHeader } from '../AdminHeader';
 import { LEAD_STATUSES, STATUS_LABEL, type LeadStatus } from './leads/constants';
 
@@ -20,7 +20,7 @@ const when = (iso: string) =>
   new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 
 export default async function DashboardPage() {
-  const supabase = createClient();
+  const supabase = rscSupabase();
 
   // head:true asks Postgres for the count only — no rows cross the wire.
   const [{ count: total }, { data: statusRows }, { data: recentRows }] = await Promise.all([

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { createClient } from '@/lib/supabase/server';
+import { rscSupabase } from '@/lib/admin/session';
 import { Icon } from '@/components/Icon';
 import { AdminHeader } from '../../AdminHeader';
 import { LEAD_STATUSES, STATUS_LABEL, type LeadStatus } from './constants';
@@ -30,7 +30,7 @@ export default async function LeadsPage({
 }: {
   searchParams: { status?: string; q?: string };
 }) {
-  const supabase = createClient();
+  const supabase = rscSupabase();
   const activeStatus = LEAD_STATUSES.includes(searchParams.status as LeadStatus)
     ? (searchParams.status as LeadStatus)
     : null;

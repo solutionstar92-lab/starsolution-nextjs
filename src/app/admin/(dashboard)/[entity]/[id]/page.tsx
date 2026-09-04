@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Icon } from '@/components/Icon';
-import { createClient } from '@/lib/supabase/server';
+import { rscSupabase } from '@/lib/admin/session';
 import { entityByKey } from '@/lib/admin/entities';
 import { AdminHeader } from '../../../AdminHeader';
 import { EntityForm } from '../EntityForm';
@@ -26,7 +26,7 @@ export default async function EditEntityPage({
   if (!entity) notFound();
 
   const id = decodeURIComponent(params.id);
-  const supabase = createClient();
+  const supabase = rscSupabase();
   const { data } = await supabase.from(entity.table).select('*').eq('id', id).maybeSingle();
   if (!data) notFound();
 

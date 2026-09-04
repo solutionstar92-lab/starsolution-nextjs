@@ -6,3 +6,6 @@ out
 *.tsbuildinfo
 next-env.d.ts
 supabase/setup.sql
+
+# playwright output from scripts/admin-check.mjs
+admin-edit.png

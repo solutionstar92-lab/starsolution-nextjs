@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { createClient } from '@/lib/supabase/server';
+import { rscSupabase } from '@/lib/admin/session';
 import { Icon } from '@/components/Icon';
 import { AdminHeader } from '../../../AdminHeader';
 import { StatusPicker } from '../StatusPicker';
@@ -12,7 +12,7 @@ import { STATUS_LABEL, type LeadStatus } from '../constants';
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-  const supabase = createClient();
+  const supabase = rscSupabase();
   const { data } = await supabase.from('leads').select('name').eq('id', params.id).maybeSingle();
   return { title: data?.name ?? 'Lead' };
 }
@@ -31,7 +31,7 @@ function formatWhen(value: string) {
 }
 
 export default async function LeadDetailPage({ params }: { params: { id: string } }) {
-  const supabase = createClient();
+  const supabase = rscSupabase();
 
   const { data: lead } = await supabase
     .from('leads')
