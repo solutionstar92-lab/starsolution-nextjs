@@ -308,38 +308,26 @@
    with the viewport so the row fits rather than truncating — the same
    approach the chips used. The scroll is a safety valve for anything
    narrower than about 320px, not the intended state. */
-/* Below 390px seven logos cannot share a line at a size anyone can read —
-   forcing it means about 7.5px type. Two centred rows at a legible size is
-   the better trade, and it looks deliberate rather than truncated. */
-@media (max-width:389px){
+/* One continuous scale from the narrowest phone to the tablet breakpoint.
+   Two separate bands, tuned when the row held seven logos, left the type
+   larger at 360px than at 390px — it shrank as the screen grew. Wrapping
+   stays enabled as the graceful failure: if a future platform pushes the row
+   past the width it drops to a second centred line rather than clipping. */
+@media (max-width:767px){
   .platform-row{
     flex-wrap: wrap;
     justify-content: center;
-    gap: 7px 13px;
+    gap: clamp(8px, 2.9vw, 22px);
     overflow: visible;
   }
-  .platform-row li{ gap: 4px; }
-  .platform-mark svg{ width: 14px; height: 14px; }
-  .platform-name{ font-size: 10.2px; font-weight: 600; letter-spacing: -.02em; }
-}
-
-@media (min-width:390px) and (max-width:767px){
-  .platform-row{
-    flex-wrap: nowrap;
-    justify-content: safe center;
-    gap: clamp(5px, 1.65vw, 15px);
-    overflow-x: auto;
-    scrollbar-width: none;
-    /* No edge bleed: the row fits inside the shell from 320px up, and the
-       negative margin the chips used pushed the page 36px wider than the
-       viewport on the narrowest phones. */
+  .platform-row li{ gap: clamp(3px, .9vw, 7px); }
+  .platform-mark svg{
+    width: clamp(14px, 11.9px + .67vw, 17px);
+    height: clamp(14px, 11.9px + .67vw, 17px);
   }
-  .platform-row::-webkit-scrollbar{ display: none; }
-  .platform-row li{ flex: 0 0 auto; gap: clamp(2px, .8vw, 6px); }
-  .platform-mark svg{ width: clamp(11px, 2.6vw, 17px); height: clamp(11px, 2.6vw, 17px); }
   .platform-name{
-    font-size: clamp(8.4px, 1.95vw, 13px);
-    font-weight: 600; letter-spacing: -.025em;
+    font-size: clamp(9.6px, 6.4px + 1.05vw, 14.5px);
+    font-weight: 600; letter-spacing: -.022em;
   }
 }
 
