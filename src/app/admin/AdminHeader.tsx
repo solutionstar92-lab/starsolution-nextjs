@@ -10,7 +10,7 @@ export function AdminHeader({
 }) {
   return (
     <header className="admin-head">
-      <div className="admin-subhead">
+      <div className="admin-head-row">
         <div>
           <h1>{title}</h1>
           {subtitle && <p>{subtitle}</p>}

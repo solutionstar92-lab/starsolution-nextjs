@@ -6,6 +6,7 @@ import { Icon } from '@/components/Icon';
 import { AdminHeader } from '../../../AdminHeader';
 import { StatusPicker } from '../StatusPicker';
 import { NoteComposer } from '../NoteComposer';
+import { ReplyActions } from '../ReplyActions';
 import { deleteLead } from '../actions';
 import { STATUS_LABEL, type LeadStatus } from '../constants';
 
@@ -128,21 +129,11 @@ export default async function LeadDetailPage({ params }: { params: { id: string 
               <header className="admin-card-head"><h2>Manage</h2></header>
               <StatusPicker id={lead.id} status={lead.status as LeadStatus} />
 
-              <div className="admin-side-actions">
-                <a href={`mailto:${lead.email}`} className="btn btn-ghost btn-sm w-full">
-                  <Icon name="mail" className="h-4 w-4" /> Reply by email
-                </a>
-                {lead.phone && (
-                  <a
-                    href={`https://wa.me/${lead.phone.replace(/[^\d]/g, '')}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn btn-ghost btn-sm w-full"
-                  >
-                    <Icon name="whatsapp" className="h-4 w-4 text-[#25D366]" /> WhatsApp
-                  </a>
-                )}
-              </div>
+              <ReplyActions
+                email={lead.email}
+                name={lead.name}
+                phone={lead.phone}
+              />
             </section>
 
             <section className="admin-card admin-card-danger">

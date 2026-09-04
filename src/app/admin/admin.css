@@ -510,12 +510,15 @@
 .admin-alert code{ overflow-wrap: anywhere; }
 
 /* The title bar puts an action button beside the heading; below the breakpoint
-   they need to stack or the button squeezes the title into a sliver. */
-.admin-subhead{
+   they need to stack or the button squeezes the title into a sliver.
+   Named -head-row, not -subhead: this file already uses .admin-subhead for the
+   small uppercase label above a block of detail, and borrowing it made every
+   page title render as 9.5px mono caps. */
+.admin-head-row{
   display: flex; flex-wrap: wrap; align-items: flex-start;
   justify-content: space-between; gap: 12px;
 }
-.admin-subhead > div:first-child{ min-width: 0; flex: 1 1 220px; }
+.admin-head-row > div:first-child{ min-width: 0; flex: 1 1 220px; }
 
 /* Inputs are width:100% of a track that may itself be too narrow; box-sizing
    keeps padding inside the track instead of adding to it. */
@@ -602,3 +605,47 @@
 @media (prefers-reduced-motion:reduce){
   .admin-nav-spin{ animation: none; border-top-color: color-mix(in srgb, var(--brand) 30%, transparent); }
 }
+
+/* =========================================================
+   Card padding
+   ---------------------------------------------------------
+   .admin-card only ever styled its border and its head, so anything else
+   placed in it sat flush against the edge — the lead's email, the message
+   quote and its accent border were all touching the frame with nowhere to
+   breathe. The card now owns its inset, and the children that deliberately
+   run edge to edge pull back out of it.
+   ========================================================= */
+.admin-card{ padding: 16px; }
+
+/* The head keeps its own padding and its full-width bottom rule. */
+.admin-card > .admin-card-head{ margin: -16px -16px 0; }
+.admin-card > .admin-card-head ~ *{ margin-top: 14px; }
+
+/* Rows, tables and empty states carry their own padding and should meet the
+   frame, so they cancel the card inset. */
+.admin-card > .admin-list,
+.admin-card > .admin-empty,
+.admin-card > .admin-table-wrap{ margin: -16px; }
+.admin-card > .admin-card-head ~ .admin-list,
+.admin-card > .admin-card-head ~ .admin-empty,
+.admin-card > .admin-card-head ~ .admin-table-wrap{ margin-top: 0; }
+/* Nested in a card, the wrapper's own frame would double the card's. */
+.admin-card > .admin-table-wrap{ border: 0; border-radius: 0; box-shadow: none; }
+
+@media (min-width:1024px){
+  .admin-card{ padding: 18px; }
+  .admin-card > .admin-card-head{ margin: -18px -18px 0; }
+  .admin-card > .admin-list,
+  .admin-card > .admin-empty,
+  .admin-card > .admin-table-wrap{ margin: -18px; }
+  .admin-card > .admin-card-head ~ .admin-list,
+  .admin-card > .admin-card-head ~ .admin-empty,
+  .admin-card > .admin-card-head ~ .admin-table-wrap{ margin-top: 0; }
+}
+
+/* the quiet mailto: fallback under the reply buttons */
+.admin-side-alt{
+  display: block; margin-top: 2px; text-align: center;
+  font-size: 12px; color: var(--muted);
+}
+.admin-side-alt:hover{ color: var(--brand-deep); }
