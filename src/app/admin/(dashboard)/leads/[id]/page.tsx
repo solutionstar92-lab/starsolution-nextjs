@@ -8,6 +8,7 @@ import { StatusPicker } from '../StatusPicker';
 import { NoteComposer } from '../NoteComposer';
 import { ReplyActions } from '../ReplyActions';
 import { deleteLead } from '../actions';
+import { ConfirmDelete } from '../../../ConfirmDelete';
 import { STATUS_LABEL, type LeadStatus } from '../constants';
 
 export const dynamic = 'force-dynamic';
@@ -141,10 +142,16 @@ export default async function LeadDetailPage({ params }: { params: { id: string 
               <p className="admin-note-hint">
                 Removes the lead and its notes permanently. This cannot be undone.
               </p>
-              <form action={deleteLead}>
+              {/* Was a single unguarded click, while deleting a testimonial
+                  asked you to type the word. That was the wrong way round: a
+                  testimonial can be retyped, an enquiry cannot. */}
+              <ConfirmDelete
+                action={deleteLead}
+                name={lead.name || lead.email}
+                label="Delete lead"
+              >
                 <input type="hidden" name="id" value={lead.id} />
-                <button type="submit" className="admin-danger-btn">Delete lead</button>
-              </form>
+              </ConfirmDelete>
             </section>
           </aside>
         </div>

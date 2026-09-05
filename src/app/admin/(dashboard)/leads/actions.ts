@@ -1,6 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 
 import { LEAD_STATUSES, STATUS_LABEL, type ActionState, type LeadStatus } from './constants';
@@ -92,4 +93,7 @@ export async function deleteLead(formData: FormData) {
   await supabase.from('leads').delete().eq('id', id);
   revalidatePath('/admin/leads');
   revalidatePath('/admin');
+  // The only caller is the lead's own detail page, which would otherwise
+  // re-render for a row that no longer exists and 404 on the way out.
+  redirect('/admin/leads');
 }

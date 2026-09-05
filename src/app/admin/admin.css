@@ -144,7 +144,13 @@
   transition:background .2s var(--ease-out);
 }
 .admin-list a:hover{ background:var(--soft); }
-.admin-list-main{ display:grid; gap:2px; min-width:0; }
+/* Takes the slack so the badge and date sit hard right, and min-width:0 is
+   what lets a long email actually ellipsis instead of forcing the row wider. */
+.admin-list-main{ display:grid; gap:2px; min-width:0; flex:1; }
+.admin-list-date{ flex:none; font-size:12.5px; white-space:nowrap; }
+/* Below the sidebar breakpoint the row runs out of width before the date does;
+   the badge carries the status and the full date is on the lead itself. */
+@media (max-width:520px){ .admin-list-date{ display:none; } }
 .admin-list-main strong{ font-size:14px; font-weight:600; letter-spacing:-.02em; }
 .admin-list-main span{
   font-size:12.5px; color:var(--muted);

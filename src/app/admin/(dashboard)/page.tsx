@@ -72,12 +72,17 @@ export default async function DashboardPage() {
             <ul className="admin-list">
               {recent.map((lead) => (
                 <li key={lead.id}>
-                  <Link href={`/admin/leads/${lead.id}`} className="admin-list-main">
-                    <strong>{lead.name}</strong>
-                    <span className="admin-muted">{lead.email}</span>
+                  {/* All three inside the link: .admin-list a is the flex row,
+                      so siblings outside it fell to a second line. This also
+                      makes the whole row the target instead of just the name. */}
+                  <Link href={`/admin/leads/${lead.id}`}>
+                    <span className="admin-list-main">
+                      <strong>{lead.name}</strong>
+                      <span className="admin-muted">{lead.email}</span>
+                    </span>
+                    <span className={`admin-status is-${lead.status}`}>{STATUS_LABEL[lead.status]}</span>
+                    <span className="admin-muted admin-list-date">{when(lead.created_at)}</span>
                   </Link>
-                  <span className={`admin-status is-${lead.status}`}>{STATUS_LABEL[lead.status]}</span>
-                  <span className="admin-muted">{when(lead.created_at)}</span>
                 </li>
               ))}
             </ul>

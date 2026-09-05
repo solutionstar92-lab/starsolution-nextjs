@@ -45,7 +45,12 @@ export default async function LeadsPage({
   if (query) {
     // escape commas so a search term cannot break out of the or() filter
     const safe = query.replace(/[,()]/g, ' ');
-    request = request.or(`name.ilike.%${safe}%,email.ilike.%${safe}%,company.ilike.%${safe}%`);
+    // message included: it is where "Shopify, 400 orders a month" actually
+    // lives, and searching the four fields the form collects is what someone
+    // typing into this box expects.
+    request = request.or(
+      `name.ilike.%${safe}%,email.ilike.%${safe}%,company.ilike.%${safe}%,message.ilike.%${safe}%`,
+    );
   }
 
   const { data, error } = await request;
@@ -98,7 +103,7 @@ export default async function LeadsPage({
               type="search"
               name="q"
               defaultValue={query}
-              placeholder="Search name, email or company"
+              placeholder="Search name, email, company or message"
               aria-label="Search leads"
             />
           </form>
