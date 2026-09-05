@@ -130,14 +130,6 @@ export function Hero({ nodes, stats, platforms }: { nodes: HeroNode[]; stats: [s
             <span className="hero-title-line">More orders. More revenue.</span>{' '}
             <span className="grad-text">Less work.</span>
           </motion.h1>
-          <motion.p
-            className="hero-sub"
-            initial={reduce ? false : { opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.08, ease: [0.16, 0.84, 0.3, 1] }}
-          >
-            AI agents that sell, reply and report &mdash; <strong>24/7</strong>.
-          </motion.p>
         </div>
 
         <Reveal className="hero-visual">

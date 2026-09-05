@@ -168,7 +168,10 @@ alter table public.testimonials add column if not exists hidden boolean default 
 create table if not exists public.leads (
   id         uuid primary key default gen_random_uuid(),
   name       text not null,
-  email      text not null,
+  -- Nullable since the AI-agent callback widget collects a name and a phone
+  -- number only. Every lead still has at least one of email or phone; the API
+  -- enforces that, because a database check cannot see which form it came from.
+  email      text,
   phone      text,
   company    text,
   message    text,

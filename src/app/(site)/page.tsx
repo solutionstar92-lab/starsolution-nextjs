@@ -1,15 +1,18 @@
 import { Hero } from '@/components/Hero';
 import { ResultsPanel } from '@/components/ResultsPanel';
 import { CTA } from '@/components/CTA';
-import { SectionHead, Goals, Solutions, Process, CaseStudies, Work, Testimonials, Team } from '@/components/sections';
+import { SectionHead, Goals, Systems, Process, CaseStudies, Work, Testimonials, Team } from '@/components/sections';
 import {
-  site, getSolutions, getGoals, getCaseStudies, getSystems, getAutomations, getTeam,
+  site, getGoals, getCaseStudies, getSystems, getAutomations, getTeam,
   getTestimonials, getProjects,
 } from '@/lib/content';
 
 export default async function HomePage() {
-  const [solutions, goals, cases, systems, automations, team, testimonials, projects] = await Promise.all([
-    getSolutions(), getGoals(), getCaseStudies(), getSystems(), getAutomations(),
+  // getSolutions() is gone with the bento it fed: it was still a Supabase
+  // round trip on every render for a section that no longer exists. The
+  // /solutions page and its route are untouched.
+  const [goals, cases, systems, automations, team, testimonials, projects] = await Promise.all([
+    getGoals(), getCaseStudies(), getSystems(), getAutomations(),
     getTeam(), getTestimonials(), getProjects(),
   ]);
 
@@ -17,7 +20,7 @@ export default async function HomePage() {
     <>
       <Hero nodes={site.heroNodes} stats={site.heroStats} platforms={site.platforms} />
       <Goals goals={goals} />
-      <Solutions solutions={solutions} />
+      <Systems systems={systems} />
 
       <section id="results" className="section section-soft stats-section" aria-labelledby="statsTitle">
         <div className="starfield starfield-dim" aria-hidden="true" />
@@ -29,7 +32,7 @@ export default async function HomePage() {
 
       <Process steps={site.process} log={site.nightLog} stats={site.nightStats} />
       <CaseStudies cases={cases} />
-      <Work projects={projects} systems={systems} automations={automations} />
+      <Work projects={projects} automations={automations} />
       <Testimonials items={testimonials} />
       <Team team={team} />
       <CTA />

@@ -11,7 +11,8 @@ export const dynamic = 'force-dynamic';
 interface RecentLead {
   id: string;
   name: string;
-  email: string;
+  email: string | null;
+  phone: string | null;
   status: LeadStatus;
   created_at: string;
 }
@@ -26,7 +27,7 @@ export default async function DashboardPage() {
   const [{ count: total }, { data: statusRows }, { data: recentRows }] = await Promise.all([
     supabase.from('leads').select('id', { count: 'exact', head: true }),
     supabase.from('leads').select('status'),
-    supabase.from('leads').select('id, name, email, status, created_at')
+    supabase.from('leads').select('id, name, email, phone, status, created_at')
       .order('created_at', { ascending: false }).limit(5),
   ]);
 
@@ -78,7 +79,7 @@ export default async function DashboardPage() {
                   <Link href={`/admin/leads/${lead.id}`}>
                     <span className="admin-list-main">
                       <strong>{lead.name}</strong>
-                      <span className="admin-muted">{lead.email}</span>
+                      <span className="admin-muted">{lead.email || lead.phone || '—'}</span>
                     </span>
                     <span className={`admin-status is-${lead.status}`}>{STATUS_LABEL[lead.status]}</span>
                     <span className="admin-muted admin-list-date">{when(lead.created_at)}</span>

@@ -11,7 +11,7 @@ export const dynamic = 'force-dynamic';
 interface LeadRow {
   id: string;
   name: string;
-  email: string;
+  email: string | null;
   phone: string | null;
   company: string | null;
   message: string | null;
@@ -141,7 +141,9 @@ export default async function LeadsPage({
                       <Link href={`/admin/leads/${lead.id}`}>{lead.name}</Link>
                     </th>
                     <td>
-                      <a href={`mailto:${lead.email}`}>{lead.email}</a>
+                      {lead.email
+                        ? <a href={`mailto:${lead.email}`}>{lead.email}</a>
+                        : <span className="admin-muted">{lead.phone || '—'}</span>}
                       {lead.phone && <span className="admin-sub">{lead.phone}</span>}
                     </td>
                     <td>{lead.company ?? <span className="admin-muted">—</span>}</td>

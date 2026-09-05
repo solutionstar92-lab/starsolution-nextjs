@@ -6,6 +6,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import * as React from 'react';
 import { Icon } from './Icon';
 import { LogoStatic } from './ui/LogoStatic';
+import { SiteSearch, type SearchDoc } from './ui/SiteSearch';
+import { AgentCallback } from './ui/AgentCallback';
 
 const NAV = [
   { href: '/solutions', label: 'Solutions' },
@@ -18,7 +20,7 @@ const NAV = [
 ];
 
 /** `whatsapp` is passed in rather than imported — see StickyBar. */
-export function SiteHeader({ whatsapp }: { whatsapp: string }) {
+export function SiteHeader({ whatsapp, searchDocs = [] }: { whatsapp: string; searchDocs?: SearchDoc[] }) {
   const [open, setOpen] = React.useState(false);
   const [stuck, setStuck] = React.useState(false);
   const pathname = usePathname();
@@ -42,10 +44,15 @@ export function SiteHeader({ whatsapp }: { whatsapp: string }) {
   return (
     <>
       <div className="promo-bar" role="region" aria-label="Current offer">
-        <div className="promo-shell">
+        <Link href="/contact" className="promo-shell">
           <span className="promo-dot" aria-hidden="true" />
-          <p>15% off with code <strong className="font-mono font-medium tracking-tight">STAR15</strong></p>
-        </div>
+          <p>
+            <strong>Free AI growth audit</strong>
+            <span className="promo-sep" aria-hidden="true"> · </span>
+            <span className="promo-tail">No commitment, reply within a day</span>
+          </p>
+          <Icon name="arrow" className="promo-arrow" />
+        </Link>
       </div>
 
       <header id="siteHeader" className={`site-header${stuck ? ' is-stuck' : ''}`}>
@@ -71,6 +78,8 @@ export function SiteHeader({ whatsapp }: { whatsapp: string }) {
           </nav>
 
           <div className="ml-auto flex items-center gap-2">
+            <SiteSearch docs={searchDocs} />
+            <AgentCallback />
             <Link href="/contact" className="btn btn-primary btn-sm header-cta">
               Get free audit <Icon name="arrow" className="cta-arrow" />
             </Link>

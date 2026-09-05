@@ -213,7 +213,7 @@ export function LogoAnimated({
 
       {!markOnly && (
         <span
-          className={`flex flex-col ${layout === 'stacked' ? 'items-center' : 'items-start'}`}
+          className={`logo-words flex flex-col ${layout === 'stacked' ? 'items-center' : 'items-start'}`}
           style={{ gap: m.taglineGap }}
         >
           <motion.span

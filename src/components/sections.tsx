@@ -3,6 +3,8 @@ import { Icon } from './Icon';
 import { Reveal } from './Reveal';
 import { Rail } from './Rail';
 import { ProjectCard } from './ProjectCard';
+import { GoalMotif } from './ui/GoalMotif';
+import { SystemCard } from './ui/SystemCard';
 import type { Entry, Project, Testimonial } from '@/lib/types';
 
 /* Every automation carries its own icon and tone, in site.json and — since the
@@ -41,12 +43,46 @@ export function Goals({ goals }: { goals: Entry[] }) {
           {goals.map((g, i) => (
             <Reveal as="li" key={g.id} delay={i * 0.06}>
               <Link href={`/goals/${g.slug}`} className="goal-card block" style={{ ['--tone' as string]: g.tone }}>
+                {/* First child so it paints under everything after it — see
+                    the stacking note in the CSS. */}
+                <GoalMotif icon={g.icon} />
                 <span className="goal-icon" style={{ ['--g1' as string]: g.tone }}><Icon name={g.icon ?? 'star'} /></span>
                 <h3>{g.title}</h3>
-                <p>{g.short}</p>
                 <p className="goal-metric"><span>{g.metric}</span> {g.metricLabel}</p>
                 <span className="link-arrow">Explore <Icon name="arrow" /></span>
               </Link>
+            </Reveal>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- Systems ---------------- */
+/**
+ * Custom systems and dashboards.
+ *
+ * Promoted out of the Work section, where it was a `group-label` and a row of
+ * plain cards between the portfolio and the automations, and given the slot the
+ * solutions bento used to hold. It is the thing the business actually builds,
+ * so it gets a section head and cards with the same weight as the goals above.
+ */
+export function Systems({ systems }: { systems: Entry[] }) {
+  if (!systems.length) return null;
+  return (
+    <section id="systems" className="section" aria-labelledby="sysTitle">
+      <div className="mx-auto max-w-shell px-5 lg:px-8">
+        <SectionHead
+          id="sysTitle"
+          eyebrow="Built for you"
+          title="Custom systems and dashboards"
+          sub="Software of your own, not another subscription."
+        />
+        <ul className="system-list">
+          {systems.map((s, i) => (
+            <Reveal as="li" key={s.id} delay={i * 0.06}>
+              <SystemCard system={s} index={i} heading="h3" />
             </Reveal>
           ))}
         </ul>
@@ -186,7 +222,8 @@ export function CaseStudies({ cases }: { cases: Entry[] }) {
 }
 
 /* ---------------- Work ---------------- */
-export function Work({ projects, systems, automations }: { projects: Project[]; systems: Entry[]; automations: Entry[] }) {
+/* `systems` is gone from here: it has its own section further up the page now. */
+export function Work({ projects, automations }: { projects: Project[]; automations: Entry[] }) {
   return (
     <section id="work" className="section" aria-labelledby="workTitle">
       <div className="mx-auto max-w-shell px-5 lg:px-8">
@@ -198,24 +235,6 @@ export function Work({ projects, systems, automations }: { projects: Project[]; 
             <ProjectCard key={p.id} project={p} delay={i * 0.08} heading="h4" />
           ))}
         </div>
-
-        <h3 className="group-label">Custom systems and dashboards</h3>
-        <ul className="system-grid">
-          {systems.map((s, i) => {
-            const card = (
-              <Link href={`/systems/${s.slug}`} className="system-card block h-full">
-                <p className="sys-tag">{s.tag}</p>
-                <h4>{s.title}</h4>
-                <p>{s.short}</p>
-              </Link>
-            );
-            // The first system is always on screen. The rest fade in as they
-            // reach the bottom edge and fade back out when you scroll up.
-            return i === 0
-              ? <li key={s.id}>{card}</li>
-              : <Reveal as="li" key={s.id} repeat>{card}</Reveal>;
-          })}
-        </ul>
 
         <h3 className="group-label">AI automations and integrations</h3>
         <Reveal as="ul" className="auto-grid">

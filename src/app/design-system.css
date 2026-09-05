@@ -333,12 +333,6 @@ h1,h2,h3,h4{ font-family:'General Sans', 'SF Pro Display', -apple-system, sans-s
 }
 @media (min-width:1024px){ .hero-title{ font-size:clamp(52px,4.4vw,72px); } }
 
-.hero-sub{
-  margin-top:12px; max-width:34ch;
-  font-size:15.5px; line-height:1.55; color:var(--ink-2);
-}
-@media (min-width:768px){ .hero-sub{ font-size:18.5px; max-width:44ch; } }
-
 .hero-actions{ display:flex; gap:9px; margin-top:18px; }
 .hero-actions .btn{ flex:1 1 0; min-width:0; padding:0 14px; font-size:14.5px; }
 @media (min-width:768px){ .hero-actions .btn{ flex:0 0 auto; } }
@@ -574,10 +568,9 @@ h1,h2,h3,h4{ font-family:'General Sans', 'SF Pro Display', -apple-system, sans-s
 .goal-icon svg{ width:19px; height:19px; }
 .goal-card h3{ font-size:15px; font-weight:600; letter-spacing:-.02em; line-height:1.25; }
 @media (min-width:768px){ .goal-card h3{ font-size:18px; } }
-.goal-card > p{ margin-top:6px; font-size:13px; color:var(--muted); line-height:1.5; }
 .goal-metric{
   margin:10px 0 10px; padding-top:9px; border-top:1px solid var(--line);
-  font-size:11.5px; color:var(--muted);
+  font-size:11.5px; line-height:1.45; color:var(--muted);
 }
 .goal-metric span{
   display:block; font-family:'General Sans',sans-serif; font-size:19px; font-weight:600;
@@ -832,21 +825,11 @@ h1,h2,h3,h4{ font-family:'General Sans', 'SF Pro Display', -apple-system, sans-s
 .live-link svg{ width:16px; height:16px; transition:transform .25s var(--ease); }
 .live-card:hover .live-link svg{ transform:translate(2px,-2px); }
 
-.system-grid{ display:grid; gap:9px; }
-@media (min-width:640px){ .system-grid{ grid-template-columns:repeat(2,1fr); } }
-@media (min-width:1024px){ .system-grid{ grid-template-columns:repeat(3,1fr); gap:16px; } }
-.system-card{
-  padding:15px 14px; border-radius:var(--r-md); background:#fff;
-  border:1px solid var(--line); box-shadow:var(--shadow-xs);
-  transition:transform .3s var(--ease), box-shadow .3s var(--ease);
-}
-.system-card:hover{ transform:translateY(-3px); box-shadow:var(--shadow-md); }
+/* Systems render as a list — see .system-list in next-additions.css. */
 .sys-tag{
   font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:.07em;
   text-transform:uppercase; color:var(--muted);
 }
-.system-card h4{ margin-top:6px; font-size:16.5px; font-weight:600; letter-spacing:-.025em; }
-.system-card > p:nth-of-type(2){ margin-top:5px; font-size:13px; color:var(--muted); line-height:1.55; }
 
 .chip-row{ display:flex; flex-wrap:wrap; gap:7px; }
 .chip-row li{
@@ -1095,7 +1078,7 @@ h1,h2,h3,h4{ font-family:'General Sans', 'SF Pro Display', -apple-system, sans-s
 
 /* ---------- typography ---------- */
 .hero-title, .section-title, .cta-title{ text-wrap:balance; }
-.hero-sub, .section-sub, .cta-sub{ text-wrap:pretty; }
+.section-sub, .cta-sub{ text-wrap:pretty; }
 .section-title{ letter-spacing:-.038em; }
 .hero-title{ letter-spacing:-.045em; }
 .grad-text{
@@ -1242,10 +1225,6 @@ h1,h2,h3,h4{ font-family:'General Sans', 'SF Pro Display', -apple-system, sans-s
   .goal-icon svg{ width:14px; height:14px; }
   .goal-card h3{ font-size:13.5px; line-height:1.2; letter-spacing:-.025em; }
   /* clamp the blurb so a long one can't make its row taller than the rest */
-  .goal-card > p{
-    margin-top:3px; font-size:11.5px; line-height:1.38;
-    display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden;
-  }
   .goal-metric{ margin:7px 0 0; padding-top:6px; font-size:10.5px; line-height:1.3; }
   .goal-metric span{ font-size:16px; }
   /* the whole card is the link, so the "Explore" label is redundant here —
@@ -1346,20 +1325,6 @@ h1,h2,h3,h4{ font-family:'General Sans', 'SF Pro Display', -apple-system, sans-s
   /* still a comfortable target, just not the full 44px reserve */
   .live-card .live-link{ margin-top:8px; min-height:32px; font-size:11.5px; gap:5px; }
   .live-card .live-link svg{ width:13px; height:13px; }
-  /* title and category tag share the top row, so each card loses a line */
-  .system-card{
-    padding:9px 11px 10px; border-radius:12px;
-    display:grid; grid-template-columns:1fr auto; column-gap:10px; align-content:start;
-  }
-  .sys-tag{ grid-column:2; grid-row:1; align-self:center; text-align:right; font-size:8.8px; }
-  /* /work renders these titles as h3, the home page as h4 */
-  .system-card h3, .system-card h4{
-    grid-column:1; grid-row:1; margin-top:0; font-size:13.5px; line-height:1.2;
-  }
-  .system-card > p:nth-of-type(2){
-    grid-column:1 / -1; grid-row:2; margin-top:3px; font-size:11px; line-height:1.35;
-  }
-  .system-grid{ gap:6px; }
   .chip-row{ gap:6px; }
   .chip-row li{ padding:7px 12px; font-size:12.5px; }
   .auto-grid{ gap:6px; }

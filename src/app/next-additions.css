@@ -227,23 +227,6 @@
 }
 
 /* =========================================================
-   Hero sub — what the agents actually do
-   ---------------------------------------------------------
-   The eyebrow names the category and the headline makes the promise; neither
-   says what is being sold. One line between them carries it, and it is the
-   line the banner underneath is a picture of.
-   ========================================================= */
-.hero-sub{
-  margin-inline: auto;
-  /* one line of 45 characters; the 34ch/44ch defaults broke it into three */
-  max-width: 46ch;
-}
-.hero-sub strong{
-  font-weight: 600; color: var(--ink);
-  font-variant-numeric: tabular-nums;
-}
-
-/* =========================================================
    Phones — the whole hero above the fold
    ---------------------------------------------------------
    The composition is unchanged: agent in the middle, four cards at the
@@ -298,12 +281,6 @@
   }
   /* Two deliberate lines rather than wherever the words happen to break. */
   .hero-title-line{ display: block; }
-
-  .hero-sub{
-    /* 34ch broke it after "report", orphaning "— 24/7." onto its own line */
-    margin-top: 3px; max-width: 46ch;
-    font-size: 12px; line-height: 1.38; text-wrap: balance;
-  }
 
   /* Landscape frame, full width: shorter block, larger cards. */
   .agent-stage{
@@ -447,7 +424,6 @@
    divider on the descenders of "recovery." / "autopilot." / "night.". This is
    the floor the slack is measured from; :not() keeps it off .goal-metric,
    which is also a > p here. */
-.goal-card > p:not(.goal-metric){ margin-bottom: 10px; }
 
 .goal-card{
   /* a wash of the card's own colour, off the corner the icon sits in */
@@ -492,7 +468,6 @@
      across the page — it can afford to be the largest thing on it. */
   .goal-metric span{ font-size: 19px; }
   .goal-card .link-arrow{ margin-top: 7px; }
-  .goal-card > p:not(.goal-metric){ margin-bottom: 7px; }
 }
 
 /* =========================================================
@@ -757,3 +732,412 @@
    Admin sign-in
    ========================================================= */
 .admin-auth-logo{ display: flex; margin: 0 auto 18px; }
+
+
+/* =========================================================
+   Header icon buttons
+   ========================================================= */
+.head-icon{
+  position: relative;
+  display: grid; place-items: center;
+  width: 40px; height: 40px; border-radius: 12px;
+  color: var(--ink-2);
+  border: 1px solid var(--line);
+  background: #fff;
+  transition: color .2s var(--ease-out), border-color .2s var(--ease-out),
+              transform .2s var(--ease-out), background .2s var(--ease-out);
+}
+.head-icon svg{ width: 19px; height: 19px; }
+.head-icon:hover{ color: var(--brand-deep); border-color: #CFE0FA; transform: translateY(-1px); }
+.head-icon:focus-visible{ outline: 2px solid var(--brand); outline-offset: 2px; }
+
+/* The agent gets the brand gradient and a live dot: it is the one control here
+   that starts a conversation rather than moving you around the site. */
+.head-icon-agent{
+  color: #fff; border-color: transparent;
+  background: linear-gradient(140deg, var(--brand), var(--accent));
+  box-shadow: 0 6px 16px -8px rgba(59,130,246,.8);
+}
+.head-icon-agent:hover{ color: #fff; border-color: transparent; }
+.head-icon-dot{
+  position: absolute; top: 6px; right: 6px;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #34D399; border: 1.5px solid #fff;
+}
+@media (prefers-reduced-motion: no-preference){
+  .head-icon-dot{ animation: agent-dot 2.4s ease-in-out infinite; }
+}
+@keyframes agent-dot{
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: .55; transform: scale(.82); }
+}
+
+@media (max-width:400px){
+  /* Logo + two icons + the hamburger is a lot of 390px. */
+  .head-icon{ width: 36px; height: 36px; border-radius: 10px; }
+  .head-icon svg{ width: 17px; height: 17px; }
+  .header-shell{ gap: 6px; }
+}
+
+/* =========================================================
+   Search overlay
+   ========================================================= */
+.ss-overlay{
+  position: fixed; inset: 0; z-index: 120;
+  display: flex; justify-content: center;
+  padding: 12vh 16px 16px;
+  background: rgba(11,18,32,.44);
+  backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+}
+.ss-panel{
+  width: 100%; max-width: 560px; align-self: flex-start;
+  background: #fff; border: 1px solid var(--line); border-radius: 18px;
+  box-shadow: var(--shadow-lg); overflow: hidden;
+}
+.ss-field{ display: flex; align-items: center; gap: 10px; padding: 14px 14px; }
+.ss-field > svg{ width: 18px; height: 18px; color: var(--muted); flex: none; }
+.ss-field input{
+  flex: 1; min-width: 0; border: 0; outline: none;
+  font-size: 16px; color: var(--ink); background: transparent;
+}
+.ss-close{
+  display: grid; place-items: center; width: 30px; height: 30px;
+  border-radius: 8px; color: var(--muted); flex: none;
+}
+.ss-close:hover{ background: var(--soft); color: var(--ink); }
+.ss-close svg{ width: 16px; height: 16px; }
+
+.ss-results{ border-top: 1px solid var(--line); max-height: 56vh; overflow-y: auto; }
+.ss-empty{ padding: 18px 16px; font-size: 13.5px; color: var(--muted); }
+.ss-hit{
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 11px 16px; min-height: 54px;
+}
+.ss-hit.is-active{ background: var(--blue-100); }
+.ss-hit-main{ display: grid; gap: 1px; min-width: 0; }
+.ss-hit-main strong{ font-size: 14.5px; font-weight: 600; letter-spacing: -.02em; color: var(--ink); }
+.ss-hit-main span{
+  font-size: 12.5px; color: var(--muted);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.ss-hit-group{
+  flex: none; font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--brand-deep);
+  background: var(--blue-100); padding: 3px 8px; border-radius: 999px;
+}
+
+/* =========================================================
+   AI agent callback
+   ========================================================= */
+.ac-overlay{
+  position: fixed; inset: 0; z-index: 130;
+  display: grid; place-items: center; padding: 16px;
+  background: rgba(11,18,32,.5);
+  backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+}
+.ac-panel{
+  position: relative; width: 100%; max-width: 400px;
+  padding: 26px 22px 20px; border-radius: 20px;
+  background:
+    radial-gradient(120% 70% at 50% 0%, rgba(59,130,246,.10), transparent 62%),
+    #fff;
+  border: 1px solid var(--line); box-shadow: var(--shadow-lg);
+  text-align: center;
+}
+.ac-close{
+  position: absolute; top: 10px; right: 10px;
+  display: grid; place-items: center; width: 32px; height: 32px;
+  border-radius: 9px; color: var(--muted);
+}
+.ac-close:hover{ background: var(--soft); color: var(--ink); }
+.ac-close svg{ width: 17px; height: 17px; }
+
+.ac-orb{
+  display: grid; place-items: center; width: 54px; height: 54px;
+  margin: 0 auto 12px; border-radius: 50%; color: #fff;
+  background: linear-gradient(140deg, var(--brand), var(--accent));
+  box-shadow: 0 14px 28px -14px rgba(59,130,246,.9);
+}
+.ac-orb svg{ width: 26px; height: 26px; }
+.ac-panel h2{
+  font-family: 'General Sans', sans-serif; font-size: 21px; font-weight: 600;
+  letter-spacing: -.035em; color: var(--ink);
+}
+.ac-lede{ margin: 6px auto 16px; max-width: 32ch; font-size: 13.5px; line-height: 1.5; color: var(--muted); }
+
+.ac-form{ display: grid; gap: 11px; text-align: left; }
+.ac-form label{ display: grid; gap: 5px; }
+.ac-form label span{ font-size: 12.5px; font-weight: 600; color: var(--ink-2); }
+.ac-form input{
+  width: 100%; height: 44px; padding: 0 13px;
+  font-size: 16px;                     /* 16px or iOS zooms the page on focus */
+  border: 1px solid var(--line); border-radius: 11px; background: #fff; color: var(--ink);
+  transition: border-color .2s, box-shadow .2s;
+}
+.ac-form input:focus{
+  outline: none; border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgba(59,130,246,.16);
+}
+.ac-form .btn{ margin-top: 3px; }
+.ac-form .btn:disabled{ opacity: .5; cursor: not-allowed; }
+.ac-error{
+  font-size: 12.5px; color: #B42318;
+  background: #FEF3F2; border: 1px solid #FEE4E2;
+  padding: 8px 10px; border-radius: 9px;
+}
+.ac-fine{ margin-top: 2px; font-size: 11.5px; color: var(--muted); text-align: center; }
+
+.ac-done{ display: grid; gap: 10px; justify-items: center; padding: 6px 0 2px; }
+.ac-tick{
+  display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%;
+  color: #15803D; background: #ECFDF3; border: 1px solid #CBEFD9;
+}
+.ac-tick svg{ width: 26px; height: 26px; }
+.ac-done p{ font-size: 13.5px; color: var(--muted); max-width: 30ch; }
+.ac-done .btn{ margin-top: 6px; }
+
+/* =========================================================
+   Phones: the picture leads, the promise follows
+   ---------------------------------------------------------
+   Visual order only — the h1 stays first in the DOM, where it belongs for a
+   screen reader and for the page's outline. Flex order moves the paint, not
+   the document, and the stage holds nothing focusable, so tab order is
+   unaffected. Desktop keeps its own arrangement.
+   ========================================================= */
+@media (max-width:639px){
+  .hero-visual { order: 1; }
+  .hero-copy   { order: 2; margin-top: 2px; }
+  .hero-actions{ order: 3; }
+  .hero-proof  { order: 4; }
+  .hero-logos  { order: 5; }
+}
+
+/* =========================================================
+   Phones: a shorter bar
+   ---------------------------------------------------------
+   62px of header over a 31px promo bar was 94px of chrome before the page
+   started — a third of what a phone shows above the fold, on every screen,
+   permanently. Nothing is removed; the paddings and the control sizes were
+   desktop numbers being worn on a phone.
+
+   The lockup shrinks with --logo-size rather than losing its wordmark, so the
+   name is still there and the bar still fits the two icons and the menu.
+   ========================================================= */
+@media (max-width:767px){
+  .promo-bar{ font-size: 11.5px; }
+  .promo-shell{ padding: 5px 14px; }
+
+  .header-shell{ padding: 5px 13px; gap: 7px; }
+  .site-header .brand{ min-height: 38px; }
+  .site-header .brand .inline-flex{ --logo-size: 27px; }
+
+  .head-icon{ width: 34px; height: 34px; border-radius: 10px; }
+  .head-icon svg{ width: 17px; height: 17px; }
+  .head-icon-dot{ top: 5px; right: 5px; width: 6px; height: 6px; }
+
+  .site-header .nav-toggle{ width: 36px; height: 36px; }
+  .site-header .nav-toggle svg{ width: 20px; height: 20px; }
+}
+
+@media (max-width:360px){
+  /* Wordmark, two icons and a menu inside 360px: the gaps go first. */
+  .header-shell{ padding: 5px 10px; gap: 5px; }
+  .site-header .brand .inline-flex{ --logo-size: 24px; }
+  .head-icon{ width: 32px; height: 32px; }
+}
+
+/* =========================================================
+   Promo bar: a free audit, and something to click
+   ---------------------------------------------------------
+   It was a discount code inside a plain div — nothing to click, and a code is
+   the least interesting thing on offer. It points at /contact now, which is
+   where every other call to action on the page already goes, so the strip
+   finally earns the ~26px it takes off every screen.
+
+   The tail drops below 480px rather than wrapping the bar onto two lines: the
+   offer is the half that matters, the reassurance is the half that can wait.
+   ========================================================= */
+.promo-shell{ transition: background .2s var(--ease-out); }
+.promo-shell:hover{ background: rgba(255,255,255,.45); }
+.promo-shell:focus-visible{ outline: 2px solid var(--brand); outline-offset: -2px; }
+.promo-shell strong{ font-weight: 600; color: var(--ink); }
+.promo-tail{ color: var(--muted); }
+.promo-arrow{
+  width: 14px; height: 14px; flex: none; color: var(--brand-deep);
+  transition: transform .2s var(--ease-out);
+}
+.promo-shell:hover .promo-arrow{ transform: translateX(3px); }
+
+@media (max-width:479px){
+  .promo-sep, .promo-tail{ display: none; }
+}
+
+/* =========================================================
+   Goal cards: a watermark that says what the card is
+   ---------------------------------------------------------
+   A dollar sign behind "Increase revenue", a bolt behind "Automate
+   operations", a speech bubble behind support, a dial behind decisions. The
+   grid stops being four white boxes and becomes four things, and it reads
+   before the title does.
+
+   Two details are load-bearing:
+
+   Stacking. A positioned element paints above its non-positioned siblings
+   whatever the source order, so the watermark alone would sit on top of the
+   text. The card's own children are lifted to z-index 1 to put it back
+   underneath — z-index:-1 on the motif would work too, but it would drop
+   behind the card's background as well and vanish.
+
+   Opacity. 0.07 is about the ceiling before the metric over it starts
+   fighting for contrast, and it is why each motif is one bold shape: at this
+   strength anything detailed turns to a smudge.
+   ========================================================= */
+.goal-card{ overflow: hidden; }
+
+.goal-motif{
+  position: absolute;
+  /* Barely cropped now. The old motif was one glyph blown up to 62% and hung
+     half off the corner; a small scene has to sit almost fully inside the card
+     or the parts that carry the meaning are the parts that get cut. */
+  right: 10px;
+  bottom: 10px;
+  width: 42%;
+  max-width: 132px;
+  height: auto;
+  z-index: 0;
+  color: var(--tone, var(--brand));
+  opacity: .085;
+  pointer-events: none;
+  transition: opacity .4s var(--ease-out), transform .5s var(--ease-out);
+}
+
+/* Everything else in the card sits above it. */
+.goal-card > *:not(.goal-motif){ position: relative; z-index: 1; }
+
+.goal-card:hover .goal-motif{
+  opacity: .15;
+  transform: translate(-3px, -3px) scale(1.05);
+}
+
+@media (prefers-reduced-motion: reduce){
+  .goal-motif{ transition: none; }
+  .goal-card:hover .goal-motif{ transform: none; }
+}
+
+@media (max-width:639px){
+  /* Two per row, so the card is half the width and the motif needs to be a
+     smaller share of it or it runs under the metric. */
+  /* Two per row, so the card is half the width; the scene keeps its size
+     rather than its share, or it shrinks past legibility. */
+  .goal-motif{ width: 50%; right: 8px; bottom: 8px; opacity: .09; }
+}
+
+/* =========================================================
+   Goal card: a floor under the title
+   ---------------------------------------------------------
+   .goal-metric carries margin-top:auto so the metric block pins to the card's
+   foot and the row lines up. An auto margin collapses to nothing when there is
+   no slack, though, and with the blurb removed there is none on a phone — the
+   divider landed hard against the title and read as an underline on it.
+   The blurb's own margin used to be this gap; now the title carries it.
+   ========================================================= */
+.goal-card h3{ margin-bottom: 13px; }
+@media (max-width:639px){ .goal-card h3{ margin-bottom: 9px; } }
+
+
+/* =========================================================
+   Custom systems and dashboards — a list
+   ---------------------------------------------------------
+   Four systems, a line each. That is a list, and boxing every one of them was
+   spending a border, a shadow and two lots of padding to say what a divider
+   says for a hairline.
+
+   Each row keeps the tone of what it is — green for finance, violet for AI,
+   amber for logistics, blue for analytics — on the icon, the tag and the rail
+   that wipes in from the left on hover. The colour comes from the tag, so it
+   means something rather than decorating.
+   ========================================================= */
+.system-list{
+  display: grid;
+  border-top: 1px solid var(--line);
+}
+.system-list > li{ border-bottom: 1px solid var(--line); }
+
+.system-row{
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 13px 12px 13px 14px;
+  transition: background .25s var(--ease-out);
+}
+/* the rail: 0 to 3px on hover, in the row's own tone */
+.system-row::before{
+  content: "";
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px; border-radius: 0 3px 3px 0;
+  background: var(--tone, var(--brand));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .25s var(--ease-out);
+}
+.system-row:hover{ background: color-mix(in srgb, var(--tone, var(--brand)) 5%, #fff); }
+.system-row:hover::before{ transform: scaleX(1); }
+.system-row:focus-visible{ outline: 2px solid var(--brand); outline-offset: -2px; }
+
+.sys-icon{
+  display: grid; place-items: center; flex: none;
+  width: 34px; height: 34px; border-radius: 11px;
+  color: var(--tone, var(--brand));
+  background: color-mix(in srgb, var(--tone, var(--brand)) 12%, #fff);
+  border: 1px solid color-mix(in srgb, var(--tone, var(--brand)) 22%, #fff);
+  transition: transform .25s var(--ease-out);
+}
+.sys-icon svg{ width: 17px; height: 17px; }
+.system-row:hover .sys-icon{ transform: scale(1.06); }
+
+.sys-body{ flex: 1; min-width: 0; display: grid; gap: 1px; }
+.sys-body h3,
+.sys-body h4{
+  font-size: 15.5px; font-weight: 600; letter-spacing: -.025em; color: var(--ink);
+  line-height: 1.25;
+}
+.sys-short{
+  font-size: 12.8px; line-height: 1.45; color: var(--muted);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+/* Tag on the right, so a wide row is anchored at both ends instead of
+   trailing off into empty space. */
+.system-row .sys-tag{
+  flex: none;
+  color: color-mix(in srgb, var(--tone, var(--brand)) 72%, var(--ink));
+  font-size: 9.5px;
+}
+
+.sys-go{
+  display: grid; place-items: center; flex: none;
+  width: 26px; height: 26px; border-radius: 50%;
+  color: var(--tone, var(--brand));
+  background: color-mix(in srgb, var(--tone, var(--brand)) 10%, #fff);
+  transition: transform .25s var(--ease-out);
+}
+.sys-go svg{ width: 14px; height: 14px; }
+.system-row:hover .sys-go{ transform: translateX(3px); }
+
+@media (max-width:639px){
+  .system-row{ gap: 10px; padding: 10px 8px 10px 10px; }
+  .sys-icon{ width: 30px; height: 30px; border-radius: 9px; }
+  .sys-icon svg{ width: 15px; height: 15px; }
+  .sys-body h3, .sys-body h4{ font-size: 14px; }
+  .sys-short{ font-size: 11.8px; }
+  /* The icon already carries the category colour, and the row has no width to
+     spare for a second label once the title and the arrow have theirs. */
+  .system-row .sys-tag{ display: none; }
+  .sys-go{ width: 24px; height: 24px; }
+  .sys-go svg{ width: 13px; height: 13px; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .system-row, .system-row::before, .sys-icon, .sys-go{ transition: none; }
+  .system-row:hover .sys-icon, .system-row:hover .sys-go{ transform: none; }
+}

@@ -18,7 +18,7 @@ import { Icon } from '@/components/Icon';
 export function ReplyActions({
   email, name, phone,
 }: {
-  email: string;
+  email: string | null;
   name: string;
   phone?: string | null;
 }) {
@@ -29,20 +29,25 @@ export function ReplyActions({
     `Hi ${name.split(' ')[0] || 'there'},\n\n` +
     `Thanks for getting in touch with StarSolution.ai.\n\n`;
 
-  const gmail =
-    'https://mail.google.com/mail/?view=cm&fs=1'
-    + `&to=${encodeURIComponent(email)}`
-    + `&su=${encodeURIComponent(subject)}`
-    + `&body=${encodeURIComponent(body)}`;
+  const gmail = email
+    ? 'https://mail.google.com/mail/?view=cm&fs=1'
+      + `&to=${encodeURIComponent(email)}`
+      + `&su=${encodeURIComponent(subject)}`
+      + `&body=${encodeURIComponent(body)}`
+    : null;
 
-  const mailto =
-    `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  const mailto = email
+    ? `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    : null;
 
   const digits = (phone ?? '').replace(/[^\d]/g, '');
+  /* Whatever there is to copy: the address if we have one, the number if the
+     lead came from the callback widget, which collects nothing else. */
+  const copyValue = email || phone || '';
 
   const copy = async () => {
     try {
-      await navigator.clipboard.writeText(email);
+      await navigator.clipboard.writeText(copyValue);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
@@ -53,34 +58,46 @@ export function ReplyActions({
 
   return (
     <div className="admin-side-actions">
-      <a
-        href={gmail}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="btn btn-primary btn-sm w-full"
-      >
-        <Icon name="mail" className="h-4 w-4" /> Reply in Gmail
-      </a>
+      {gmail && (
+        <a
+          href={gmail}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn btn-primary btn-sm w-full"
+        >
+          <Icon name="mail" className="h-4 w-4" /> Reply in Gmail
+        </a>
+      )}
 
       {digits && (
         <a
           href={`https://wa.me/${digits}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="btn btn-ghost btn-sm w-full"
+          className={`btn btn-sm w-full ${gmail ? 'btn-ghost' : 'btn-primary'}`}
         >
           <Icon name="whatsapp" className="h-4 w-4 text-[#25D366]" /> WhatsApp
         </a>
       )}
 
-      <button type="button" onClick={copy} className="btn btn-ghost btn-sm w-full">
-        <Icon name={copied ? 'check' : 'quote'} className="h-4 w-4" />
-        {copied ? 'Address copied' : 'Copy email address'}
-      </button>
+      {digits && (
+        <a href={`tel:${digits}`} className="btn btn-ghost btn-sm w-full">
+          <Icon name="phone" className="h-4 w-4" /> Call {phone}
+        </a>
+      )}
 
-      <a href={mailto} className="admin-side-alt">
-        Or open in your mail app
-      </a>
+      {copyValue && (
+        <button type="button" onClick={copy} className="btn btn-ghost btn-sm w-full">
+          <Icon name={copied ? 'check' : 'quote'} className="h-4 w-4" />
+          {copied ? 'Copied' : email ? 'Copy email address' : 'Copy phone number'}
+        </button>
+      )}
+
+      {mailto && (
+        <a href={mailto} className="admin-side-alt">
+          Or open in your mail app
+        </a>
+      )}
     </div>
   );
 }

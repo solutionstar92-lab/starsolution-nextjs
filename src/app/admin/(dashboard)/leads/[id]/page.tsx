@@ -72,7 +72,11 @@ export default async function LeadDetailPage({ params }: { params: { id: string 
               <dl className="admin-facts">
                 <div>
                   <dt>Email</dt>
-                  <dd><a href={`mailto:${lead.email}`}>{lead.email}</a></dd>
+                  <dd>
+                    {lead.email
+                      ? <a href={`mailto:${lead.email}`}>{lead.email}</a>
+                      : <span className="admin-muted">Not given — callback request</span>}
+                  </dd>
                 </div>
                 <div>
                   <dt>Phone</dt>

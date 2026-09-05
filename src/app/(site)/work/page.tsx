@@ -4,6 +4,7 @@ import { PageHead } from '@/components/PageHead';
 import { Reveal } from '@/components/Reveal';
 import { Icon } from '@/components/Icon';
 import { ProjectCard } from '@/components/ProjectCard';
+import { SystemCard } from '@/components/ui/SystemCard';
 import { autoIcon, autoTone } from '@/components/sections';
 import { getProjects, getSystems, getAutomations } from '@/lib/content';
 
@@ -29,14 +30,10 @@ export default async function WorkIndexPage() {
           </div>
 
           <h2 className="group-label">Custom systems and dashboards</h2>
-          <ul className="system-grid">
+          <ul className="system-list">
             {systems.map((s, i) => (
               <Reveal as="li" key={s.id} delay={i * 0.05}>
-                <Link href={`/systems/${s.slug}`} className="system-card block h-full">
-                  <p className="sys-tag">{s.tag}</p>
-                  <h3>{s.title}</h3>
-                  <p>{s.short}</p>
-                </Link>
+                <SystemCard system={s} index={i} heading="h3" />
               </Reveal>
             ))}
           </ul>
