@@ -1243,7 +1243,15 @@
    rail's inner track is `width:max-content`, which would otherwise let each
    card take as much as its longest paragraph wants.
    ========================================================= */
-.live-rail > .rail-inner > .live-card{ width:min(84vw, 340px); }
+/* The width is written as "whatever is left after the peek" rather than as a
+   share of the screen. At 84vw the second card showed 31px of itself on a small
+   phone and 57px on a large one — present, but easy to read as the first card
+   just being cropped. Subtracting a fixed slice instead means the same
+   deliberate sliver of the next project is showing before anyone scrolls, at
+   every phone size: enough of a card edge to be a card, not a stray line.
+
+   78px = the rail's 18px padding + the 8px gap + a 52px slice. */
+.live-rail > .rail-inner > .live-card{ width:min(calc(100vw - 78px), 340px); }
 @media (min-width:768px){ .live-rail > .rail-inner > .live-card{ width:360px; } }
 @media (min-width:1024px){ .live-rail > .rail-inner > .live-card{ width:392px; } }
 
