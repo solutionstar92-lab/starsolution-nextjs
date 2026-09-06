@@ -1229,3 +1229,25 @@
      axis is still left to the pointer handlers that do the dragging. */
   .rr-handle{ touch-action: pan-y; }
 }
+
+/* =========================================================
+   Live websites: a rail, not a stack
+   ---------------------------------------------------------
+   In the grid these cards were a single column on a phone and two from 768px
+   up. Each one is a before/after frame plus a title, a paragraph and a
+   write-up that expands in place, so stacked they put most of a screen between
+   one project and the next and the automations below them fell off the end of
+   the section. Sideways, the set reads as a set.
+
+   The card has to be told a width here: in the grid the track sized it, and a
+   rail's inner track is `width:max-content`, which would otherwise let each
+   card take as much as its longest paragraph wants.
+   ========================================================= */
+.live-rail > .rail-inner > .live-card{ width:min(84vw, 340px); }
+@media (min-width:768px){ .live-rail > .rail-inner > .live-card{ width:360px; } }
+@media (min-width:1024px){ .live-rail > .rail-inner > .live-card{ width:392px; } }
+
+/* Cards size themselves rather than stretching to the tallest. "Read about
+   this project" expands one card in place; with the flex default every other
+   card in the rail would grow with it and hold the empty space. */
+.live-rail > .rail-inner{ align-items:flex-start; }

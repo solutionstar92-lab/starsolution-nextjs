@@ -25,6 +25,10 @@ export function Rail({
   const [active, setActive] = React.useState(0);
   const [count, setCount] = React.useState(0);
   const [edges, setEdges] = React.useState({ start: true, end: false });
+  /* Whether there is anything to page through at this width. The live-websites
+     rail holds two cards, which fit a desktop screen side by side, and a pair
+     of permanently greyed-out arrows above them is just furniture. */
+  const [overflows, setOverflows] = React.useState(true);
 
   const cards = React.useCallback(
     () => Array.from(railRef.current?.querySelectorAll<HTMLElement>('.rail-inner > *') ?? []),
@@ -51,6 +55,7 @@ export function Rail({
       if (d < bestDist) { bestDist = d; best = i; }
     });
     setActive(best);
+    setOverflows(rail.scrollWidth > rail.clientWidth + 2);
     setEdges({
       start: rail.scrollLeft <= 2,
       end: rail.scrollLeft >= rail.scrollWidth - rail.clientWidth - 2,
@@ -80,14 +85,19 @@ export function Rail({
 
   return (
     <>
-      <div className="slider-nav" role="group" aria-label={`${label} navigation`}>
-        <button type="button" className="round-btn" onClick={() => nudge(-1)} disabled={edges.start} aria-label={`Previous ${label}`}>
-          <Icon name="left" />
-        </button>
-        <button type="button" className="round-btn" onClick={() => nudge(1)} disabled={edges.end} aria-label={`Next ${label}`}>
-          <Icon name="right" />
-        </button>
-      </div>
+      {/* Not `hidden`: .slider-nav sets display:flex from 768px up, and an
+          author rule beats the UA stylesheet's [hidden], so the attribute alone
+          would leave the arrows on screen. */}
+      {overflows && (
+        <div className="slider-nav" role="group" aria-label={`${label} navigation`}>
+          <button type="button" className="round-btn" onClick={() => nudge(-1)} disabled={edges.start} aria-label={`Previous ${label}`}>
+            <Icon name="left" />
+          </button>
+          <button type="button" className="round-btn" onClick={() => nudge(1)} disabled={edges.end} aria-label={`Next ${label}`}>
+            <Icon name="right" />
+          </button>
+        </div>
+      )}
 
       <div
         className={`rail ${className}`}
@@ -105,7 +115,7 @@ export function Rail({
         <div className="rail-inner">{children}</div>
       </div>
 
-      {showDots && count > 1 && (
+      {showDots && count > 1 && overflows && (
         <div className="rail-dots" role="tablist" aria-label={`${label} position`}>
           {Array.from({ length: count }).map((_, i) => (
             <button

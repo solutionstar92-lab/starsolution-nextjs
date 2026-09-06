@@ -281,11 +281,19 @@ export function Work({ projects, automations }: { projects: Project[]; automatio
         <SectionHead id="workTitle" eyebrow="Portfolio" title="Our work and projects" sub="Websites, systems and automations." />
 
         <h3 className="group-label">Live websites</h3>
-        <div className="live-grid">
-          {projects.map((p, i) => (
-            <ProjectCard key={p.id} project={p} delay={i * 0.08} heading="h4" />
-          ))}
-        </div>
+      </div>
+      {/* A rail rather than a stack. Each card is a tall thing — a before/after
+          frame, a title, a paragraph and an expandable write-up — so stacked
+          they pushed the automations below them most of a screen apart per
+          project. Side by side, the set reads as a set. Rail is the same
+          component the case studies use, so the arrows, dots, keyboard and
+          snapping are the ones already on the page. */}
+      <Rail id="live" label="Live websites" className="live-rail">
+        {projects.map((p, i) => (
+          <ProjectCard key={p.id} project={p} delay={i * 0.08} heading="h4" />
+        ))}
+      </Rail>
+      <div className="mx-auto max-w-shell px-5 lg:px-8">
 
         <h3 className="group-label">AI automations and integrations</h3>
         <Reveal as="ul" className="auto-grid">
