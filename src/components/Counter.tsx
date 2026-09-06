@@ -24,7 +24,13 @@ export function Counter({ value, decimals = 0, prefix = '', suffix = '', classNa
   React.useEffect(() => {
     if (!inView) return;
     if (reduce) { setShown(value); return; }
-    if (started.current === (runKey ?? 'once') && runKey === undefined) return;
+    // Snap, do not bail. The cleanup below cancels the rAF whenever this effect
+    // re-runs — and with once:false, useInView re-runs it every time the element
+    // crosses the threshold. The old guard returned early on that second pass,
+    // so a count interrupted mid-flight was left frozen short of its target:
+    // 76 where the card claims 85. Showing the final value instead means the
+    // number is either fully animated or simply correct, never neither.
+    if (started.current === (runKey ?? 'once')) { setShown(value); return; }
     started.current = runKey ?? 'once';
 
     let frame = 0;

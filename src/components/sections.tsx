@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import { Icon } from './Icon';
+import { Counter } from './Counter';
+import { CaseVisual } from './ui/CaseVisual';
 import { Reveal } from './Reveal';
 import { Rail } from './Rail';
 import { ProjectCard } from './ProjectCard';
@@ -11,6 +13,9 @@ import type { Entry, Project, Testimonial } from '@/lib/types';
    schema gained the columns — in Supabase too. These remain as a fallback for a
    row that arrives without them, but note it is a guess from array position, so
    it only lands correctly while the order matches the ring below. */
+/** One per process step: analysis, craft, growth. */
+const STEP_TONES = ['#3B82F6', '#7C6CFF', '#34D399'];
+
 const AUTO_TONES = ['#3B82F6', '#34D399', '#FBBF24', '#F472B6', '#38BDF8', '#7C6CFF'];
 const AUTO_ICONS = ['revenue', 'whatsapp', 'package', 'play', 'bot', 'build'];
 export const autoTone = (i: number) => AUTO_TONES[i % AUTO_TONES.length];
@@ -144,7 +149,16 @@ export function Process({ steps, log, stats, bare = false }: {
             h1 and these, so they step up to keep the outline contiguous. */}
         <ol className="steps">
           {steps.map((s, i) => (
-            <Reveal as="li" key={s.num} className="step" delay={i * 0.08}>
+            <Reveal
+              as="li"
+              key={s.num}
+              className="step"
+              delay={i * 0.08}
+              /* Examine, build, grow — blue, violet, green. The steps are a
+                 sequence, so the colour moves with them rather than three
+                 identical pale-blue chips saying nothing about order. */
+              style={{ ['--tone' as string]: STEP_TONES[i % STEP_TONES.length] }}
+            >
               <p className="step-num">{s.num}</p>
               <span className="step-icon"><Icon name={s.icon} /></span>
               {bare ? <h2>{s.title}</h2> : <h3>{s.title}</h3>}
@@ -179,22 +193,59 @@ export function Process({ steps, log, stats, bare = false }: {
 }
 
 /* ---------------- Case studies ---------------- */
+/**
+ * A case KPI is one string covering several shapes — "85", "18K", "4.2",
+ * "+280" — so the number has to be pulled out of it before it can be counted
+ * up, along with whatever sits either side and how many decimals to hold.
+ *
+ * Returns null for anything without a number in it. These rows come from
+ * Supabase, so a KPI reading "Sold out" is a thing someone can type, and it
+ * should render as itself rather than as NaN.
+ */
+function parseKpi(raw?: string) {
+  const m = /^([^\d]*)(\d+(?:\.\d+)?)(.*)$/.exec((raw ?? '').trim());
+  if (!m) return null;
+  const [, prefix, num, suffix] = m;
+  const dot = num.indexOf('.');
+  return { prefix, value: Number(num), decimals: dot < 0 ? 0 : num.length - dot - 1, suffix };
+}
+
+/** The KPI, counting up the first time the card is scrolled into view. */
+function CaseKpi({ kpi }: { kpi?: string }) {
+  const parsed = parseKpi(kpi);
+  if (!parsed) return <>{kpi}</>;
+  return (
+    <Counter
+      value={parsed.value}
+      decimals={parsed.decimals}
+      prefix={parsed.prefix}
+      suffix={parsed.suffix}
+    />
+  );
+}
+
+
 export function CaseCard({ c }: { c: Entry }) {
   return (
     <article className="case-card">
       <Link href={`/case-studies/${c.slug}`} className="block h-full">
         <div className="case-visual" style={{ ['--c1' as string]: c.c1, ['--c2' as string]: c.c2 }}>
-          <p className="case-kpi">{c.kpi}<span>{c.kpiUnit}</span></p>
+          {/* The unit needs its own class: .case-kpi span would otherwise also
+              match the span Counter renders, and shrink the number to unit size. */}
+          <p className="case-kpi"><CaseKpi kpi={c.kpi} /><span className="case-kpi-unit">{c.kpiUnit}</span></p>
           <p className="case-kpi-label">{c.kpiLabel}</p>
-          <svg className="case-spark" viewBox="0 0 200 60" aria-hidden="true">
-            <polyline points="0,52 28,48 56,42 84,34 112,26 140,16 168,10 200,4" />
-          </svg>
+          {/* One drawing per metric, not one for all five — see CaseVisual. */}
+          <CaseVisual parts={[c.kpiLabel, c.kpiUnit, c.before, c.after, c.type]} />
         </div>
         <div className="case-body">
           <p className="case-type">{c.type}</p>
           <div className="case-compare">
             <div><span>Before</span><strong>{c.before}</strong></div>
-            <Icon name="arrow" className="case-arrow" />
+            {/* A rising zigzag, not a flat one: the row is a before/after, so
+                the arrow between them should say the number went up rather
+                than merely pointing at the next box. `revenue` is already that
+                shape — a new glyph here would be a near-duplicate. */}
+            <Icon name="revenue" className="case-arrow" />
             <div><span>After</span><strong>{c.after}</strong></div>
           </div>
           <p className="case-delta">{c.delta} <em>{c.period}</em></p>

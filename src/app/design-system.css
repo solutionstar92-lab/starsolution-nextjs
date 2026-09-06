@@ -743,7 +743,7 @@ h1,h2,h3,h4{ font-family:'General Sans', 'SF Pro Display', -apple-system, sans-s
   font-family:'General Sans',sans-serif; font-size:31px; font-weight:600;
   letter-spacing:-.045em; line-height:1; color:var(--ink);
 }
-.case-kpi span{ font-size:14px; color:var(--muted); letter-spacing:-.01em; }
+.case-kpi .case-kpi-unit{ font-size:14px; color:var(--muted); letter-spacing:-.01em; }
 .case-kpi-label{ margin-top:4px; font-size:11.5px; color:var(--muted); }
 .case-spark{
   position:absolute; right:-4px; bottom:0; width:62%; height:58px;
@@ -1286,7 +1286,7 @@ h1,h2,h3,h4{ font-family:'General Sans', 'SF Pro Display', -apple-system, sans-s
   .case-card{ width:min(76vw,258px); border-radius:14px; }
   .case-visual{ padding:11px 12px 12px; }
   .case-kpi{ font-size:24px; }
-  .case-kpi span{ font-size:11px; }
+  .case-kpi .case-kpi-unit{ font-size:11px; }
   .case-kpi-label{ margin-top:2px; font-size:10px; }
   .case-spark{ height:42px; width:58%; }
   .case-body{ padding:11px; }

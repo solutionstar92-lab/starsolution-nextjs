@@ -44,15 +44,23 @@ export const metadata: Metadata = {
  */
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`js ${jakarta.variable}`}>
+    // suppressHydrationWarning covers this one element, one level deep: the
+    // pre-paint script below sets --splash on <html>, so the DOM React hydrates
+    // carries an attribute the server never rendered. This is the documented
+    // escape hatch for that, and the same one theme scripts use.
+    <html lang="en" className={`js ${jakarta.variable}`} suppressHydrationWarning>
       <head>
-        {/* Runs before first paint: marks <html> when the splash has already
-            been shown this session, so the CSS below can hide it with no flash.
+        {/* Runs before first paint: sets --splash on <html> when the splash has
+            already been shown this session, so the CSS can hide it with no flash.
+            A custom property rather than a class on purpose — className on <html>
+            is rendered by the layout and hydrated against, so adding to it here
+            made the client and server disagree and React logged a mismatch on
+            every load after the first.
             Kept to one try/catch — sessionStorage throws, not returns null, in
             some privacy modes, and an exception here would block the parser. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: "try{if(sessionStorage.getItem('ss-splash-seen'))document.documentElement.classList.add('splash-done')}catch(e){}",
+            __html: "try{if(sessionStorage.getItem('ss-splash-seen'))document.documentElement.style.setProperty('--splash','none')}catch(e){}",
           }}
         />
         <link rel="preconnect" href="https://api.fontshare.com" crossOrigin="" />

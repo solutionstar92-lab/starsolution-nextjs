@@ -1165,19 +1165,19 @@
   "process": [
     {
       "num": "01",
-      "icon": "search",
+      "icon": "audit",
       "title": "Free audit",
       "text": "Your store, ads and workflows — analyzed free."
     },
     {
       "num": "02",
-      "icon": "build",
+      "icon": "layers",
       "title": "We build",
       "text": "Custom automation, live in 14 days."
     },
     {
       "num": "03",
-      "icon": "rocket",
+      "icon": "grow",
       "title": "You grow",
       "text": "Orders and revenue climb on autopilot."
     }

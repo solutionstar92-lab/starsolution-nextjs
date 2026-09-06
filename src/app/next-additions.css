@@ -706,7 +706,9 @@
    ========================================================= */
 .site-splash{
   position: fixed; inset: 0; z-index: 200;
-  display: grid; place-items: center;
+  /* var(): the pre-paint guard in the root layout sets --splash to none on
+     <html> once this session has already seen it. */
+  display: var(--splash, grid); place-items: center;
   background:
     radial-gradient(58% 42% at 50% 42%, rgba(6,182,255,.13), transparent 70%),
     #0B1026;
@@ -717,10 +719,6 @@
   0%, 68%   { opacity: 1; }
   100%      { opacity: 0; visibility: hidden; }
 }
-
-/* Already seen this session — hidden before the first paint by the inline
-   script in the root layout, so there is no flash to fade. */
-.splash-done .site-splash{ display: none; }
 
 /* A full-screen animation is exactly what this setting is asking us not to do,
    and it is CSS rather than JS so it applies before hydration too. */
@@ -1140,4 +1138,94 @@
 @media (prefers-reduced-motion: reduce){
   .system-row, .system-row::before, .sys-icon, .sys-go{ transition: none; }
   .system-row:hover .sys-icon, .system-row:hover .sys-go{ transform: none; }
+}
+
+/* =========================================================
+   Process steps: the sequence has a colour
+   ---------------------------------------------------------
+   Three identical pale-blue chips said nothing about order. Blue to violet to
+   green moves with the steps — examine, build, grow — and the number above
+   each one takes the same tone, so the eye reads 01 → 02 → 03 as a journey
+   rather than three cards that happen to be adjacent.
+   ========================================================= */
+.step-icon{
+  color: var(--tone, var(--brand-deep));
+  background:
+    linear-gradient(150deg,
+      color-mix(in srgb, var(--tone, var(--brand)) 15%, #fff),
+      color-mix(in srgb, var(--tone, var(--brand)) 7%, #fff));
+  border-color: color-mix(in srgb, var(--tone, var(--brand)) 20%, #fff);
+  box-shadow: 0 6px 16px -10px color-mix(in srgb, var(--tone, var(--brand)) 90%, transparent);
+  transition: transform .3s var(--ease-out), box-shadow .3s var(--ease-out);
+}
+.step:hover .step-icon{
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 10px 20px -10px color-mix(in srgb, var(--tone, var(--brand)) 90%, transparent);
+}
+.step-num{ color: color-mix(in srgb, var(--tone, var(--brand)) 78%, var(--ink)); }
+.step:hover{ border-color: color-mix(in srgb, var(--tone, var(--brand)) 32%, var(--line)); }
+
+@media (prefers-reduced-motion: reduce){
+  .step-icon{ transition: none; }
+  .step:hover .step-icon{ transform: none; }
+}
+
+/* =========================================================
+   Case study: the before/after arrow
+   ---------------------------------------------------------
+   It is a rising trend now, so it takes the same green as the delta beneath
+   it — the two are saying the same thing, and brand blue made the arrow read
+   as navigation rather than as growth.
+   ========================================================= */
+.case-arrow{ color: #16A34A; }
+
+
+/* =========================================================
+   Case study visuals
+   ---------------------------------------------------------
+   Weights, not colours: every shape inherits --c1 from the card it sits in, so
+   a card keeps one colour and only the drawing changes. Stroke widths live
+   here rather than as presentation attributes because .case-spark sets
+   stroke-width in CSS, and a stylesheet beats an attribute every time — the
+   attribute would simply be ignored.
+   ========================================================= */
+.cv-head{ stroke-width: 2.6; }
+
+/* Round caps turn a bare vertical line into a column. */
+.cv-bars{ stroke-width: 7; stroke-linecap: round; }
+.cv-dashboard .cv-bars{ stroke-width: 5.5; }
+
+/* The funnel's spout: outlines at this size read as rings, so they fill. */
+.cv-funnel circle{ fill: var(--c1); stroke: none; }
+.cv-dot{ fill: var(--c1); stroke: none; }
+
+/* The panel is the frame, not the subject. */
+.cv-dashboard rect{ opacity: .55; }
+
+/* =========================================================
+   Portfolio comparison: one scroll, not two competing
+   ---------------------------------------------------------
+   Measured before changing anything. A vertical swipe on the live side moved
+   the capture 108px and the page 0; a swipe on the drag handle moved neither,
+   because the handle needs touch-action:none to own its horizontal drag and
+   that killed vertical panning with it. Two thirds of the frame was a trap and
+   a 44px column was a dead zone.
+
+   On touch the scroller goes inert and is driven from the page instead (see
+   the effect in RealResults), and the handle allows vertical panning while
+   still owning the horizontal axis. Every vertical gesture in this section now
+   belongs to the page, and the storefront still walks past as you go.
+
+   Pointer-fine devices are untouched: the wheel still scrolls the capture and
+   chains to the page at its edges.
+   ========================================================= */
+@media (hover: none){
+  .rr-slider .af-shot-scroll{
+    overflow: hidden;
+    /* the page owns the vertical axis here */
+    touch-action: pan-y;
+  }
+  /* pan-y, not none: the browser keeps vertical scrolling, and the horizontal
+     axis is still left to the pointer handlers that do the dragging. */
+  .rr-handle{ touch-action: pan-y; }
 }

@@ -12,6 +12,7 @@ export function Reveal({
   delay = 0,
   y = 18,
   className,
+  style,
   as = 'div',
   repeat = false,
 }: {
@@ -19,6 +20,8 @@ export function Reveal({
   delay?: number;
   y?: number;
   className?: string;
+  /** Forwarded to the rendered element — the process steps set --tone here. */
+  style?: React.CSSProperties;
   as?: 'div' | 'section' | 'article' | 'li' | 'header' | 'dl' | 'ul' | 'nav' | 'figure';
   /** Re-run the reveal on every pass, so scrolling back up hides it again. */
   repeat?: boolean;
@@ -28,6 +31,7 @@ export function Reveal({
   return (
     <Tag
       className={className}
+      style={style}
       initial={reduce ? false : { opacity: 0, y, scale: 0.995 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={

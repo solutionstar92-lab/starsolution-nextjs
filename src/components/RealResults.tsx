@@ -85,6 +85,55 @@ export function Comparison({ project }: { project: Project }) {
     if (e.key === 'End') { setPos(MAX); e.preventDefault(); }
   };
 
+  /*
+   * Touch devices: the capture pans with the page instead of against it.
+   *
+   * The frame is ~306x204 in the middle of a phone screen and the capture
+   * inside it is 4330px tall — 21 screenfuls. A vertical swipe anywhere on the
+   * live side was being taken by that scroller, and overscroll chaining could
+   * not save it because you would have to swipe twenty-one screens to reach an
+   * edge. So the page simply stopped moving under your thumb.
+   *
+   * Rather than pick a winner, the gesture stops being contested: the scroller
+   * is inert on touch (see the CSS) and its position is driven by how far the
+   * card has travelled through the viewport. One ordinary page scroll now
+   * moves down the page and walks down the storefront at the same time.
+   *
+   * Pointer-fine devices keep the wheel behaviour they had.
+   */
+  React.useEffect(() => {
+    const el = boxRef.current;
+    if (!el) return;
+    if (!window.matchMedia('(hover: none)').matches) return;
+    const scroller = el.querySelector<HTMLElement>('.rr-after .af-shot-scroll');
+    if (!scroller) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const r = el.getBoundingClientRect();
+      const travel = window.innerHeight + r.height;
+      if (travel <= 0) return;
+      // 0 as the card enters from the bottom, 1 as it leaves past the top.
+      const t = Math.max(0, Math.min(1, (window.innerHeight - r.top) / travel));
+      // Capped: the full 4330px across one card's travel would be a blur, so a
+      // pass shows the top few screenfuls and the project page has the rest.
+      const reach = Math.min(scroller.scrollHeight - scroller.clientHeight, scroller.clientHeight * 5);
+      scroller.scrollTop = t * reach;
+    };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
+
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
+  }, []);
+
   const shot = hasShot(project.slug);
   /* When the site we replaced is still online, `npm run shots` has captured it
      too and the comparison shows the real thing instead of the generic mock. */

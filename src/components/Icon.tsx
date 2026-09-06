@@ -41,6 +41,48 @@ const paths: Record<string, React.ReactNode> = {
   eye: <><path d="M2.5 12S6 5.8 12 5.8 21.5 12 21.5 12 18 18.2 12 18.2 2.5 12 2.5 12Z" /><circle cx="12" cy="12" r="3" /></>,
   play: <path fill="currentColor" stroke="none" d="M8.4 5.6a1 1 0 0 1 1.5-.87l8.2 4.9a1 1 0 0 1 0 1.72l-8.2 4.9a1 1 0 0 1-1.5-.87Z" />,
 
+  /* The three process steps.
+     These render at 19px, and 13px on a phone — which is why each is three or
+     four strokes and nothing more. A magnifier with a trend line inside says
+     "we read your numbers" where a bare magnifier only says "search"; three
+     blocks say assembly where a wrench says repair; and rising bars say
+     "orders and revenue climb" literally, where a rocket is a stock metaphor
+     for launch, which is the one thing this step is not about. */
+  /* "Your store, ads and workflows — analyzed free." The deliverable is a
+     written report, examined: a document with a lens over its corner. A bare
+     magnifier only ever said "search". */
+  audit: <>
+    <path d="M13.6 20.6H6.3a2.3 2.3 0 0 1-2.3-2.3V5.7a2.3 2.3 0 0 1 2.3-2.3h9.4a2.3 2.3 0 0 1 2.3 2.3v5.1" />
+    <path d="M7.6 8h6.8M7.6 12h3.4" />
+    <circle cx="16.4" cy="16.4" r="4" />
+    <path d="m19.4 19.4 2.2 2.2" />
+  </>,
+  /* "Custom automation, live in 14 days." Layers: a system assembled from
+     parts and stacked into one thing, which is what is actually being built.
+     Three flat plates read at 13px where a wrench or a puzzle piece does not. */
+  layers: <>
+    <path d="M12 2.6 21.4 7.3 12 12 2.6 7.3 12 2.6Z" />
+    <path d="m2.6 12 9.4 4.7 9.4-4.7" />
+    <path d="m2.6 16.7 9.4 4.7 9.4-4.7" />
+  </>,
+  /* "Orders and revenue climb on autopilot." Both halves of that sentence:
+     the currency mark for revenue, the arrow for climb.
+     The two sit side by side rather than overlapping — at 13px, which is what
+     these render at on a phone, anything layered turns to a blur. The $ is a
+     letterform, so it stays legible smaller than any drawn glyph would. */
+  grow: <>
+    <text
+      x="8" y="18.6" textAnchor="middle"
+      fontSize="19" fontWeight="700"
+      fontFamily="'General Sans', 'Satoshi', system-ui, sans-serif"
+      fill="currentColor" stroke="none"
+    >
+      $
+    </text>
+    <path d="M18.4 19.6V7.4" strokeWidth="2.3" />
+    <path d="M14.9 10.9 18.4 7.4l3.5 3.5" strokeWidth="2.3" />
+  </>,
+
   /* Goal glyphs — each names what its card actually does. "package" said the
      parcel and not the autopilot; "headset" said a call centre where the copy
      promises AI replies; "chart" said any chart where the copy promises one
