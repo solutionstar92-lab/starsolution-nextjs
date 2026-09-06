@@ -105,8 +105,13 @@ export function Comparison({ project }: { project: Project }) {
     const el = boxRef.current;
     if (!el) return;
     if (!window.matchMedia('(hover: none)').matches) return;
-    const scroller = el.querySelector<HTMLElement>('.rr-after .af-shot-scroll');
-    if (!scroller) return;
+    /* Both sides, not just the live one. The old site is a capture of the same
+       kind, and walking only one of them down the page put the two halves of
+       the comparison at different depths as you scrolled. */
+    const panes = Array.from(el.querySelectorAll<HTMLElement>('.rr-layer .af-shot-scroll'))
+      .map((scroller) => ({ scroller, img: scroller.querySelector<HTMLElement>('img') }))
+      .filter((p): p is { scroller: HTMLElement; img: HTMLElement } => !!p.img);
+    if (!panes.length) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     /* Moved with a transform rather than by setting scrollTop.
@@ -115,12 +120,10 @@ export function Comparison({ project }: { project: Project }) {
        phone put a third of the frame budget in that one write. A translate on
        the image is a compositor move: same picture, no repaint. The scroller is
        already overflow:hidden here (see the CSS), so nothing else changes. */
-    const img = scroller.querySelector<HTMLElement>('img');
-    if (!img) return;
-    scroller.scrollTop = 0;
+    panes.forEach((p) => { p.scroller.scrollTop = 0; });
 
     let raf = 0;
-    let lastY = -1;
+    let lastT = -1;
     const update = () => {
       raf = 0;
       const r = el.getBoundingClientRect();
@@ -128,13 +131,25 @@ export function Comparison({ project }: { project: Project }) {
       if (travel <= 0) return;
       // 0 as the card enters from the bottom, 1 as it leaves past the top.
       const t = Math.max(0, Math.min(1, (window.innerHeight - r.top) / travel));
-      // Capped: the full 4330px across one card's travel would be a blur, so a
-      // pass shows the top few screenfuls and the project page has the rest.
-      const reach = Math.min(img.offsetHeight - scroller.clientHeight, scroller.clientHeight * 5);
-      const y = Math.round(t * reach);
-      if (y === lastY) return;   // a scroll that did not move this card is free
-      lastY = y;
-      img.style.transform = `translate3d(0, ${-y}px, 0)`;
+      if (t === lastT) return;   // a scroll that did not move this card is free
+      lastT = t;
+
+      /* One fraction, applied to both — the same rule the wheel path uses.
+         Driving them by a shared number of pixels instead would put the two
+         sites at different depths, because the old store is a shorter page: the
+         same 400px is a fifth of the way down one and nearly half the other.
+         The fraction is capped so the taller capture still travels only about
+         five screenfuls in a pass; the whole 4330px in one go would be a blur,
+         and the project page has the rest. */
+      const spans = panes.map(({ scroller, img }) => Math.max(0, img.offsetHeight - scroller.clientHeight));
+      let cap = 1;
+      panes.forEach(({ scroller }, i) => {
+        if (spans[i] > 0) cap = Math.min(cap, (scroller.clientHeight * 5) / spans[i]);
+      });
+      const f = t * cap;
+      panes.forEach(({ img }, i) => {
+        img.style.transform = `translate3d(0, ${-Math.round(f * spans[i])}px, 0)`;
+      });
     };
     const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
 
@@ -143,10 +158,45 @@ export function Comparison({ project }: { project: Project }) {
     window.addEventListener('resize', onScroll, { passive: true });
     return () => {
       cancelAnimationFrame(raf);
-      img.style.transform = '';
+      panes.forEach((p) => { p.img.style.transform = ''; });
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
     };
+  }, []);
+
+  /*
+   * Pointer-fine devices: the wheel still scrolls a capture, and now there are
+   * two of them. Scrolling either one carries the other to the same relative
+   * depth, so the divider always cuts one moment of the page rather than the
+   * old site's header against the new site's footer. Proportional rather than
+   * pixel-for-pixel — the two captures are different heights, and both sides
+   * should reach their end together.
+   */
+  React.useEffect(() => {
+    const el = boxRef.current;
+    if (!el) return;
+    if (window.matchMedia('(hover: none)').matches) return;   // touch is driven by the page
+    const panes = Array.from(el.querySelectorAll<HTMLElement>('.rr-layer .af-shot-scroll'));
+    if (panes.length < 2) return;
+
+    let echo = false;   // the sync writes scrollTop, which fires scroll again
+    const onScroll = (e: Event) => {
+      if (echo) return;
+      const src = e.currentTarget as HTMLElement;
+      const srcMax = src.scrollHeight - src.clientHeight;
+      if (srcMax <= 0) return;
+      const ratio = src.scrollTop / srcMax;
+      echo = true;
+      for (const other of panes) {
+        if (other === src) continue;
+        const max = other.scrollHeight - other.clientHeight;
+        if (max > 0) other.scrollTop = ratio * max;
+      }
+      requestAnimationFrame(() => { echo = false; });
+    };
+
+    panes.forEach((p) => p.addEventListener('scroll', onScroll, { passive: true }));
+    return () => panes.forEach((p) => p.removeEventListener('scroll', onScroll));
   }, []);
 
   const shot = hasShot(project.slug);
@@ -171,7 +221,11 @@ export function Comparison({ project }: { project: Project }) {
         </div>
         <div className="rr-layer rr-before">
           {realBefore
-            ? <ShotFrame slug={beforeSlug} title={`${project.title} — previous site`} scroll={false} />
+            ? <ShotFrame
+                slug={beforeSlug}
+                title={`${project.title} — previous site`}
+                scrollLabel="scroll the previous site"
+              />
             : <BeforeFrame />}
         </div>
         {shot && <span className="rr-hint" aria-hidden="true">Scroll ↕</span>}

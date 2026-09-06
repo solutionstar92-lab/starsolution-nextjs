@@ -47,19 +47,21 @@ export function BeforeFrame() {
  * captures the pages instead — re-run it after a store redesign.
  */
 export function ShotFrame({
-  slug, title, scroll = true,
+  slug, title, scroll = true, scrollLabel = 'scroll the live site',
 }: {
   slug: string; title: string;
-  /** The "before" capture is a clipped sliver — two scrollers in one frame
-   *  reads as a bug, so only the live side takes the wheel. */
+  /** Both sides of a comparison scroll, and Comparison keeps them at the same
+   *  depth — two scrollers only read as a bug while they disagree. Still
+   *  optional, for the places a capture is shown on its own. */
   scroll?: boolean;
+  scrollLabel?: string;
 }) {
   const shot = (shots as Record<string, Shot>)[slug];
   return (
     <div className={`ba-frame af-shot${scroll ? '' : ' af-shot-fixed'}`}>
       <div
         className="af-shot-scroll"
-        {...(scroll ? { tabIndex: 0, role: 'group', 'aria-label': `${title} — scroll the live site` } : {})}
+        {...(scroll ? { tabIndex: 0, role: 'group', 'aria-label': `${title} — ${scrollLabel}` } : {})}
       >
         {/* plain <img>: a pre-sized static capture, next/image adds nothing here.
             The 24px stand-in from the manifest sits behind it as a background,
