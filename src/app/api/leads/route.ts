@@ -36,8 +36,16 @@ export async function POST(request: Request) {
     if (phoneDigits.length < 7) {
       return NextResponse.json({ error: 'Enter a phone number we can call.' }, { status: 422 });
     }
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
-    return NextResponse.json({ error: 'Enter a valid email address.' }, { status: 422 });
+  } else {
+    // The audit form asks for both, so it has to check both — a client-side
+    // rule is a courtesy to whoever is typing, not a guarantee about what
+    // arrives here.
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+      return NextResponse.json({ error: 'Enter a valid email address.' }, { status: 422 });
+    }
+    if (phoneDigits.length < 7) {
+      return NextResponse.json({ error: 'Enter a phone number we can reach you on.' }, { status: 422 });
+    }
   }
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
     return NextResponse.json({ error: 'Enter a valid email address.' }, { status: 422 });

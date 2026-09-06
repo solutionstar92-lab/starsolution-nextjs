@@ -1295,9 +1295,36 @@
    still scrolls for anyone who writes more. */
 @media (max-width:1023px){ .field textarea{ height:62px; } }
 
-/* Phone and business name side by side from 380px rather than 520px. They are
-   the two optional fields and the two shortest answers, so they are the pair
-   that can share a line; a phone number still shows about nine digits at that
-   width. Below 380px they go back to stacking, where half a line would be too
-   little to type into. */
-@media (min-width:380px){ .field-row{ grid-template-columns:1fr 1fr; } }
+/* The pairing rule that used to live here put phone and business name on one
+   line. They are no longer on the same line — phone is required and on show,
+   business name is optional and behind the toggle below — and .field-row has no
+   remaining users, so the rule went with them. */
+
+/* ---------- audit form: the optional half, behind a toggle ----------
+   Name, email and phone are always on show and always required. Business name
+   and the message are the two fields most people skip, so they sit behind this
+   until someone wants them — the form reads as three short answers instead of
+   five, without hiding what is being asked for. */
+.form-more-toggle{
+  display:inline-flex; align-items:center; gap:7px; margin:2px 0 4px;
+  font-size:13px; font-weight:600; color:var(--brand-deep);
+  background:none; border:0; padding:6px 0; cursor:pointer; min-height:32px;
+}
+.form-more-toggle:hover{ color:var(--brand); }
+.form-more-toggle:focus-visible{
+  outline:2px solid var(--brand); outline-offset:3px; border-radius:6px;
+}
+.form-more-chev{
+  width:14px; height:14px; transform:rotate(90deg);
+  transition:transform .3s var(--ease);
+}
+.form-more-toggle[aria-expanded="true"] .form-more-chev{ transform:rotate(-90deg); }
+
+/* The panel is measured by its inner box — the outer one is animating between
+   0 and auto, so it cannot carry the spacing itself. */
+.form-more-inner{ padding-top:2px; }
+.form-more-inner .field:last-child{ margin-bottom:4px; }
+
+@media (max-width:639px){
+  .form-more-toggle{ font-size:12px; margin:0 0 2px; }
+}
