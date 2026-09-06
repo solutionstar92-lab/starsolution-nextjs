@@ -109,7 +109,18 @@ export function Comparison({ project }: { project: Project }) {
     if (!scroller) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
+    /* Moved with a transform rather than by setting scrollTop.
+       Both look identical, but scrolling a box whose content is a 4330px image
+       repaints it every frame, and profiling the section on a 4x-throttled
+       phone put a third of the frame budget in that one write. A translate on
+       the image is a compositor move: same picture, no repaint. The scroller is
+       already overflow:hidden here (see the CSS), so nothing else changes. */
+    const img = scroller.querySelector<HTMLElement>('img');
+    if (!img) return;
+    scroller.scrollTop = 0;
+
     let raf = 0;
+    let lastY = -1;
     const update = () => {
       raf = 0;
       const r = el.getBoundingClientRect();
@@ -119,8 +130,11 @@ export function Comparison({ project }: { project: Project }) {
       const t = Math.max(0, Math.min(1, (window.innerHeight - r.top) / travel));
       // Capped: the full 4330px across one card's travel would be a blur, so a
       // pass shows the top few screenfuls and the project page has the rest.
-      const reach = Math.min(scroller.scrollHeight - scroller.clientHeight, scroller.clientHeight * 5);
-      scroller.scrollTop = t * reach;
+      const reach = Math.min(img.offsetHeight - scroller.clientHeight, scroller.clientHeight * 5);
+      const y = Math.round(t * reach);
+      if (y === lastY) return;   // a scroll that did not move this card is free
+      lastY = y;
+      img.style.transform = `translate3d(0, ${-y}px, 0)`;
     };
     const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
 
@@ -129,6 +143,7 @@ export function Comparison({ project }: { project: Project }) {
     window.addEventListener('resize', onScroll, { passive: true });
     return () => {
       cancelAnimationFrame(raf);
+      img.style.transform = '';
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
     };
