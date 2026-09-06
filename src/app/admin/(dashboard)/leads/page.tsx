@@ -46,10 +46,19 @@ export default async function LeadsPage({
     // escape commas so a search term cannot break out of the or() filter
     const safe = query.replace(/[,()]/g, ' ');
     // message included: it is where "Shopify, 400 orders a month" actually
-    // lives, and searching the four fields the form collects is what someone
+    // lives, and searching every field the form collects is what someone
     // typing into this box expects.
+    // phone included since the audit form began requiring one: it is the field
+    // someone has in front of them after a missed call, and it was the only
+    // thing on the row that could not be searched for.
+    //
+    // Matched as stored, so a partial number works — "1234" finds
+    // "+20 101 234 5678" — but the spacing has to match the way it was typed
+    // in. Normalising that properly means a generated digits-only column and a
+    // migration to go with it, which is not worth it until someone is actually
+    // searching enough numbers to be annoyed.
     request = request.or(
-      `name.ilike.%${safe}%,email.ilike.%${safe}%,company.ilike.%${safe}%,message.ilike.%${safe}%`,
+      `name.ilike.%${safe}%,email.ilike.%${safe}%,company.ilike.%${safe}%,message.ilike.%${safe}%,phone.ilike.%${safe}%`,
     );
   }
 
@@ -103,7 +112,7 @@ export default async function LeadsPage({
               type="search"
               name="q"
               defaultValue={query}
-              placeholder="Search name, email, company or message"
+              placeholder="Search name, email, phone, company or message"
               aria-label="Search leads"
             />
           </form>
