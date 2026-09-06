@@ -1259,3 +1259,45 @@
    this project" expands one card in place; with the flex default every other
    card in the rail would grow with it and hold the empty space. */
 .live-rail > .rail-inner{ align-items:flex-start; }
+
+/* =========================================================
+   Audit form: take the air out from between the fields
+   ---------------------------------------------------------
+   The compact treatment stopped at 639px, so anything from there to a desktop
+   — a small laptop window, or a phone held sideways — got the full 32px
+   desktop padding and ran 559px tall for five fields and a button. Below 639px
+   the same card is 485px with the same content in it, which is the proof that
+   the height was spacing rather than substance.
+
+   Nothing is removed and no tap target shrinks: the inputs keep their 16px
+   text (any smaller and iOS zooms the page on focus) and clear 40px of height.
+   Only the space between things comes down.
+   ========================================================= */
+@media (min-width:640px) and (max-width:767px){
+  .form-card{ padding:14px 14px 15px; border-radius:16px; }
+  .form-card h3{ font-size:16px; margin-bottom:10px; }
+  .field{ margin-bottom:8px; }
+  .field-row{ gap:8px; }
+  .field label{ margin-bottom:3px; font-size:11px; }
+  .field input, .field textarea{ padding:9px 12px; border-radius:12px; }
+}
+@media (min-width:768px){
+  .form-card{ padding:22px 22px 24px; }
+  .form-card h3{ margin-bottom:11px; }
+  .field{ margin-bottom:9px; }
+  .field-row{ gap:10px; }
+  .field label{ margin-bottom:4px; }
+  .field input, .field textarea{ padding:10px 13px; }
+}
+
+/* The message box is the one field that can lose a line without losing
+   anything — it is optional, its placeholder says what belongs in it, and it
+   still scrolls for anyone who writes more. */
+@media (max-width:1023px){ .field textarea{ height:62px; } }
+
+/* Phone and business name side by side from 380px rather than 520px. They are
+   the two optional fields and the two shortest answers, so they are the pair
+   that can share a line; a phone number still shows about nine digits at that
+   width. Below 380px they go back to stacking, where half a line would be too
+   little to type into. */
+@media (min-width:380px){ .field-row{ grid-template-columns:1fr 1fr; } }
