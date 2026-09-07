@@ -1761,3 +1761,16 @@
   }
   .live-rail > .rail-inner > .live-card{ width:auto; }
 }
+
+/* ---------- team: as many columns as there are people ----------
+   The grid asked for seven columns and the team is six, so the seventh sat
+   empty and left 197px of shell doing nothing on the right — the same gap the
+   projects had, from the opposite cause: there the cards were too narrow to
+   fill the row, here there was one row-slot too many.
+
+   auto-fit collapses the track nothing lands in and lets the rest stretch, so
+   the row fills at any headcount: six people share the width, a seventh takes
+   the track back, an eighth wraps. Nothing to keep in sync with the data. */
+@media (min-width:1024px){
+  .team-grid{ grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); }
+}
