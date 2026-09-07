@@ -1,16 +1,24 @@
 import Link from 'next/link';
+import { Icon } from './Icon';
 import { Reveal } from './Reveal';
 
 export function PageHead({
-  eyebrow, title, lede, crumbs,
+  eyebrow, title, lede, crumbs, icon, tone,
 }: {
   eyebrow?: string;
   title: string;
   lede?: string;
   crumbs?: { href?: string; label: string }[];
+  /** Draws the entry's own mark above the title, so a detail page opens with the
+   *  same icon and colour as the card that was clicked to reach it. */
+  icon?: string;
+  tone?: string;
 }) {
   return (
-    <header className="page-head">
+    <header
+      className={`page-head${tone ? ' has-tone' : ''}`}
+      style={tone ? ({ ['--tone' as string]: tone }) : undefined}
+    >
       <div className="starfield starfield-dim" aria-hidden="true">
         {Array.from({ length: 22 }, (_, i) => (
           <span
@@ -38,6 +46,7 @@ export function PageHead({
           </nav>
         )}
         <Reveal>
+          {icon && <span className="head-mark" aria-hidden="true"><Icon name={icon} /></span>}
           {eyebrow && <p className="eyebrow"><span className="eyebrow-dot" aria-hidden="true" /> {eyebrow}</p>}
           <h1 className="page-title">{title}</h1>
           {lede && <p className="page-lede">{lede}</p>}

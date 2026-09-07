@@ -9,6 +9,8 @@ export function EntryPage({
   entry, section, sectionHref, prev, next,
   pointsTitle = 'What you get',
   pointsAs = 'list',
+  icon,
+  tone,
 }: {
   entry: Entry;
   section: string;
@@ -19,17 +21,30 @@ export function EntryPage({
   pointsTitle?: string;
   /** Short labels read better as chips than as a checklist. */
   pointsAs?: 'list' | 'chips';
+  /** Override the entry's own mark — the automations list colours its cards by
+   *  position rather than from the row, so the page has to be told to match. */
+  icon?: string;
+  tone?: string;
 }) {
+  const mark = icon ?? entry.icon;
+  const hue = tone ?? entry.tone;
+  /* Everything else in this section, for the aside. On a desktop the sticky CTA
+     card left most of a screen of empty column beside the body; somewhere to go
+     next is more use there than white space, and it links the section together. */
+  const more = [next, prev].filter((e): e is Entry => !!e);
+
   return (
     <>
       <PageHead
         eyebrow={entry.eyebrow}
         title={entry.title}
         lede={entry.summary}
+        icon={mark}
+        tone={hue}
         crumbs={[{ href: '/', label: 'Home' }, { href: sectionHref, label: section }, { label: entry.title }]}
       />
 
-      <section className="section">
+      <section className="section" style={hue ? ({ ['--tone' as string]: hue }) : undefined}>
         <div className="mx-auto max-w-shell px-5 lg:px-8">
           <div className="detail-layout">
             <div className="detail-body">
@@ -58,28 +73,42 @@ export function EntryPage({
                 )}
               </Reveal>
 
-              <div className="pager">
-                {prev ? (
-                  <Link href={`${sectionHref}/${prev.slug}`}>
-                    <small>Previous</small><strong>{prev.title}</strong>
-                  </Link>
-                ) : <span />}
-                {next && (
-                  <Link href={`${sectionHref}/${next.slug}`} className="pager-next">
-                    <small>Next</small><strong>{next.title}</strong>
-                  </Link>
-                )}
-              </div>
+              {/* The prev/next pager used to sit here. It listed the same two
+                  entries the "More in ..." panel now lists, and with one
+                  neighbour it rendered as a single card floated against the
+                  right edge with nothing beside it. One of the two had to go,
+                  and the panel is the one that also fills the empty column. */}
             </div>
 
-            <aside className="detail-aside">
-              <h2>Start with a free audit</h2>
-              <p>We analyze your store, ads and workflows and send back a written growth plan. No commitment.</p>
-              <Link href="/contact" className="btn btn-primary btn-lg">Get free audit</Link>
-              <a href={site.contact.whatsapp} className="btn btn-ghost btn-lg mt-2 w-full">
-                <Icon name="whatsapp" className="h-5 w-5 text-[#25D366]" /> WhatsApp
-              </a>
-            </aside>
+            <div className="detail-rail">
+              <aside className="detail-aside">
+                <h2>Start with a free audit</h2>
+                <p>We analyze your store, ads and workflows and send back a written growth plan. No commitment.</p>
+                <Link href="/contact" className="btn btn-primary btn-lg">Get free audit</Link>
+                <a href={site.contact.whatsapp} className="btn btn-ghost btn-lg mt-2 w-full">
+                  <Icon name="whatsapp" className="h-5 w-5 text-[#25D366]" /> WhatsApp
+                </a>
+              </aside>
+
+              {more.length > 0 && (
+                <nav className="aside-more" aria-label={`More in ${section}`}>
+                  <p className="aside-more-h">More in {section.toLowerCase()}</p>
+                  <ul>
+                    {more.map((e) => (
+                      <li key={e.slug}>
+                        <Link href={`${sectionHref}/${e.slug}`}>
+                          <span>{e.title}</span>
+                          <Icon name="arrow" />
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                  <Link href={sectionHref} className="aside-more-all">
+                    All {section.toLowerCase()} <Icon name="arrow" />
+                  </Link>
+                </nav>
+              )}
+            </div>
           </div>
         </div>
       </section>

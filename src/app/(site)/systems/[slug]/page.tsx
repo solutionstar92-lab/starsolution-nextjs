@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { EntryPage } from '@/components/EntryPage';
+import { systemLook } from '@/components/ui/SystemCard';
 import { getSystems } from '@/lib/content';
 
 export async function generateStaticParams() {
@@ -19,6 +20,10 @@ export default async function SystemsDetailPage({ params }: { params: { slug: st
   const index = items.findIndex((entry) => entry.slug === params.slug);
   if (index === -1) notFound();
 
+  // The systems table has no icon or tone column; the cards derive both from the
+  // row's tag. Same helper here, so a page opens as the card that led to it.
+  const look = systemLook(items[index], index);
+
   return (
     <EntryPage
       entry={items[index]}
@@ -26,6 +31,8 @@ export default async function SystemsDetailPage({ params }: { params: { slug: st
       sectionHref="/systems"
       prev={items[index - 1] ?? null}
       next={items[index + 1] ?? null}
+      icon={look.icon}
+      tone={look.tone}
     />
   );
 }

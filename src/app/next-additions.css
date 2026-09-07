@@ -1328,3 +1328,122 @@
 @media (max-width:639px){
   .form-more-toggle{ font-size:12px; margin:0 0 2px; }
 }
+
+/* =========================================================
+   Detail pages: give each one a face
+   ---------------------------------------------------------
+   These pages were a column of grey text under a big title — no colour, no
+   mark, and on a desktop most of a screen of empty column beside the body
+   where the sticky CTA ran out. The content was fine; nothing on the page
+   said which section you were in or gave the eye somewhere to land.
+
+   Everything here is driven by --tone, the entry's own colour, so a page opens
+   in the same colour as the card that was clicked to reach it.
+   ========================================================= */
+
+/* The entry's mark, above the eyebrow. Same gradient treatment as the icon on
+   the card it came from, at a size that reads as a page's own emblem. */
+.head-mark{
+  display:grid; place-items:center; width:52px; height:52px;
+  margin-bottom:14px; border-radius:16px; color:#fff;
+  background:linear-gradient(150deg, var(--tone,var(--brand)), color-mix(in srgb, var(--tone,var(--brand)) 55%, var(--accent)));
+  box-shadow:0 14px 30px -14px color-mix(in srgb, var(--tone,var(--brand)) 90%, transparent);
+}
+.head-mark svg{ width:26px; height:26px; }
+@media (max-width:639px){
+  .head-mark{ width:42px; height:42px; border-radius:13px; margin-bottom:11px; }
+  .head-mark svg{ width:21px; height:21px; }
+}
+
+/* A wash in the entry's colour over the standard head gradient, so the band at
+   the top of the page is not the same pale blue on all forty of them. */
+.page-head.has-tone::after{
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(52% 70% at 88% 4%, color-mix(in srgb, var(--tone) 20%, transparent), transparent 70%);
+}
+
+/* The last crumb repeats the h1 directly below it, which on a phone cost a
+   whole wrapped line to say the same thing twice. The separator lives inside
+   the crumb before it, so that has to go as well or the trail ends on a
+   dangling slash. */
+@media (max-width:639px){
+  .crumbs > span.contents:last-child{ display:none; }
+  .crumbs > span.contents:nth-last-child(2) > span[aria-hidden="true"]{ display:none; }
+}
+
+/* ---------- the spec strip ----------
+   Three fixed columns turned "Cloud API or QR" into three wrapped lines on a
+   phone. Stacked rows there instead — label on the left, value on the right,
+   which is how a spec sheet reads anyway — and the row of cards from 560px up
+   where there is width for it. */
+.detail-stats{ display:grid; grid-template-columns:1fr; gap:0; margin-top:20px; }
+.detail-stats > div{
+  display:flex; align-items:baseline; justify-content:space-between; gap:16px;
+  padding:11px 14px; border-radius:0; border:0;
+  border-bottom:1px solid var(--line); background:none;
+}
+.detail-stats > div:first-child{ border-top:1px solid var(--line); }
+.detail-stats dt{ font-size:11.5px; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); }
+.detail-stats dd{ margin-top:0; font-size:16px; text-align:right; }
+
+@media (min-width:560px){
+  .detail-stats{ grid-template-columns:repeat(3,1fr); gap:10px; }
+  .detail-stats > div{
+    display:block; padding:14px 15px 15px; border:1px solid var(--line);
+    border-radius:14px; background:linear-gradient(170deg,#fff,var(--soft));
+    border-top:3px solid var(--tone,var(--brand));
+  }
+  .detail-stats > div:first-child{ border-top:3px solid var(--tone,var(--brand)); }
+  .detail-stats dd{ margin-top:4px; font-size:18px; text-align:left; }
+}
+
+/* ---------- what you get ----------
+   Nine of these in one narrow column was a wall of text with nothing to catch
+   the eye between one line and the next. Two columns where there is room, and
+   each point on its own tinted ground so the list reads as a set of things
+   rather than a paragraph with ticks in it. */
+.detail-points{ gap:8px; }
+@media (min-width:900px){ .detail-points{ grid-template-columns:1fr 1fr; gap:8px 14px; } }
+.detail-points li{
+  gap:11px; padding:11px 13px; border-radius:12px;
+  background:color-mix(in srgb, var(--tone,var(--brand)) 4%, #fff);
+  border:1px solid color-mix(in srgb, var(--tone,var(--brand)) 12%, var(--line));
+}
+.detail-points svg{
+  margin-top:1px; width:15px; height:15px; padding:3px; border-radius:50%;
+  color:#fff; background:var(--tone,var(--brand)); box-sizing:content-box;
+}
+@media (max-width:639px){
+  .detail-points li{ padding:9px 11px; font-size:13.6px; }
+}
+
+/* ---------- the right-hand column ----------
+   The CTA card is short and sticky, so on a desktop it left a screen of empty
+   column under it. Somewhere to go next belongs there. */
+.detail-rail{ display:grid; gap:14px; }
+@media (min-width:1024px){ .detail-rail{ position:sticky; top:86px; align-self:start; } }
+@media (min-width:1024px){ .detail-aside{ position:static; top:auto; } }
+
+.aside-more{
+  padding:16px 16px 14px; border-radius:var(--r-xl);
+  background:#fff; border:1px solid var(--line); box-shadow:var(--shadow-xs);
+}
+.aside-more-h{
+  font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--muted); margin-bottom:9px;
+}
+.aside-more ul{ display:grid; gap:2px; }
+.aside-more li a{
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:9px 10px; margin-inline:-10px; border-radius:10px;
+  font-size:14px; font-weight:500; color:var(--ink-2); min-height:40px;
+  transition:background .2s var(--ease), color .2s var(--ease);
+}
+.aside-more li a:hover{ background:var(--soft); color:var(--brand-deep); }
+.aside-more li svg{ width:14px; height:14px; flex:none; color:var(--tone,var(--brand)); }
+.aside-more-all{
+  display:inline-flex; align-items:center; gap:6px; margin-top:10px;
+  padding-top:11px; border-top:1px solid var(--line); width:100%;
+  font-size:12.5px; font-weight:600; color:var(--brand-deep); min-height:32px;
+}
+.aside-more-all svg{ width:13px; height:13px; }
