@@ -85,8 +85,24 @@ export function EntryPage({
                         {entry.points.map((p) => <li key={p}>{p}</li>)}
                       </ul>
                     ) : (
+                      /* One at a time, on the way down and on the way back up.
+                         `repeat` is the same reversible reveal the systems cards
+                         use, so a point fades in as it crosses the line near the
+                         bottom of the screen and fades out again if you scroll
+                         back past it, leaving whatever is above still showing.
+
+                         Hidden points keep their space rather than collapsing.
+                         Reflowing the list under a scroll that is in progress
+                         moves the ground under the reader's thumb — and on the
+                         way up, removing height below the viewport is what makes
+                         a page jump. Only the ink changes here, never the
+                         layout. */
                       <ul className="detail-points">
-                        {entry.points.map((p) => <li key={p}><Icon name="check" /> {p}</li>)}
+                        {entry.points.map((p) => (
+                          <Reveal as="li" key={p} repeat y={10}>
+                            <Icon name="check" /> {p}
+                          </Reveal>
+                        ))}
                       </ul>
                     )}
                   </>
