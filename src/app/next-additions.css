@@ -1631,3 +1631,71 @@
    mt-10 both pages set to fix that lost to it on source order and never
    applied. :first-child is the condition that was actually meant. */
 .group-label:first-of-type:not(:first-child){ margin-top:40px; }
+
+/* =========================================================
+   Hero: two columns from 1024px
+   ---------------------------------------------------------
+   Centred and stacked, the hero spent the whole width on one column and put
+   the buttons under a 560px-tall visual. Split, the words and the ask sit on
+   the left at a readable measure and the orbit takes the right, which is the
+   shape the rest of the page already uses and the one asked for.
+
+   DOM order is untouched — grid areas place the pieces — so a phone still gets
+   the stacked hero it had, in the same reading order, and so does anything
+   without grid.
+   ========================================================= */
+@media (min-width:1024px){
+  .hero-shell{
+    display:grid; align-items:center; text-align:left;
+    grid-template-columns:minmax(0,1fr) minmax(0,1.06fr);
+    grid-template-areas:
+      "copy    visual"
+      "actions visual"
+      "proof   visual"
+      "logos   visual";
+    grid-template-rows:auto auto auto auto;
+    column-gap:clamp(28px, 4vw, 64px);
+    row-gap:clamp(14px, 2vh, 22px);
+    max-width:1200px;
+  }
+  .hero-copy{ grid-area:copy; }
+  .hero-actions{ grid-area:actions; justify-content:flex-start; width:auto; max-width:none; }
+  .hero-proof{ grid-area:proof; max-width:none; justify-items:start; }
+  .hero-logos{ grid-area:logos; }
+  /* Centred in its column against all four rows of the left one, so the orbit
+     sits opposite the middle of the copy rather than at the top of it. */
+  .hero-visual{ grid-area:visual; align-self:center; max-width:none; margin-inline:auto; }
+
+  /* The headline wraps here instead of being fitted to one line — see the note
+     in useHeadlineFit. Three lines of 56px reads as a headline; one line
+     squeezed into half the width does not. */
+  .hero-title{
+    font-size:clamp(40px, 3.6vw, 58px);
+    line-height:1.06; white-space:normal; text-wrap:balance;
+  }
+  .hero-title-line{ display:block; }
+
+  /* The eyebrow becomes a chip: at the top of a left-aligned column it needs an
+     edge of its own, where centred over a headline it did not. */
+  .hero-copy .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:6px 13px; border-radius:99px;
+    background:rgba(255,255,255,.72); border:1px solid var(--line);
+    box-shadow:var(--shadow-xs); backdrop-filter:blur(8px);
+  }
+
+  .hero-lede{
+    margin-top:16px; max-width:44ch;
+    font-size:16.5px; line-height:1.62; color:var(--muted);
+  }
+
+  .hero-proof{ justify-content:start; }
+  .logo-row{ justify-content:flex-start; }
+  .hero-logos .logo-label{ text-align:left; }
+  .orbit-hint{ text-align:center; }
+}
+
+/* Below the split the lede is not shown at all: the stacked hero is already
+   tight enough that another paragraph would push the buttons off a phone. */
+.hero-lede{ display:none; }
+@media (min-width:1024px){ .hero-lede{ display:block; } }

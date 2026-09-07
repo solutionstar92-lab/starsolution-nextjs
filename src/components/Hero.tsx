@@ -25,7 +25,15 @@ function useHeadlineFit(ref: React.RefObject<HTMLHeadingElement>) {
     const fit = () => {
       const parent = el.parentElement;
       if (!parent || !parent.clientWidth) return;
-      if (!window.matchMedia('(min-width:640px)').matches) { el.style.fontSize = ''; return; }
+      /* Upper bound as well as a lower one now. From 1024px the hero is two
+         columns and the headline has half the width, so fitting it to one line
+         would shrink it to something smaller than the paragraph under it — the
+         same failure this pass exists to avoid on a phone, arrived at from the
+         other end. Above that width it wraps and the stylesheet sizes it. */
+      if (!window.matchMedia('(min-width:640px) and (max-width:1023px)').matches) {
+        el.style.fontSize = '';
+        return;
+      }
       el.style.fontSize = '100px';
       const natural = el.scrollWidth;
       if (!natural) return;
@@ -130,6 +138,16 @@ export function Hero({ nodes, stats, platforms }: { nodes: HeroNode[]; stats: [s
             <span className="hero-title-line">More orders. More revenue.</span>{' '}
             <span className="grad-text">Less work.</span>
           </motion.h1>
+          {/* The site's own description, which had never appeared on the page it
+              describes. Shown from 1024px up, where the split hero has a column
+              to put it in; below that the hero is already tight enough that a
+              paragraph would push the buttons off the screen. */}
+          <Reveal as="div" delay={0.06}>
+            <p className="hero-lede">
+              We automate your Shopify, social media and marketing — so your
+              business grows while you sleep.
+            </p>
+          </Reveal>
         </div>
 
         <Reveal className="hero-visual">
