@@ -1774,3 +1774,30 @@
 @media (min-width:1024px){
   .team-grid{ grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); }
 }
+
+/* =========================================================
+   Mobile pass: three places the spacing was wrong
+   ========================================================= */
+
+/* 1. Cards keeping their rail width inside a grid.
+   .case-card and .review are sized for the home page's rails, where a fixed
+   width is what puts the next card half on screen. /results and /case-studies
+   put the same cards in .index-grid, and the width came with them: a 252px
+   review sitting in a 350px column, with 98px of nothing down the right of
+   every row. The markup already asked for w-full; the component's own width
+   beat it on source order. */
+.index-grid > .case-card,
+.index-grid > .review,
+.index-grid .case-card,
+.index-grid .review{ width:auto; max-width:none; }
+
+/* 2. The hero on a phone had no air in it at all.
+   gap:4px and margin-top:4px put the dashboard cards, the headline, the
+   buttons and the logo row into one block with nothing between them. This is
+   still tight — the whole point of that compaction is that the buttons stay on
+   the first screen — but the headline now has room to be a headline. */
+@media (max-width:639px){
+  .hero-shell{ gap:11px; padding:8px 18px 14px; }
+  .hero-actions{ margin-top:2px; gap:9px; }
+  .hero-logos{ margin-top:6px; }
+}

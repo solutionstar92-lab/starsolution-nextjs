@@ -43,7 +43,14 @@ export function Reveal({
             // buffer — one taller than the section would keep every card
             // permanently "in view" and nothing would ever reverse.
             { once: false, amount: 0.15, margin: '0px 0px -12% 0px' }
-          : { once: true, amount: 0.15, margin: '0px 0px -8% 0px' }
+          : // A positive bottom margin, so a card is already faded in by the
+            // time it scrolls into view rather than a moment after. It was -8%,
+            // which asked an element to come 8% further up the screen before it
+            // counted as visible: on a phone the third and fourth goal cards
+            // were on screen and still at zero opacity, and a card holding its
+            // space while showing nothing reads as a gap in the page, not as an
+            // animation about to happen.
+            { once: true, amount: 0.15, margin: '0px 0px 12% 0px' }
       }
       transition={{ duration: repeat ? 0.45 : 0.62, delay, ease: [0.16, 0.84, 0.3, 1] }}
     >
