@@ -84,98 +84,21 @@ export function Comparison({ project }: { project: Project }) {
     if (e.key === 'Home') { setPos(MIN); e.preventDefault(); }
     if (e.key === 'End') { setPos(MAX); e.preventDefault(); }
   };
-
   /*
-   * Touch devices: the capture pans with the page instead of against it.
+   * The two captures stay level with each other. Scrolling either one carries
+   * the other to the same relative depth, so the divider always cuts one moment
+   * of the page rather than the old site's header against the new site's
+   * footer. Proportional rather than pixel-for-pixel — the two captures are
+   * different heights, and both sides should reach their end together.
    *
-   * The frame is ~306x204 in the middle of a phone screen and the capture
-   * inside it is 4330px tall — 21 screenfuls. A vertical swipe anywhere on the
-   * live side was being taken by that scroller, and overscroll chaining could
-   * not save it because you would have to swipe twenty-one screens to reach an
-   * edge. So the page simply stopped moving under your thumb.
-   *
-   * Rather than pick a winner, the gesture stops being contested: the scroller
-   * is inert on touch (see the CSS) and its position is driven by how far the
-   * card has travelled through the viewport. One ordinary page scroll now
-   * moves down the page and walks down the storefront at the same time.
-   *
-   * Pointer-fine devices keep the wheel behaviour they had.
+   * On every device now. It used to bail on touch, because there the captures
+   * were not scrolled by the reader at all: the page drove them. Nothing drives
+   * them from outside any more, so the same rule applies to a thumb as to a
+   * wheel.
    */
   React.useEffect(() => {
     const el = boxRef.current;
     if (!el) return;
-    if (!window.matchMedia('(hover: none)').matches) return;
-    /* Both sides, not just the live one. The old site is a capture of the same
-       kind, and walking only one of them down the page put the two halves of
-       the comparison at different depths as you scrolled. */
-    const panes = Array.from(el.querySelectorAll<HTMLElement>('.rr-layer .af-shot-scroll'))
-      .map((scroller) => ({ scroller, img: scroller.querySelector<HTMLElement>('img') }))
-      .filter((p): p is { scroller: HTMLElement; img: HTMLElement } => !!p.img);
-    if (!panes.length) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    /* Moved with a transform rather than by setting scrollTop.
-       Both look identical, but scrolling a box whose content is a 4330px image
-       repaints it every frame, and profiling the section on a 4x-throttled
-       phone put a third of the frame budget in that one write. A translate on
-       the image is a compositor move: same picture, no repaint. The scroller is
-       already overflow:hidden here (see the CSS), so nothing else changes. */
-    panes.forEach((p) => { p.scroller.scrollTop = 0; });
-
-    let raf = 0;
-    let lastT = -1;
-    const update = () => {
-      raf = 0;
-      const r = el.getBoundingClientRect();
-      const travel = window.innerHeight + r.height;
-      if (travel <= 0) return;
-      // 0 as the card enters from the bottom, 1 as it leaves past the top.
-      const t = Math.max(0, Math.min(1, (window.innerHeight - r.top) / travel));
-      if (t === lastT) return;   // a scroll that did not move this card is free
-      lastT = t;
-
-      /* One fraction, applied to both — the same rule the wheel path uses.
-         Driving them by a shared number of pixels instead would put the two
-         sites at different depths, because the old store is a shorter page: the
-         same 400px is a fifth of the way down one and nearly half the other.
-         The fraction is capped so the taller capture still travels only about
-         five screenfuls in a pass; the whole 4330px in one go would be a blur,
-         and the project page has the rest. */
-      const spans = panes.map(({ scroller, img }) => Math.max(0, img.offsetHeight - scroller.clientHeight));
-      let cap = 1;
-      panes.forEach(({ scroller }, i) => {
-        if (spans[i] > 0) cap = Math.min(cap, (scroller.clientHeight * 5) / spans[i]);
-      });
-      const f = t * cap;
-      panes.forEach(({ img }, i) => {
-        img.style.transform = `translate3d(0, ${-Math.round(f * spans[i])}px, 0)`;
-      });
-    };
-    const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
-
-    update();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
-    return () => {
-      cancelAnimationFrame(raf);
-      panes.forEach((p) => { p.img.style.transform = ''; });
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
-    };
-  }, []);
-
-  /*
-   * Pointer-fine devices: the wheel still scrolls a capture, and now there are
-   * two of them. Scrolling either one carries the other to the same relative
-   * depth, so the divider always cuts one moment of the page rather than the
-   * old site's header against the new site's footer. Proportional rather than
-   * pixel-for-pixel — the two captures are different heights, and both sides
-   * should reach their end together.
-   */
-  React.useEffect(() => {
-    const el = boxRef.current;
-    if (!el) return;
-    if (window.matchMedia('(hover: none)').matches) return;   // touch is driven by the page
     const panes = Array.from(el.querySelectorAll<HTMLElement>('.rr-layer .af-shot-scroll'));
     if (panes.length < 2) return;
 

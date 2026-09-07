@@ -1203,27 +1203,46 @@
 .cv-dashboard rect{ opacity: .55; }
 
 /* =========================================================
-   Portfolio comparison: one scroll, not two competing
+   Portfolio comparison: the capture scrolls itself
    ---------------------------------------------------------
-   Measured before changing anything. A vertical swipe on the live side moved
-   the capture 108px and the page 0; a swipe on the drag handle moved neither,
-   because the handle needs touch-action:none to own its horizontal drag and
-   that killed vertical panning with it. Two thirds of the frame was a trap and
-   a 44px column was a dead zone.
+   The page used to drive it. Scrolling the home page walked the storefront down
+   inside the frame, which tied two things together that have no reason to be
+   tied: the reader could not look at the storefront without moving the page,
+   or move the page without the storefront sliding about. They are separate
+   now — the page scrolls, the capture scrolls, neither touches the other.
 
-   On touch the scroller goes inert and is driven from the page instead (see
-   the effect in RealResults), and the handle allows vertical panning while
-   still owning the horizontal axis. Every vertical gesture in this section now
-   belongs to the page, and the storefront still walks past as you go.
+   That coupling existed to solve a real problem, and the crop below is what
+   replaces it. The original fault, measured: a vertical swipe on the live side
+   moved the capture 108px and the page 0, because a 4330px picture in a 204px
+   frame puts the browser's handoff point twenty-odd swipes away. Cropping the
+   capture brings that edge back within one swipe, so the frame can scroll on
+   its own without ever holding the page hostage.
 
-   Pointer-fine devices are untouched: the wheel still scrolls the capture and
-   chains to the page at its edges.
+   Pointer-fine devices are unchanged throughout: the wheel scrolls the capture
+   and chains to the page at its edges, as it always did.
    ========================================================= */
 @media (hover: none){
+  /* The capture scrolls under a thumb again, on its own, and hands the gesture
+     back to the page once it reaches its end. Nothing outside the frame moves
+     it any more. */
   .rr-slider .af-shot-scroll{
-    overflow: hidden;
-    /* the page owns the vertical axis here */
+    overflow-y: auto;
     touch-action: pan-y;
+    overscroll-behavior-y: auto;   /* chain to the page at the edges */
+  }
+  /* This crop is what makes the chaining reachable, and it is the whole reason
+     the page could not be scrolled here in the first place: the storefront is
+     4330px in a frame 204px tall, so the "edge" the browser hands off at was
+     twenty-odd swipes away and the page simply stopped moving under your thumb.
+     Cropped to the top of the page the handoff is reachable, and the rest of
+     the storefront is on the project page where there is room for it.
+
+     340px against a ~179px frame is about 160px of travel: one swipe to see the
+     storefront move, a second to reach the end, and the page has it from there.
+     Tried 520px first, which left 341px — four swipes before the page would
+     move, which is the same fault in miniature. */
+  .rr-slider .af-shot-scroll img{
+    height: 340px; object-fit: cover; object-position: top;
   }
   /* pan-y, not none: the browser keeps vertical scrolling, and the horizontal
      axis is still left to the pointer handlers that do the dragging. */
