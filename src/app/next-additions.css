@@ -1421,8 +1421,13 @@
    The CTA card is short and sticky, so on a desktop it left a screen of empty
    column under it. Somewhere to go next belongs there. */
 .detail-rail{ display:grid; gap:14px; }
-@media (min-width:1024px){ .detail-rail{ position:sticky; top:86px; align-self:start; } }
-@media (min-width:1024px){ .detail-aside{ position:static; top:auto; } }
+@media (min-width:1024px){
+  .detail-rail{ position:sticky; top:86px; align-self:start; }
+  /* Only the one inside the rail: the rail is what sticks now, and a sticky
+     child of a sticky parent goes nowhere. /about uses .detail-aside on its
+     own, with no rail around it, and that one keeps sticking as it did. */
+  .detail-rail .detail-aside{ position:static; top:auto; }
+}
 
 .aside-more{
   padding:16px 16px 14px; border-radius:var(--r-xl);
@@ -1548,9 +1553,15 @@
 }
 @media (max-width:639px){ .detail-tagline{ font-size:15px; padding-left:13px; margin-bottom:16px; } }
 
-/* 118px of air above and below a short body is what made the page feel big. */
-@media (min-width:768px){ .detail-layout{ margin-block:-14px; } }
-@media (min-width:1280px){ .detail-layout{ margin-block:-42px; } }
+/* A short body did not need a full section's worth of air around it. Taken off
+   the section's own padding rather than as a negative margin on the layout:
+   /about uses .detail-layout too and has the team below it, so a negative
+   bottom margin there pulled "The team" up through "Where we work" and slid
+   the team cards over the line of copy above them. A negative margin is a
+   promise about what follows the element, and this element does not always
+   know what follows it. */
+@media (min-width:768px){ .detail-section{ padding-block:62px; } }
+@media (min-width:1280px){ .detail-section{ padding-block:70px; } }
 
 /* On a phone the panel and the head band between them were giving back the
    height the lighter list had just saved. Nothing is removed here — the same
@@ -1570,3 +1581,53 @@
   .detail-layout{ gap:16px; }
   .detail-section{ padding:30px 0; }
 }
+
+/* =========================================================
+   Desktop pass: fit the ask on the screen, and take out the air
+   =========================================================
+   The hero's call to action sat at 875-922px down the page. That is below the
+   fold on 1366x768, 1440x900 and 1536x864 — the three sizes most laptops
+   actually are — so on most desktops the main thing this page asks for could
+   not be seen without scrolling. Only a 1080-tall screen showed it.
+
+   The fixed paddings, gaps and the 560px visual become height-aware instead,
+   so the shorter the screen the tighter it packs. Nothing is removed and the
+   composition does not change; a tall screen tightens a little too rather than
+   staying exactly as it was, which is the honest description of what these
+   clamps do.
+
+     1366x768   CTA bottom 922 -> 649
+     1440x900              922 -> 714
+     1536x864              922 -> 696
+     1920x1080             905 -> 801   (the orbit still at its full 560px)
+   ========================================================= */
+@media (min-width:1024px){
+  .hero-shell{
+    gap:clamp(12px, 2vh, 26px);
+    padding-top:clamp(20px, 3vh, 46px);
+    padding-bottom:clamp(28px, 5vh, 72px);
+  }
+  /* The orbit is the signature element, so it is capped rather than rescaled:
+     it keeps its 560px wherever there is room for it and gives way only where
+     there is not. */
+  .hero-visual{ max-width:min(560px, 52vh); }
+}
+
+/* 118px above and below every section — 236px between one and the next — was
+   most of the empty space on a desktop. 86px still reads as a deliberate break
+   between sections without a screenful of nothing in the middle. */
+@media (min-width:1280px){ .section{ padding:86px 0; } }
+
+/* A line of body copy stops being comfortable somewhere around 75 characters;
+   the about page's standfirst was running to 106. Every other lede on the site
+   is already capped — this one had nothing holding it. */
+.section-sub{ max-width:62ch; }
+
+/* .group-label:first-of-type zeroes the top margin, on the reasoning that a
+   section's first label sits directly under the section heading and needs no
+   gap. On /about and /results the label is the first h2 *child of the shell*,
+   but the thing it has to clear is nested inside the block above it — so it
+   was pulled flush against a paragraph it has nothing to do with, and the
+   mt-10 both pages set to fix that lost to it on source order and never
+   applied. :first-child is the condition that was actually meant. */
+.group-label:first-of-type:not(:first-child){ margin-top:40px; }
