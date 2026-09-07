@@ -1447,3 +1447,126 @@
   font-size:12.5px; font-weight:600; color:var(--brand-deep); min-height:32px;
 }
 .aside-more-all svg{ width:13px; height:13px; }
+
+/* =========================================================
+   Detail pages, second pass: less page, more to look at
+   ---------------------------------------------------------
+   The first pass gave these pages colour but made them taller, and a taller
+   page of the same material is a more boring page, not a better one. The head
+   was still half a screen of empty space to the right of the title, and the
+   body was carrying every fact the entry had in one column.
+
+   So the shortest, most concrete thing an entry owns — its spec — moves up
+   beside the title, where it fills the empty half and comes out of the body's
+   height at the same time. One move, both problems.
+   ========================================================= */
+@media (min-width:960px){
+  .page-head-inner.has-aside{
+    display:grid; grid-template-columns:minmax(0,1fr) 370px;
+    gap:52px; align-items:center;
+  }
+  /* The crumbs span both columns and stay on top. */
+  .page-head-inner.has-aside > .crumbs{ grid-column:1 / -1; }
+  /* Narrower than the full column so the lede does not run under the panel. */
+  .page-head-inner.has-aside .page-lede{ max-width:46ch; }
+}
+.page-head-aside{ margin-top:24px; }
+@media (min-width:960px){ .page-head-aside{ margin-top:0; } }
+
+/* The spec panel. Glass over the head's own gradient rather than a solid card,
+   so it belongs to the band it sits in instead of being dropped on top of it. */
+.entry-panel{
+  position:relative; overflow:hidden;
+  padding:20px 20px 8px; border-radius:var(--r-xl);
+  background:linear-gradient(165deg, rgba(255,255,255,.92), color-mix(in srgb, var(--tone,var(--brand)) 9%, rgba(255,255,255,.72)));
+  border:1px solid color-mix(in srgb, var(--tone,var(--brand)) 22%, #fff);
+  box-shadow:0 26px 60px -34px color-mix(in srgb, var(--tone,var(--brand)) 80%, transparent), var(--hi);
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+}
+/* The glyph again, oversized and faded into the corner where the spec rows
+   run out. Cropped by the panel edge on purpose: a whole icon sitting in the
+   corner reads as a second, badly placed button. */
+.entry-panel-wash{
+  position:absolute; right:-26px; bottom:-30px; pointer-events:none;
+  color:var(--tone,var(--brand)); opacity:.11;
+}
+.entry-panel-wash svg{ width:150px; height:150px; stroke-width:1.1; }
+.entry-panel-mark{
+  position:relative; display:grid; place-items:center; width:46px; height:46px;
+  border-radius:14px; color:#fff; margin-bottom:16px;
+  background:linear-gradient(150deg, var(--tone,var(--brand)), color-mix(in srgb, var(--tone,var(--brand)) 55%, var(--accent)));
+  box-shadow:0 12px 26px -12px color-mix(in srgb, var(--tone,var(--brand)) 90%, transparent);
+}
+.entry-panel-mark svg{ width:23px; height:23px; }
+
+.entry-spec{ position:relative; }
+.entry-spec > div{
+  display:flex; align-items:baseline; justify-content:space-between; gap:14px;
+  padding:11px 0; border-top:1px solid color-mix(in srgb, var(--tone,var(--brand)) 16%, var(--line));
+}
+.entry-spec dt{
+  font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--muted);
+}
+.entry-spec dd{
+  font-family:'General Sans',sans-serif; font-size:16px; font-weight:600;
+  letter-spacing:-.02em; color:var(--ink); text-align:right;
+}
+@media (max-width:639px){
+  .entry-panel{ padding:16px 16px 6px; }
+  .entry-panel-mark{ width:40px; height:40px; border-radius:12px; margin-bottom:12px; }
+  .entry-panel-wash svg{ width:112px; height:112px; }
+  .entry-spec dd{ font-size:15px; }
+}
+
+/* The mark now lives in the panel, so the one above the title would be the
+   same icon twice on the same screen. */
+.page-head-inner.has-aside .head-mark{ display:none; }
+
+/* ---------- the body, lighter ----------
+   Nine full cards made the list look like nine decisions. A tone-coloured rule
+   down the side carries the same colour at a fraction of the weight, and the
+   whole list comes in around a third shorter. */
+.detail-points li{
+  padding:7px 0 7px 13px; border-radius:0; border:0;
+  border-left:2px solid color-mix(in srgb, var(--tone,var(--brand)) 45%, transparent);
+  background:none; font-size:14px; line-height:1.5;
+}
+.detail-points svg{
+  margin-top:2px; width:13px; height:13px; padding:2px;
+  color:#fff; background:var(--tone,var(--brand));
+}
+@media (min-width:768px){ .detail-points{ grid-template-columns:1fr 1fr; gap:10px 22px; } }
+@media (max-width:639px){ .detail-points li{ font-size:13.4px; padding-left:11px; } }
+
+/* A pull quote, not a small italic aside — it is the one line on the page in
+   the client's own words. */
+.detail-tagline{
+  margin-bottom:22px; padding:0 0 0 18px;
+  border-left:3px solid var(--tone,var(--brand));
+  font-size:17px; line-height:1.5; color:var(--ink-2); font-style:normal;
+}
+@media (max-width:639px){ .detail-tagline{ font-size:15px; padding-left:13px; margin-bottom:16px; } }
+
+/* 118px of air above and below a short body is what made the page feel big. */
+@media (min-width:768px){ .detail-layout{ margin-block:-14px; } }
+@media (min-width:1280px){ .detail-layout{ margin-block:-42px; } }
+
+/* On a phone the panel and the head band between them were giving back the
+   height the lighter list had just saved. Nothing is removed here — the same
+   mark, the same three rows — the padding around them is simply not a
+   desktop's worth of padding on a 390px screen. */
+@media (max-width:639px){
+  /* Scoped to the pages this is about. The first version of this block set
+     .section and .page-lede globally, which would have re-spaced every section
+     of the home page on a phone to fix a detail page. */
+  .page-head-inner.has-aside{ padding:26px 18px 22px; }
+  .page-head-inner.has-aside .page-lede{ margin-top:10px; font-size:14.8px; }
+  .page-head-aside{ margin-top:18px; }
+  .entry-panel{ padding:14px 15px 4px; }
+  .entry-panel-mark{ width:36px; height:36px; border-radius:11px; margin-bottom:10px; }
+  .entry-panel-mark svg{ width:19px; height:19px; }
+  .entry-spec > div{ padding:9px 0; }
+  .detail-layout{ gap:16px; }
+  .detail-section{ padding:30px 0; }
+}

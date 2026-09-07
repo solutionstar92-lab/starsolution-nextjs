@@ -3,7 +3,7 @@ import { Icon } from './Icon';
 import { Reveal } from './Reveal';
 
 export function PageHead({
-  eyebrow, title, lede, crumbs, icon, tone,
+  eyebrow, title, lede, crumbs, icon, tone, aside,
 }: {
   eyebrow?: string;
   title: string;
@@ -13,6 +13,11 @@ export function PageHead({
    *  same icon and colour as the card that was clicked to reach it. */
   icon?: string;
   tone?: string;
+  /** Sits beside the title on a desktop and under the lede on a phone. The
+   *  detail pages put their spec panel here: the head was half a screen of
+   *  empty space to the right of the words, and the panel it holds is content
+   *  the body no longer has to carry. */
+  aside?: React.ReactNode;
 }) {
   return (
     <header
@@ -34,7 +39,7 @@ export function PageHead({
           />
         ))}
       </div>
-      <div className="page-head-inner">
+      <div className={`page-head-inner${aside ? ' has-aside' : ''}`}>
         {crumbs && (
           <nav className="crumbs" aria-label="Breadcrumb">
             {crumbs.map((c, i) => (
@@ -45,12 +50,13 @@ export function PageHead({
             ))}
           </nav>
         )}
-        <Reveal>
+        <Reveal className="page-head-copy">
           {icon && <span className="head-mark" aria-hidden="true"><Icon name={icon} /></span>}
           {eyebrow && <p className="eyebrow"><span className="eyebrow-dot" aria-hidden="true" /> {eyebrow}</p>}
           <h1 className="page-title">{title}</h1>
           {lede && <p className="page-lede">{lede}</p>}
         </Reveal>
+        {aside && <Reveal className="page-head-aside" delay={0.1}>{aside}</Reveal>}
       </div>
     </header>
   );

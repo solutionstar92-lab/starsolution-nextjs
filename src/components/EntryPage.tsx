@@ -28,6 +28,11 @@ export function EntryPage({
 }) {
   const mark = icon ?? entry.icon;
   const hue = tone ?? entry.tone;
+  const stats = entry.stats ?? [];
+  /* The panel needs something in it to be worth drawing. A team page has
+     neither an icon nor stats, and an empty tinted box beside the name would be
+     worse than the plain head it replaces. */
+  const hasPanel = stats.length > 0 || !!mark;
   /* Everything else in this section, for the aside. On a desktop the sticky CTA
      card left most of a screen of empty column beside the body; somewhere to go
      next is more use there than white space, and it links the section together. */
@@ -39,23 +44,38 @@ export function EntryPage({
         eyebrow={entry.eyebrow}
         title={entry.title}
         lede={entry.summary}
-        icon={mark}
         tone={hue}
         crumbs={[{ href: '/', label: 'Home' }, { href: sectionHref, label: section }, { label: entry.title }]}
+        aside={hasPanel ? (
+          <div className="entry-panel">
+            {/* The entry's own glyph, blown up and faded into the corner. The
+                goal-card motifs were the first thing tried here and they only
+                map a handful of icons — "whatsapp" fell through to concentric
+                rings, which read as a stray circle rather than as anything to
+                do with an inbox. The icon set covers every entry by
+                definition, so this is always on the subject. */}
+            {mark && <span className="entry-panel-wash" aria-hidden="true"><Icon name={mark} /></span>}
+            {mark && <span className="entry-panel-mark" aria-hidden="true"><Icon name={mark} /></span>}
+            {stats.length > 0 && (
+              <dl className="entry-spec">
+                {stats.map(([k, v]) => (
+                  <div key={k}><dt>{k}</dt><dd>{v}</dd></div>
+                ))}
+              </dl>
+            )}
+          </div>
+        ) : null}
       />
 
-      <section className="section" style={hue ? ({ ['--tone' as string]: hue }) : undefined}>
+      <section className="section detail-section" style={hue ? ({ ['--tone' as string]: hue }) : undefined}>
         <div className="mx-auto max-w-shell px-5 lg:px-8">
           <div className="detail-layout">
             <div className="detail-body">
               <Reveal>
+                {/* The stats used to sit here. They are the shortest, most
+                    concrete thing an entry has, so they earn a place in the
+                    head rather than a third of the body's height. */}
                 {entry.tagline && <p className="detail-tagline">{entry.tagline}</p>}
-
-                {entry.stats && entry.stats.length > 0 && (
-                  <dl className="detail-stats">
-                    {entry.stats.map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}
-                  </dl>
-                )}
 
                 {entry.points && entry.points.length > 0 && (
                   <>
