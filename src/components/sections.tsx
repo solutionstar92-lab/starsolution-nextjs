@@ -274,13 +274,17 @@ export function CaseStudies({ cases }: { cases: Entry[] }) {
 
 /* ---------------- Work ---------------- */
 /* `systems` is gone from here: it has its own section further up the page now. */
-export function Work({ projects, automations }: { projects: Project[]; automations: Entry[] }) {
+export function Work({ projects }: { projects: Project[] }) {
   return (
     <section id="work" className="section" aria-labelledby="workTitle">
       <div className="mx-auto max-w-shell px-5 lg:px-8">
-        <SectionHead id="workTitle" eyebrow="Portfolio" title="Our work and projects" sub="Websites, systems and automations." />
-
-        <h3 className="group-label">Live websites</h3>
+        {/* The sub used to read "Websites, systems and automations" and name
+            three things this section no longer holds: systems have had their
+            own section for a while, and the automations now have one below.
+            The "Live websites" label went with them — with only the rail left
+            under it, it was a second heading for the same thing, and 52px of
+            gap plus its own line to say it. */}
+        <SectionHead id="workTitle" eyebrow="Portfolio" title="Our work and projects" sub="Real stores we designed, built and still run." />
       </div>
       {/* A rail rather than a stack. Each card is a tall thing — a before/after
           frame, a title, a paragraph and an expandable write-up — so stacked
@@ -293,10 +297,34 @@ export function Work({ projects, automations }: { projects: Project[]; automatio
           <ProjectCard key={p.id} project={p} delay={i * 0.08} heading="h4" />
         ))}
       </Rail>
-      <div className="mx-auto max-w-shell px-5 lg:px-8">
+    </section>
+  );
+}
 
-        <h3 className="group-label">AI automations and integrations</h3>
-        <Reveal as="ul" className="auto-grid">
+/* ---------------- Automations ---------------- */
+/**
+ * Its own section, not a group label under the portfolio.
+ *
+ * It was the third block inside "Our work and projects", under a heading that
+ * promised websites — so an automation read as a kind of website, and the label
+ * announcing it sat flush against the rail above: .group-label:first-of-type
+ * zeroes the top margin, and in its own wrapper it counted as first. A section
+ * of its own is what it always was, and it gets the spacing every other one
+ * has for free.
+ */
+export function Automations({ automations }: { automations: Entry[] }) {
+  return (
+    <section id="automations" className="section" aria-labelledby="autoTitle">
+      <div className="mx-auto max-w-shell px-5 lg:px-8">
+        <SectionHead
+          id="autoTitle"
+          eyebrow="Automations"
+          title="AI automations and integrations"
+          sub="The work that runs after the site is live."
+          action={<Link href="/automations" className="link-arrow">View all <Icon name="arrow" /></Link>}
+          row
+        />
+        <Reveal as="ul" className="auto-grid automations-grid">
           {automations.map((a, i) => (
             <li key={a.id}>
               <Link

@@ -1699,3 +1699,39 @@
    tight enough that another paragraph would push the buttons off a phone. */
 .hero-lede{ display:none; }
 @media (min-width:1024px){ .hero-lede{ display:block; } }
+
+/* 52px between a section's heading and the first thing under it is a lot of
+   air to cross before the content starts, and it is paid once per section on
+   the way down the page. 36px still separates them. */
+@media (min-width:768px){ .section-head{ margin-bottom:36px; } }
+
+/* ---------- automation cards, now that they are a section ----------
+   These were sized to sit under a group label inside the portfolio: a single
+   line of summary, clipped, on a row 44px tall. Under a section head of their
+   own that reads as a leftover strip rather than the section's content. Given
+   a column each, the icon above the words and room for the summary to finish,
+   they carry the heading they now sit under. */
+@media (min-width:1024px){
+  .automations-grid.auto-grid{ gap:18px; }
+  .automations-grid .auto-card{
+    display:block; padding:20px 20px 18px; border-radius:18px;
+  }
+  .automations-grid .auto-icon{ width:44px; height:44px; border-radius:14px; margin-bottom:14px; }
+  .automations-grid .auto-icon svg{ width:21px; height:21px; }
+  .automations-grid .auto-card h4{ font-size:16.5px; }
+  /* The summary runs to two lines instead of being cut mid-word on one. The
+     right-hand padding is the arrow's seat: it sits in that corner, and without
+     the gap the second line runs underneath it. */
+  .automations-grid .auto-card p{
+    margin-top:7px; padding-right:34px; font-size:13.8px; line-height:1.55;
+    white-space:normal; overflow:hidden;
+    display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2;
+  }
+  /* The arrow moves to the bottom corner, where it reads as "open this" rather
+     than as a third column squeezing the words. */
+  .automations-grid .auto-go{
+    position:absolute; right:16px; bottom:16px;
+    width:26px; height:26px;
+  }
+  .automations-grid .auto-card{ padding-bottom:22px; }
+}
