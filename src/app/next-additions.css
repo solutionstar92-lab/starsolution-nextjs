@@ -1711,27 +1711,53 @@
    own that reads as a leftover strip rather than the section's content. Given
    a column each, the icon above the words and room for the summary to finish,
    they carry the heading they now sit under. */
+.automations-grid.auto-grid{ gap:10px; }
+.automations-grid .auto-card{ display:block; padding:14px 15px 16px; border-radius:16px; }
+.automations-grid .auto-icon{ width:38px; height:38px; border-radius:12px; margin-bottom:10px; }
+.automations-grid .auto-icon svg{ width:18px; height:18px; }
+.automations-grid .auto-card h3,
+.automations-grid .auto-card h4{ font-size:15px; }
+/* Two lines of summary instead of one cut off mid-word. The right-hand padding
+   is the arrow's seat: it sits in that corner, and without the gap the second
+   line runs underneath it — which only shows up if you measure the painted line
+   boxes, since the paragraph's own box overlaps it either way. */
+.automations-grid .auto-card p{
+  margin-top:6px; padding-right:30px; font-size:13px; line-height:1.5;
+  white-space:normal; overflow:hidden;
+  display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2;
+}
+/* Bottom corner, where it reads as "open this" rather than as a third column
+   squeezing the words into a strip. */
+.automations-grid .auto-go{ position:absolute; right:13px; bottom:13px; width:24px; height:24px; }
+
 @media (min-width:1024px){
   .automations-grid.auto-grid{ gap:18px; }
-  .automations-grid .auto-card{
-    display:block; padding:20px 20px 18px; border-radius:18px;
-  }
+  .automations-grid .auto-card{ padding:20px 20px 22px; border-radius:18px; }
   .automations-grid .auto-icon{ width:44px; height:44px; border-radius:14px; margin-bottom:14px; }
   .automations-grid .auto-icon svg{ width:21px; height:21px; }
   .automations-grid .auto-card h4{ font-size:16.5px; }
-  /* The summary runs to two lines instead of being cut mid-word on one. The
-     right-hand padding is the arrow's seat: it sits in that corner, and without
-     the gap the second line runs underneath it. */
-  .automations-grid .auto-card p{
-    margin-top:7px; padding-right:34px; font-size:13.8px; line-height:1.55;
-    white-space:normal; overflow:hidden;
-    display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2;
+  .automations-grid .auto-card p{ margin-top:7px; padding-right:34px; font-size:13.8px; line-height:1.55; }
+  .automations-grid .auto-go{ right:16px; bottom:16px; width:26px; height:26px; }
+}
+
+/* ---------- live websites: a grid on a desktop, a rail on a phone ----------
+   Two projects at a fixed 391px left 365px of empty shell to the right of the
+   second card — a rail with nothing to scroll to, and the emptiness read as a
+   missing third project rather than as space.
+
+   From 1024px the same markup lays out as a grid that fills the shell: the
+   cards take the width between them, and the frames grow with it. It stays a
+   rail below that, where two cards genuinely do not fit side by side and
+   swiping is the point.
+
+   auto-fit with a floor rather than two fixed columns, so a third and fourth
+   project wrap into rows instead of being squeezed into slivers. */
+@media (min-width:1024px){
+  .live-rail{ overflow-x:visible; scroll-snap-type:none; }
+  .live-rail > .rail-inner{
+    width:auto; display:grid; align-items:start;
+    grid-template-columns:repeat(auto-fit, minmax(380px, 1fr));
+    gap:24px;
   }
-  /* The arrow moves to the bottom corner, where it reads as "open this" rather
-     than as a third column squeezing the words. */
-  .automations-grid .auto-go{
-    position:absolute; right:16px; bottom:16px;
-    width:26px; height:26px;
-  }
-  .automations-grid .auto-card{ padding-bottom:22px; }
+  .live-rail > .rail-inner > .live-card{ width:auto; }
 }

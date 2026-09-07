@@ -104,9 +104,13 @@ export function Rail({
         id={id}
         ref={railRef}
         onScroll={sync}
-        tabIndex={0}
-        role="region"
-        aria-label={`${label}, scrollable`}
+        /* Only a tab stop while there is something to scroll to. The live-website
+           rail lays out as a grid on a desktop and stops scrolling entirely, and
+           a focusable region announced as "scrollable" that cannot scroll is a
+           stop on the keyboard path that does nothing when you get there. */
+        tabIndex={overflows ? 0 : -1}
+        role={overflows ? 'region' : undefined}
+        aria-label={overflows ? `${label}, scrollable` : undefined}
         onKeyDown={(e) => {
           if (e.key === 'ArrowRight') { e.preventDefault(); nudge(1); }
           if (e.key === 'ArrowLeft') { e.preventDefault(); nudge(-1); }
