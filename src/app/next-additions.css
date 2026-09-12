@@ -1683,7 +1683,9 @@
   .hero-logos{ grid-area:logos; }
   /* Centred in its column against all four rows of the left one, so the orbit
      sits opposite the middle of the copy rather than at the top of it. */
-  .hero-visual{ grid-area:visual; align-self:center; max-width:none; margin-inline:auto; }
+  /* max-width, not none: the height-aware cap lives further down and this rule
+     used to cancel it, which is how the hero stopped fitting short laptops. */
+  .hero-visual{ grid-area:visual; align-self:center; margin-inline:auto; }
 
   /* The headline wraps here instead of being fitted to one line — see the note
      in useHeadlineFit. Three lines of 56px reads as a headline; one line
@@ -1819,4 +1821,75 @@
   .hero-shell{ gap:11px; padding:8px 18px 14px; }
   .hero-actions{ margin-top:2px; gap:9px; }
   .hero-logos{ margin-top:6px; }
+}
+
+/* =========================================================
+   Hero: fit the screen, not the resolution
+   ---------------------------------------------------------
+   A 1366x768 laptop gives a page about 610px once Windows' taskbar and
+   Chrome's own bars have taken their share, and the hero wanted 638 — so the
+   platform logos were cut off the bottom on the most common laptop there is.
+   A 2560x1440 desktop had the opposite problem: the same hero, 510px of empty
+   screen under it.
+
+   Everything vertical here now scales with the height of the window as well as
+   its width. clamp(min, Nvh, max): the max is what a large screen gets, the min
+   is the floor nothing goes below, and short screens land in between instead of
+   overflowing.
+
+     1280 x 560   overflowed by 66px
+     1366 x 610   overflowed by 28px
+     2560 x 1250  510px of slack
+   ========================================================= */
+@media (min-width:1024px){
+  .hero-shell{
+    gap:clamp(8px, 1.8vh, 22px);
+    padding-top:clamp(12px, 2.6vh, 46px);
+    padding-bottom:clamp(16px, 4vh, 72px);
+  }
+
+  /* min() of the two axes: the headline is already capped by width, and now by
+     height too, so three lines of it cannot push the buttons off a short
+     screen. */
+  .hero-title{ font-size:clamp(32px, min(3.6vw, 7.1vh), 58px); }
+
+  .hero-lede{
+    margin-top:clamp(8px, 1.6vh, 16px);
+    font-size:clamp(14.5px, 2vh, 16.5px);
+  }
+
+  .hero-proof{ padding-block:clamp(6px, 1.2vh, 14px); }
+  .hero-proof dd{ font-size:clamp(17px, 3vh, 24px); }
+  .hero-proof dt{ font-size:clamp(10px, 1.5vh, 12px); }
+  .hero-logos{ margin-top:clamp(2px, 0.8vh, 16px); }
+
+  /* The orbit is the other half of the fit. 560px wherever there is room, and
+     tied to the window's height where there is not — it keeps its aspect, so
+     capping the width is what brings its height down. */
+  .hero-visual{ max-width:min(560px, 68vh); }
+}
+
+/* Under about 520px of window — a 1024x600 netbook, or a laptop with every
+   toolbar switched on — there is not room for the standfirst as well as the
+   ask, and the ask wins. The lede is already hidden below 1024px wide for the
+   same reason, so this is the same judgement applied to the other axis. */
+@media (min-width:1024px) and (max-height:520px){
+  .hero-lede{ display:none; }
+  .hero-proof{ padding-block:4px; }
+  .hero-proof dd{ font-size:16px; }
+}
+
+/* Tablets keep the stacked hero — two columns need more width than 1023px
+   leaves — but stacked means the orbit sits above the words, so its height is
+   added to theirs rather than shared with them. At 600px wide it pushed the
+   proof row and the logos off a 900px-tall screen. Capped against the window
+   the same way the split hero is; phones are untouched, their own rules start
+   below 768. */
+@media (min-width:768px) and (max-width:1023px){
+  .hero-visual{ max-width:min(600px, 46vh); }
+  .hero-shell{
+    gap:clamp(10px, 1.6vh, 26px);
+    padding-top:clamp(16px, 2.4vh, 46px);
+    padding-bottom:clamp(20px, 3.5vh, 72px);
+  }
 }
