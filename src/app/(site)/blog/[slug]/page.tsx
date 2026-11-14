@@ -37,7 +37,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
       <PageHead
         eyebrow={`${post.tag} · ${post.readingTime}`}
         title={post.title}
-        byline={author ? <Byline author={author} locale={locale} /> : undefined}
+        byline={author ? <Byline author={author} locale={locale} updated={post.updated} /> : undefined}
         lede={post.excerpt}
         crumbs={[{ href: '/', label: 'Home' }, { href: '/blog', label: 'Blog' }, { label: post.tag }]}
       />

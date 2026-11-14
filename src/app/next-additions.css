@@ -4466,7 +4466,9 @@
 .post-byline-avatar{ width: 30px; height: 30px; font-size: 11px; box-shadow: none; }
 .post-byline-photo{ width: 30px; height: 30px; border-radius: 50%; object-fit: cover; flex: none; }
 .post-byline-role{ font-size: 13px; }
-.post-byline-role::before{ content: "·"; margin-inline-end: 12px; color: var(--line); }
+.post-byline-role::before,
+.post-byline-updated::before{ content: "·"; margin-inline-end: 12px; color: var(--line); }
+.post-byline-updated{ font-size: 13px; }
 
 .author-posts{ padding-top: 8px; }
 .author-posts-title{

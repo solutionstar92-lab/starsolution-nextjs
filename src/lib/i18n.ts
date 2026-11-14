@@ -24,7 +24,11 @@ export function getContent(locale: Locale): SiteContent {
 
 export type Post = {
   slug: string; title: string; excerpt: string;
-  date: string; readingTime: string; tag: string;
+  /** "YYYY-MM-DD", published. */
+  date: string;
+  /** "YYYY-MM-DD", last meaningful update (dateModified). */
+  updated?: string;
+  readingTime: string; tag: string;
   /** Team member slug (src/data/site*.json team / the Supabase team table). */
   author?: string;
   /** Plain paragraphs, or one Markdown string (see PostBody). */
@@ -169,6 +173,7 @@ const STRINGS: Record<Locale, Dict> = {
     'detail.whatYouGet': 'What you get',
     'detail.faq': 'Frequently asked questions',
     'post.by': 'By',
+    'post.updated': 'Updated',
     'team.articlesBy': 'Articles by',
     'work.whatWeDid': 'What we did',
     'work.visitTitle': 'Visit the live store',
@@ -407,6 +412,7 @@ const STRINGS: Record<Locale, Dict> = {
     'detail.whatYouGet': 'ما ستحصل عليه',
     'detail.faq': 'أسئلة شائعة',
     'post.by': 'بقلم',
+    'post.updated': 'آخر تحديث',
     'team.articlesBy': 'مقالات كتبتها',
     'work.whatWeDid': 'ما نفّذناه',
     'work.visitTitle': 'ادخل المتجر',

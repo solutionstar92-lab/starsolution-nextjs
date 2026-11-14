@@ -1,6 +1,7 @@
 import type { Entry } from './types';
 import type { Locale, Post } from './i18n';
 import { getContent, localeHref } from './i18n';
+import { cairoIso } from './dates';
 
 /**
  * Structured data (schema.org JSON-LD) for Google.
@@ -183,7 +184,10 @@ export function blogPosting(post: Post, locale: Locale, path: string, author?: P
     url,
     headline: post.title,
     description: post.excerpt,
-    datePublished: post.date,
+    // Full ISO 8601 with Cairo's offset for that day; a bare date fails the
+    // Rich Results Test ("missing a timezone").
+    datePublished: cairoIso(post.date),
+    dateModified: post.updated ? cairoIso(post.updated) : undefined,
     inLanguage: locale,
     articleSection: post.tag,
     author: author
