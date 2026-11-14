@@ -10,6 +10,7 @@ import { site } from '@/lib/content';
 import { buildSearchIndex } from '@/components/ui/search-index';
 import { SiteSplash } from '@/components/ui/SiteSplash';
 import { MetaPixel } from '@/components/MetaPixel';
+import { WebMcp } from '@/components/WebMcp';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.starsolution.ai'),
@@ -50,6 +51,8 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       <SiteSplash />
       {/* Meta Pixel — public pages only, so /admin is never tracked. */}
       <MetaPixel />
+      {/* WebMCP tools for in-browser AI agents. */}
+      <WebMcp />
       <a href="#main" className="skip-link">Skip to content</a>
       <SiteHeader locale="en" whatsapp={site.contact.whatsapp} searchDocs={searchDocs} />
       <main id="main">

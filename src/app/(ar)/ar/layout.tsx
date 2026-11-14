@@ -10,6 +10,7 @@ import { PageTransition } from '@/components/PageTransition';
 import { ScrollQuiet } from '@/components/ScrollQuiet';
 import { SiteSplash } from '@/components/ui/SiteSplash';
 import { MetaPixel } from '@/components/MetaPixel';
+import { WebMcp } from '@/components/WebMcp';
 import { buildSearchIndex } from '@/components/ui/search-index';
 import { getContent, getDict } from '@/lib/i18n';
 
@@ -58,6 +59,8 @@ export default async function ArabicLayout({ children }: { children: React.React
       <SiteSplash />
       {/* Meta Pixel — public pages only, so /admin is never tracked. */}
       <MetaPixel />
+      {/* WebMCP tools for in-browser AI agents. */}
+      <WebMcp />
       <a href="#main" className="skip-link">{t('a11y.skip')}</a>
       <SiteHeader locale="ar" whatsapp={c.contact.whatsapp} searchDocs={searchDocs} />
       <main id="main">
